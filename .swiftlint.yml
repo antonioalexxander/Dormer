@@ -1,0 +1,40 @@
+# SwiftLint (MIT). Install: brew install swiftlint
+included:
+  - App
+  - Packages/DormerKit/Sources
+  - Packages/DormerKit/Tests
+excluded:
+  - Packages/DormerKit/.build
+  - build
+
+# Formatting is owned by swift-format; disable overlapping style rules.
+disabled_rules:
+  - trailing_comma
+  - opening_brace
+  - line_length          # swift-format enforces 120
+  - identifier_name      # e.g. x86_64 enum case
+  - todo
+
+opt_in_rules:
+  - empty_count
+  - first_where
+  - contains_over_filter_count
+  - sorted_first_last
+  - redundant_nil_coalescing
+  - unused_declaration
+  - force_unwrapping
+
+force_unwrapping:
+  severity: warning
+
+type_body_length:
+  warning: 400
+  error: 600
+file_length:
+  warning: 600
+  error: 900
+function_body_length:
+  warning: 80
+  error: 150
+nesting:
+  type_level: 3

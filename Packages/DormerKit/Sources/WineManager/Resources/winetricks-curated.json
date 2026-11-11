@@ -1,0 +1,19 @@
+[
+  { "id": "vcrun2022", "title": "Visual C++ 2015–2022", "category": "cpp", "estimatedMinutes": 1 },
+  { "id": "vcrun2013", "title": "Visual C++ 2013", "category": "cpp", "estimatedMinutes": 1 },
+  { "id": "vcrun2012", "title": "Visual C++ 2012", "category": "cpp", "estimatedMinutes": 1 },
+  { "id": "vcrun2010", "title": "Visual C++ 2010", "category": "cpp", "estimatedMinutes": 1 },
+  { "id": "vcrun2008", "title": "Visual C++ 2008", "category": "cpp", "estimatedMinutes": 1 },
+  { "id": "dotnet48", "title": ".NET Framework 4.8", "category": "dotnet", "estimatedMinutes": 6 },
+  { "id": "dotnet40", "title": ".NET Framework 4.0", "category": "dotnet", "estimatedMinutes": 3 },
+  { "id": "dotnetdesktop8", "title": ".NET Desktop Runtime 8", "category": "dotnet", "estimatedMinutes": 2 },
+  { "id": "d3dcompiler_47", "title": "D3DCompiler 47", "category": "directx", "estimatedMinutes": 1 },
+  { "id": "d3dcompiler_43", "title": "D3DCompiler 43", "category": "directx", "estimatedMinutes": 1 },
+  { "id": "d3dx9", "title": "DirectX 9 (d3dx9)", "category": "directx", "estimatedMinutes": 2 },
+  { "id": "d3dx11_43", "title": "DirectX 11 (d3dx11_43)", "category": "directx", "estimatedMinutes": 1 },
+  { "id": "xact", "title": "XACT (audio de DirectX)", "category": "directx", "estimatedMinutes": 1 },
+  { "id": "corefonts", "title": "Microsoft Core Fonts", "category": "fonts", "estimatedMinutes": 2 },
+  { "id": "cjkfonts", "title": "CJK fonts", "category": "fonts", "estimatedMinutes": 2 },
+  { "id": "gdiplus", "title": "GDI+", "category": "other", "estimatedMinutes": 1 },
+  { "id": "msxml6", "title": "MSXML 6", "category": "other", "estimatedMinutes": 1 }
+]

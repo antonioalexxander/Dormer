@@ -112,10 +112,10 @@ dormer/
 │   ├── Sources/
 │   │   ├── DormerCore/           # Modelos, errores, rutas, parsers PE/ICO/LNK/.reg, ProcessRunner
 │   │   ├── WineManager/          # Runtimes, Rosetta, descargas, verificación, winetricks, backends
+│   │   │   └── Resources/        # runtimes.json y winetricks-curated.json (SHA-256 fijados)
 │   │   ├── BottleManager/        # CRUD de botellas, ajustes, descubrimiento, lanzadores, export/import
 │   │   └── DormerUI/             # Vistas SwiftUI + ViewModels (@Observable) + Mocks para Previews
 │   └── Tests/                    # XCTest: Core, WineManager, BottleManager
-├── Resources/manifests/          # runtimes.json, winetricks-curated.json, tools.json
 ├── Tools/                        # Scripts: make-dmg.sh, build-cabextract.sh, gen-icon…
 ├── docs/                         # DESIGN.md, COMPATIBILITY.md, capturas
 ├── .github/                      # CI, plantillas de issues y PR
@@ -275,7 +275,7 @@ sequenceDiagram
 | Lanzadores `.app` | Bundle mínimo con script que ejecuta `open "dormer://run?bottle=<id>&program=<id>"`, más el ícono convertido a `.icns`. La app arranca sin ventana, lanza el programa y se cierra al terminar si no había ventanas abiertas. Así los ajustes viven en un solo lugar. |
 | Notificaciones | `UserNotifications` local (permiso pedido la primera vez que hace falta). |
 | Liquid Glass | Con el SDK de macOS 26+ los controles estándar lo adoptan solos. Las superficies propias (zona de soltar, tarjetas) usan `if #available(macOS 26, *) { .glassEffect() } else { .background(.regularMaterial) }`. |
-| Localización | *String Catalogs* (`.xcstrings`) desde la Fase 1, en español e inglés. |
+| Localización | *String Catalogs* (`.xcstrings`) en español e inglés. **Cambio en la Fase 1:** se pospone a la Fase 5, porque las vistas viven en un paquete Swift y cada texto debe indicar `bundle: .module`. La interfaz está hoy en español. |
 
 ---
 

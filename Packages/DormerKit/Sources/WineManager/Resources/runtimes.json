@@ -1,0 +1,35 @@
+{
+  "recommended": "gcenx-wine-staging-11.21",
+  "runtimes": [
+    {
+      "id": "gcenx-wine-staging-11.21",
+      "displayName": "Wine Staging 11.21",
+      "version": "11.21",
+      "flavor": "staging",
+      "architecture": "x86_64",
+      "requiresRosetta": true,
+      "minimumMacOS": "10.15",
+      "downloadURL": "https://github.com/Gcenx/macOS_Wine_builds/releases/download/11.21/wine-staging-11.21-osx64.tar.xz",
+      "sha256": "d7bcd5abf4df27aae397a7898aef074fea4a2e0b51e0a55aa9659517bbf9d452",
+      "sizeBytes": 228148688,
+      "license": "LGPL-2.1-or-later",
+      "sourceURL": "https://gitlab.winehq.org/wine/wine",
+      "capabilities": { "wow64": true, "esync": false, "msync": false }
+    },
+    {
+      "id": "gcenx-wine-devel-11.21",
+      "displayName": "Wine Devel 11.21",
+      "version": "11.21",
+      "flavor": "devel",
+      "architecture": "x86_64",
+      "requiresRosetta": true,
+      "minimumMacOS": "10.15",
+      "downloadURL": "https://github.com/Gcenx/macOS_Wine_builds/releases/download/11.21/wine-devel-11.21-osx64.tar.xz",
+      "sha256": "9909b486657e10ab66c7279371ae1f990345b596b3b1b3a0cf21f28af24fa0ce",
+      "sizeBytes": 225612636,
+      "license": "LGPL-2.1-or-later",
+      "sourceURL": "https://gitlab.winehq.org/wine/wine",
+      "capabilities": { "wow64": true, "esync": false, "msync": false }
+    }
+  ]
+}
