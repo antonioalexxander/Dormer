@@ -2,6 +2,7 @@ import AppKit
 import DormerCore
 import Foundation
 import Observation
+import UniformTypeIdentifiers
 
 /// Main-actor state shared by every view.
 ///
@@ -31,6 +32,8 @@ public final class AppModel {
     public let dataFolder: URL?
     /// Names of bottles Wine is still creating (takes ~30 s), shown as placeholders in the sidebar.
     public private(set) var bottlesBeingCreated: [String] = []
+    /// Long-running work shown in the sidebar (exporting, importing, applying settings), or `nil`.
+    public private(set) var activity: String?
 
     public var hasCompletedOnboarding: Bool {
         didSet { defaults.set(hasCompletedOnboarding, forKey: Keys.onboardingCompleted) }
@@ -47,6 +50,8 @@ public final class AppModel {
     let runner: any ProgramRunning
     let runtimeService: any RuntimeServicing
     let dependencyInstaller: any DependencyInstalling
+    private let iconProvider: any ProgramIconProviding
+    @ObservationIgnored private var iconCache: [String: NSImage] = [:]
     private let defaults: UserDefaults
     private var pendingSaves: [UUID: Task<Void, Never>] = [:]
 
@@ -60,6 +65,7 @@ public final class AppModel {
         runner: any ProgramRunning,
         runtimeService: any RuntimeServicing,
         dependencyInstaller: any DependencyInstalling,
+        iconProvider: any ProgramIconProviding,
         isPreview: Bool,
         dataFolder: URL? = nil,
         defaults: UserDefaults = .standard
@@ -68,6 +74,7 @@ public final class AppModel {
         self.runner = runner
         self.runtimeService = runtimeService
         self.dependencyInstaller = dependencyInstaller
+        self.iconProvider = iconProvider
         self.isPreview = isPreview
         self.dataFolder = dataFolder
         self.defaults = defaults
@@ -174,6 +181,7 @@ public final class AppModel {
 
     public func duplicateBottle(_ id: UUID) async {
         guard let original = bottle(withID: id) else { return }
+        guard requireNoRunningPrograms(in: original, action: "duplicarla") else { return }
         do {
             let copy = try await bottleService.duplicate(original, named: "\(original.name) (copia)")
             if let index = bottles.firstIndex(where: { $0.id == id }) {
@@ -195,6 +203,7 @@ public final class AppModel {
             try await bottleService.delete(bottle)
             bottles.removeAll { $0.id == id }
             detectedPrograms[id] = nil
+            iconCache = iconCache.filter { !$0.key.hasPrefix(id.uuidString) }
             logSessions.removeAll { $0.bottleID == id }
             if selectedBottleID == id { selectedBottleID = bottles.first?.id }
         } catch {
@@ -219,13 +228,31 @@ public final class AppModel {
         mutateBottle(bottleID) { $0.pinnedPrograms.removeAll { $0.id == programID } }
     }
 
-    public func renameProgram(_ programID: UUID, in bottleID: UUID, to name: String) {
+    /// Saves the name, command-line arguments and environment of a pinned program.
+    public func updateProgram(
+        _ programID: UUID, in bottleID: UUID, name: String, arguments: String, environment: [EnvironmentVariable]
+    ) {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         mutateBottle(bottleID) { bottle in
             guard let index = bottle.pinnedPrograms.firstIndex(where: { $0.id == programID }) else { return }
             bottle.pinnedPrograms[index].name = trimmed
+            bottle.pinnedPrograms[index].arguments = arguments.trimmingCharacters(in: .whitespacesAndNewlines)
+            bottle.pinnedPrograms[index].environment = environment.filter {
+                !$0.name.trimmingCharacters(in: .whitespaces).isEmpty
+            }
         }
+    }
+
+    /// The program's icon, read from its executable. `nil` while unavailable (the UI shows a monogram).
+    public func icon(for program: Program, in bottleID: UUID) async -> NSImage? {
+        let key = "\(bottleID.uuidString)|\(program.pathKey)"
+        if let cached = iconCache[key] { return cached }
+        guard let bottle = bottle(withID: bottleID), let data = await iconProvider.iconPNG(for: program, in: bottle),
+            let image = NSImage(data: data)
+        else { return nil }
+        iconCache[key] = image
+        return image
     }
 
     public func pinnedProgram(_ programID: UUID, in bottleID: UUID) -> Program? {
@@ -295,8 +322,17 @@ public final class AppModel {
     }
 
     private func start(_ request: LaunchRequest, in bottleID: UUID, programPathKey: String?) async {
-        guard let bottle = bottle(withID: bottleID) else { return }
+        guard var bottle = bottle(withID: bottleID) else { return }
         do {
+            // Wine settings are written to the prefix lazily, right before a program starts.
+            let hasPendingChanges = bottle.appliedSettings != bottle.settings
+            if hasPendingChanges { activity = "Aplicando ajustes de «\(bottle.name)»…" }
+            defer { if hasPendingChanges { activity = nil } }
+            let applied = try await runner.prepare(bottle)
+            if applied != bottle.appliedSettings {
+                mutateBottle(bottleID) { $0.appliedSettings = applied }
+                bottle.appliedSettings = applied
+            }
             let session = try await runner.launch(request, in: bottle)
             let log = LogSession(
                 id: session.id, bottleID: bottleID, title: session.title, startedAt: session.startedAt,
@@ -321,7 +357,10 @@ public final class AppModel {
     }
 
     private func sessionEnded(_ log: LogSession, request: LaunchRequest) async {
-        if case .file = request { await refreshPrograms(in: log.bottleID) }
+        if case .file = request {
+            iconCache.removeAll()  // an installer may have replaced executables
+            await refreshPrograms(in: log.bottleID)
+        }
         guard let status = log.exitStatus, status != 0, status != -1 else { return }
         alert = AppAlert(
             title: "«\(log.title)» terminó con un error",
@@ -350,6 +389,72 @@ public final class AppModel {
             sessionTitle: session.title,
             lines: session.lines)
         return report.render()
+    }
+
+    /// Opens one of Wine's own tools (`winecfg`, `regedit`) in the bottle.
+    public func openTool(_ tool: WineTool, in bottleID: UUID) async {
+        selectedBottleID = bottleID
+        await start(.tool(tool), in: bottleID, programPathKey: nil)
+    }
+
+    // MARK: Export and import
+
+    private static let archiveType = UTType(filenameExtension: "aar") ?? .data
+
+    /// Asks where to save, then writes the bottle as an Apple Archive file.
+    public func exportBottle(_ id: UUID) async {
+        guard let bottle = bottle(withID: id) else { return }
+        guard requireNoRunningPrograms(in: bottle, action: "exportarla") else { return }
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [Self.archiveType]
+        panel.nameFieldStringValue = "\(bottle.name).aar"
+        panel.message = String(localized: "Exporta la botella con todos sus programas y ajustes a un solo archivo.")
+        panel.prompt = String(localized: "Exportar")
+        guard panel.runModal() == .OK, let destination = panel.url else { return }
+
+        activity = "Exportando «\(bottle.name)»…"
+        defer { activity = nil }
+        do {
+            try await bottleService.save(bottle)  // include edits still waiting for their debounced save
+            try await bottleService.exportBottle(bottle, to: destination)
+            NSWorkspace.shared.activateFileViewerSelecting([destination])
+        } catch {
+            present(error, title: "No se pudo exportar la botella")
+        }
+    }
+
+    /// Asks for an exported bottle and adds it as a new bottle.
+    public func importBottle() async {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [Self.archiveType]
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.message = String(localized: "Elige un archivo de botella exportado desde Dormer.")
+        panel.prompt = String(localized: "Importar")
+        guard panel.runModal() == .OK, let source = panel.url else { return }
+
+        activity = "Importando «\(source.deletingPathExtension().lastPathComponent)»…"
+        defer { activity = nil }
+        do {
+            let bottle = try await bottleService.importBottle(from: source)
+            bottles.append(bottle)
+            selectedBottleID = bottle.id
+            detailTab = .programs
+            await refreshPrograms(in: bottle.id)
+        } catch {
+            present(error, title: "No se pudo importar la botella")
+        }
+    }
+
+    /// Wine writes its registry when the last process exits, so copying a running bottle gives a stale copy.
+    private func requireNoRunningPrograms(in bottle: Bottle, action: String) -> Bool {
+        guard runningCount(in: bottle.id) == 0 else {
+            alert = AppAlert(
+                title: "Cierra los programas primero",
+                message: "«\(bottle.name)» tiene programas abiertos. Pulsa «Detener todo» antes de \(action).")
+            return false
+        }
+        return true
     }
 
     // MARK: Finder

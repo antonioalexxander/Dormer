@@ -55,9 +55,9 @@ public actor BottleStore: BottleServicing {
         named name: String, symbolName: String, windowsVersion: WindowsVersion
     ) async throws -> Bottle {
         guard let installation = await runtimes.defaultInstallation() else { throw BottleError.noRuntimeInstalled }
-        let bottle = Bottle(
-            name: name, symbolName: symbolName, runtimeID: installation.descriptor.id,
-            settings: BottleSettings(windowsVersion: windowsVersion))
+        let settings = BottleSettings(windowsVersion: windowsVersion)
+        var bottle = Bottle(
+            name: name, symbolName: symbolName, runtimeID: installation.descriptor.id, settings: settings)
         let folder = paths.bottle(id: bottle.id)
         let prefix = paths.prefix(id: bottle.id)
         try fileManager.createDirectory(at: prefix, withIntermediateDirectories: true)
@@ -77,6 +77,12 @@ public actor BottleStore: BottleServicing {
                 ], step: "desactivar winemenubuilder", installation, prefix)
             // wineboot returns before wineserver has flushed the registry to disk.
             _ = try await ProcessRunner.run(installation.wineserverSpec(["-w"], prefix: prefix))
+            // A new prefix already has Wine's defaults (96 DPI, no Retina) and the chosen Windows version;
+            // what is left is hiding the Mac's files, which new bottles do by default.
+            try PrefixIsolation.apply(
+                hidesHostFileSystem: settings.hidesHostFileSystem, prefix: prefix,
+                home: fileManager.homeDirectoryForCurrentUser)
+            bottle.appliedSettings = settings
             try write(bottle)
         } catch {
             _ = try? await ProcessRunner.run(installation.wineserverSpec(["-k"], prefix: prefix))
@@ -100,6 +106,48 @@ public actor BottleStore: BottleServicing {
         try fileManager.copyItem(at: paths.bottle(id: bottle.id), to: paths.bottle(id: copy.id))
         try write(copy)
         return copy
+    }
+
+    public func exportBottle(_ bottle: Bottle, to archive: URL) async throws {
+        try await BottleArchiver.export(bottleFolder: paths.bottle(id: bottle.id), to: archive)
+    }
+
+    /// Imports an exported bottle as a new one. The archive is validated before anything is extracted,
+    /// extraction happens in a hidden staging folder, and the bottle gets a fresh identifier so it can
+    /// never overwrite an existing bottle.
+    public func importBottle(from archive: URL) async throws -> Bottle {
+        try await BottleArchiver.validate(archive: archive)
+        try fileManager.createDirectory(at: paths.bottles, withIntermediateDirectories: true)
+        let staging = paths.bottles.appending(path: ".import-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? fileManager.removeItem(at: staging) }
+        try await BottleArchiver.extract(archive: archive, to: staging)
+
+        var bottle = try BottleMetadataCodec.decode(Data(contentsOf: staging.appending(path: "bottle.json")))
+        bottle.id = UUID()
+        bottle.name = Self.uniqueName(bottle.name, among: try await loadBottles().map(\.name))
+        // The Wine version it was exported with may not be installed here; use the one that is.
+        if (try? await runtimes.installation(forID: bottle.runtimeID)) == nil,
+            let fallback = await runtimes.defaultInstallation()
+        {
+            bottle.runtimeID = fallback.descriptor.id
+        }
+        try BottleMetadataCodec.encode(bottle).write(to: staging.appending(path: "bottle.json"), options: .atomic)
+        try fileManager.createDirectory(
+            at: staging.appending(path: "logs", directoryHint: .isDirectory), withIntermediateDirectories: true)
+        try fileManager.moveItem(at: staging, to: paths.bottle(id: bottle.id))
+        return bottle
+    }
+
+    /// `name`, or `name (importada)` / `name (importada 2)`… when that name is already taken.
+    static func uniqueName(_ name: String, among existing: [String]) -> String {
+        guard existing.contains(name) else { return name }
+        var candidate = "\(name) (importada)"
+        var number = 2
+        while existing.contains(candidate) {
+            candidate = "\(name) (importada \(number))"
+            number += 1
+        }
+        return candidate
     }
 
     /// Moves the bottle to the Trash so it can still be recovered from Finder.
@@ -130,47 +178,5 @@ public actor BottleStore: BottleServicing {
             let detail = (errors.isEmpty ? result.lines : errors).suffix(3).joined(separator: "\n")
             throw BottleError.wineFailed(step: step, detail: detail.isEmpty ? "código \(result.status)" : detail)
         }
-    }
-}
-
-/// Finds installed programs by scanning the usual install folders of a `C:` drive.
-public enum ProgramScanner {
-    /// Folders relative to `drive_c` searched for `.exe` files, and how deep to look.
-    static let searchRoots = ["Program Files", "Program Files (x86)"]
-    static let perUserRoot = "users"
-    static let maximumDepth = 4
-
-    public static func scan(cDrive: URL, fileManager: FileManager = .default) -> [Program] {
-        var roots = searchRoots.map { cDrive.appending(path: $0, directoryHint: .isDirectory) }
-        // Per-user installs (e.g. many Electron apps) go to AppData\Local\Programs.
-        let users = cDrive.appending(path: perUserRoot, directoryHint: .isDirectory)
-        for user in (try? fileManager.contentsOfDirectory(at: users, includingPropertiesForKeys: nil)) ?? [] {
-            roots.append(user.appending(path: "AppData/Local/Programs", directoryHint: .isDirectory))
-        }
-
-        var seen = Set<String>()
-        var programs: [Program] = []
-        for root in roots {
-            guard
-                let enumerator = fileManager.enumerator(
-                    at: root, includingPropertiesForKeys: [.isRegularFileKey, .isSymbolicLinkKey],
-                    options: [.skipsHiddenFiles, .skipsPackageDescendants])
-            else { continue }
-            for case let url as URL in enumerator {
-                if enumerator.level >= maximumDepth { enumerator.skipDescendants() }
-                guard url.pathExtension.lowercased() == "exe",
-                    let values = try? url.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey]),
-                    values.isRegularFile == true, values.isSymbolicLink != true
-                else { continue }
-                let program = Program(
-                    name: url.deletingPathExtension().lastPathComponent,
-                    windowsPath: WindowsPath.windowsPath(for: url, cDrive: cDrive))
-                guard ProgramDiscoveryFilter.isUserFacing(program), seen.insert(program.pathKey).inserted else {
-                    continue
-                }
-                programs.append(program)
-            }
-        }
-        return programs.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
 }

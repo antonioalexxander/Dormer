@@ -56,6 +56,7 @@ struct ProgramsView: View {
                     ForEach(bottle.pinnedPrograms) { program in
                         ProgramTile(
                             program: program,
+                            bottleID: bottle.id,
                             isRunning: model.isRunning(program, in: bottle.id),
                             onLaunch: { Task { await model.launch(program, in: bottle.id) } }
                         )
@@ -70,7 +71,7 @@ struct ProgramsView: View {
     private func tileMenu(for program: Program) -> some View {
         Button("Abrir") { Task { await model.launch(program, in: bottle.id) } }
         Divider()
-        Button("Renombrar…") { model.activeSheet = .renameProgram(bottleID: bottle.id, programID: program.id) }
+        Button("Editar…") { model.activeSheet = .editProgram(bottleID: bottle.id, programID: program.id) }
         Button("Desanclar") {
             withAnimation(.snappy) { model.unpin(program.id, in: bottle.id) }
         }
@@ -102,6 +103,7 @@ struct ProgramsView: View {
                     ForEach(detected) { program in
                         DetectedProgramRow(
                             program: program,
+                            bottleID: bottle.id,
                             onPin: { withAnimation(.snappy) { model.pin(program, in: bottle.id) } },
                             onLaunch: { Task { await model.launch(program, in: bottle.id) } }
                         )
@@ -132,6 +134,7 @@ private struct SectionHeader: View {
 
 struct ProgramTile: View {
     let program: Program
+    let bottleID: UUID
     let isRunning: Bool
     let onLaunch: () -> Void
     @State private var isHovering = false
@@ -139,7 +142,7 @@ struct ProgramTile: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            ProgramIconView(name: program.name, size: 56)
+            ProgramIconView(name: program.name, size: 56, program: program, bottleID: bottleID)
                 .overlay(alignment: .bottomTrailing) {
                     if isRunning {
                         RunningIndicator()
@@ -199,15 +202,16 @@ struct ProgramTile: View {
 
 private struct DetectedProgramRow: View {
     let program: Program
+    let bottleID: UUID
     let onPin: () -> Void
     let onLaunch: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
-            ProgramIconView(name: program.name, size: 24)
+            ProgramIconView(name: program.name, size: 24, program: program, bottleID: bottleID)
             VStack(alignment: .leading, spacing: 1) {
-                Text(program.fileName)
-                Text(program.directory)
+                Text(program.name)
+                Text(program.windowsPath)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

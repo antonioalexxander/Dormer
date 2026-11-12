@@ -86,6 +86,8 @@ enum MockData {
                 "0024:err:module:import_dll Library MSVCP140.dll (which is needed by L\"C:\\\\Program Files (x86)\\\\PixelQuest\\\\PixelQuest.exe\") not found",
                 "0024:err:module:loader_init Importing dlls for L\"C:\\\\Program Files (x86)\\\\PixelQuest\\\\PixelQuest.exe\" failed, status c0000135",
             ]
+        case .tool:
+            return ["0024:fixme:winediag:loader_init Vista previa: herramienta simulada."]
         case .program:
             return [
                 "0024:fixme:dwmapi:DwmSetWindowAttribute (00010074, 20, 000000000011F2D4, 4) stub",
@@ -102,6 +104,7 @@ enum MockData {
         case .file: 0
         case .program(let program) where program.name == "Pixel Quest": 53
         case .program: nil
+        case .tool: nil
         }
     }
 }

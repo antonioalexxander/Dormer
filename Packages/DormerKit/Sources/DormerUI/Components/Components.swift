@@ -1,3 +1,4 @@
+import AppKit
 import DormerCore
 import SwiftUI
 
@@ -34,9 +35,15 @@ extension View {
 
 /// Placeholder icon until icons are extracted from `.exe` files (Phase 3):
 /// a monogram on a color derived from the program's name.
+/// A program's icon read from its executable, or a colored monogram while loading or when it has none.
 struct ProgramIconView: View {
     let name: String
     var size: CGFloat = 48
+    var program: Program?
+    var bottleID: UUID?
+
+    @Environment(AppModel.self) private var model
+    @State private var image: NSImage?
 
     private static let palette: [Color] = [.blue, .indigo, .purple, .pink, .orange, .teal, .green, .cyan, .mint]
 
@@ -50,16 +57,29 @@ struct ProgramIconView: View {
     }
 
     var body: some View {
-        RoundedRectangle(cornerRadius: size * 0.22, style: .continuous)
-            .fill(color.gradient)
-            .overlay {
-                Text(monogram)
-                    .font(.system(size: size * 0.48, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.white)
+        Group {
+            if let image {
+                Image(nsImage: image)
+                    .resizable()
+                    .interpolation(.high)
+                    .aspectRatio(contentMode: .fit)
+            } else {
+                RoundedRectangle(cornerRadius: size * 0.22, style: .continuous)
+                    .fill(color.gradient)
+                    .overlay {
+                        Text(monogram)
+                            .font(.system(size: size * 0.48, weight: .semibold, design: .rounded))
+                            .foregroundStyle(.white)
+                    }
+                    .shadow(color: .black.opacity(0.12), radius: 2, y: 1)
             }
-            .frame(width: size, height: size)
-            .shadow(color: .black.opacity(0.12), radius: 2, y: 1)
-            .accessibilityHidden(true)
+        }
+        .frame(width: size, height: size)
+        .accessibilityHidden(true)
+        .task(id: program?.pathKey) {
+            guard let program, let bottleID else { return }
+            image = await model.icon(for: program, in: bottleID)
+        }
     }
 }
 

@@ -4,7 +4,7 @@
 
 Dormer es una app nativa de macOS, libre y gratuita, que instala y abre programas de Windows usando [Wine](https://www.winehq.org). Cada programa vive en su propia **botella** (un entorno aislado).
 
-> ⚠️ **Estado: Fase 2 (núcleo Wine).** Dormer descarga Wine dentro de la app, crea botellas y ejecuta programas de Windows (probado con Notepad++). Aún faltan íconos reales, exportar/importar, winetricks y lanzadores (Fases 3 y 4). Ver el [plan completo](docs/DESIGN.md#7-plan-por-fases).
+> ⚠️ **Estado: Fase 3 (botellas y programas).** Dormer descarga Wine dentro de la app, crea botellas aisladas, ejecuta programas de Windows con su ícono real y permite exportar e importar botellas (probado con Notepad++). Aún faltan winetricks, gráficos DXMT/D3DMetal y lanzadores (Fase 4). Ver el [plan completo](docs/DESIGN.md#7-plan-por-fases).
 
 Dormer no está afiliado a Microsoft ni a Apple. *Windows* es marca de Microsoft Corporation; *Mac* y *macOS* son marcas de Apple Inc.
 
@@ -44,4 +44,4 @@ También puedes abrir `Dormer.xcodeproj` en Xcode y pulsar ⌘R. Las vistas tien
 
 ### English (short)
 
-Dormer is a free, open-source native macOS app that installs and runs Windows programs through Wine, each in its own isolated *bottle*. **Phase 2 status:** Wine is downloaded and verified inside the app, bottles are real and Windows programs run (tested with Notepad++). Build with `make run`; test with `make test`. Licensed under GPL-3.0-or-later. A full English README arrives in Phase 5.
+Dormer is a free, open-source native macOS app that installs and runs Windows programs through Wine, each in its own isolated *bottle*. **Phase 3 status:** Wine is downloaded and verified inside the app, bottles are isolated and can be exported/imported, Windows programs run with their real icons and settings (tested with Notepad++). Build with `make run`; test with `make test`. Licensed under GPL-3.0-or-later. A full English README arrives in Phase 5.

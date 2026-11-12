@@ -32,7 +32,7 @@ struct BottleSettingsView: View {
                     Text("Versión de Windows")
                     Text("La versión que los programas creen estar usando. Windows 10 funciona con casi todo.")
                 }
-                PendingSettingNote("Se aplica al crear la botella. Cambiarla después se conecta en la Fase 3.")
+                PendingSettingNote("Los cambios se aplican la próxima vez que abras un programa.")
             }
 
             Section("Gráficos") {
@@ -62,7 +62,7 @@ struct BottleSettingsView: View {
                 Toggle(isOn: settings.retinaMode) {
                     Text("Modo Retina")
                     Text(
-                        "Usa la resolución completa de tu pantalla. Más nítido, pero algunos programas se ven diminutos."
+                        "Usa la resolución completa de tu pantalla: más nítido, pero los programas se ven a la mitad de tamaño. Combínalo con una escala de 192 DPI."
                     )
                 }
 
@@ -89,7 +89,7 @@ struct BottleSettingsView: View {
                     Text("Aumenta el tamaño del texto y de los controles dentro de los programas.")
                 }
                 PendingSettingNote(
-                    "Por ahora todos los programas usan WineD3D. Retina y DPI se aplican en la Fase 3; DXMT y D3DMetal, en la Fase 4."
+                    "Retina y la escala se aplican la próxima vez que abras un programa. Por ahora todos los programas usan WineD3D: DXMT y D3DMetal llegan en la Fase 4."
                 )
             }
 
@@ -115,7 +115,9 @@ struct BottleSettingsView: View {
                     Text("Ocultar los archivos del Mac (unidad Z:)")
                     Text("Los programas de Windows solo verán su propia unidad C: y no el resto de tu disco.")
                 }
-                PendingSettingNote("Se aplica en la Fase 3. Por ahora la unidad Z: sigue visible.")
+                PendingSettingNote(
+                    "Los archivos que abres desde el Mac se copian a la unidad C: de la botella. Si un instalador necesita otros archivos de su carpeta, desactiva esta opción."
+                )
             }
 
             Section {
@@ -135,8 +137,10 @@ struct BottleSettingsView: View {
                     Text(bottle.createdAt, format: .dateTime.day().month().year())
                 }
                 HStack {
-                    Button("Abrir winecfg") { model.explainUnavailable("winecfg", phase: 3) }
-                    Button("Editor del registro") { model.explainUnavailable("Editor del registro", phase: 3) }
+                    Button("Abrir winecfg") { Task { await model.openTool(.winecfg, in: bottleID) } }
+                        .help("La ventana de configuración de Wine (unidades, bibliotecas, audio…)")
+                    Button("Editor del registro") { Task { await model.openTool(.regedit, in: bottleID) } }
+                        .help("El editor del registro de Windows de esta botella")
                 }
             }
         }
@@ -170,7 +174,7 @@ extension SyncMode {
 }
 
 /// Editable list of environment variables with inline validation.
-private struct EnvironmentEditor: View {
+struct EnvironmentEditor: View {
     @Binding var variables: [EnvironmentVariable]
 
     var body: some View {

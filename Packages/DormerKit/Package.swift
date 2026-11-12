@@ -23,8 +23,10 @@ let package = Package(
         ),
         .target(name: "BottleManager", dependencies: ["DormerCore", "WineManager"]),
         .target(name: "DormerUI", dependencies: ["DormerCore", "WineManager", "BottleManager"]),
-        .testTarget(name: "DormerCoreTests", dependencies: ["DormerCore"]),
-        .testTarget(name: "WineManagerTests", dependencies: ["WineManager"]),
-        .testTarget(name: "BottleManagerTests", dependencies: ["BottleManager", "WineManager"]),
+        // Builds synthetic executables and shortcuts for the tests below; not shipped.
+        .target(name: "DormerTestSupport", path: "Tests/DormerTestSupport"),
+        .testTarget(name: "DormerCoreTests", dependencies: ["DormerCore", "DormerTestSupport"]),
+        .testTarget(name: "WineManagerTests", dependencies: ["WineManager", "DormerTestSupport"]),
+        .testTarget(name: "BottleManagerTests", dependencies: ["BottleManager", "WineManager", "DormerTestSupport"]),
     ]
 )

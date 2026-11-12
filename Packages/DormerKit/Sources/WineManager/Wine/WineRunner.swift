@@ -12,9 +12,23 @@ public actor WineRunner: ProgramRunning {
         self.runtimes = runtimes
     }
 
+    public func prepare(_ bottle: Bottle) async throws -> BottleSettings {
+        let installation = try await runtimes.installation(forID: bottle.runtimeID)
+        return try await PrefixConfigurator.apply(
+            bottle.settings, previous: bottle.appliedSettings, installation: installation,
+            prefix: paths.prefix(id: bottle.id))
+    }
+
     public func launch(_ request: LaunchRequest, in bottle: Bottle) async throws -> RunSession {
         let installation = try await runtimes.installation(forID: bottle.runtimeID)
-        let plan = WineLaunchPlan.make(for: request, cDrive: paths.cDrive(id: bottle.id))
+        let cDrive = paths.cDrive(id: bottle.id)
+        var request = request
+        // Without the Z: drive a program cannot be started from its Mac path, so it is cloned into C: first.
+        if case .file(let target) = request, bottle.settings.hidesHostFileSystem {
+            Self.sweepStagedFiles(in: cDrive)
+            request = .file(try Self.stage(target, in: cDrive))
+        }
+        let plan = WineLaunchPlan.make(for: request, cDrive: cDrive)
         var programEnvironment: [EnvironmentVariable] = []
         if case .program(let program) = request { programEnvironment = program.environment }
 
@@ -50,6 +64,35 @@ public actor WineRunner: ProgramRunning {
         }
         // Anything that ignored wineserver (or a missing runtime) gets SIGTERM.
         for process in processes { process.terminate() }
+    }
+
+    // MARK: Staging files from the Mac
+
+    /// Where files run from the Mac are copied when the bottle hides the host file system.
+    static let stagingFolder = "Dormer/Incoming"
+    /// Staged copies are removed after this long, so big installers do not pile up.
+    static let stagedFileLifetime: TimeInterval = 24 * 60 * 60
+
+    /// Copies `target` into `C:\Dormer\Incoming\<id>\`. On APFS the copy is a clone: instant and free
+    /// until either file changes.
+    static func stage(_ target: RunTarget, in cDrive: URL) throws -> RunTarget {
+        let folder = cDrive.appending(path: stagingFolder, directoryHint: .isDirectory)
+            .appending(path: UUID().uuidString, directoryHint: .isDirectory)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        let copy = folder.appending(path: target.url.lastPathComponent)
+        try FileManager.default.copyItem(at: target.url, to: copy)
+        return RunTarget(url: copy) ?? target
+    }
+
+    static func sweepStagedFiles(in cDrive: URL, now: Date = Date(), fileManager: FileManager = .default) {
+        let root = cDrive.appending(path: stagingFolder, directoryHint: .isDirectory)
+        let folders =
+            (try? fileManager.contentsOfDirectory(
+                at: root, includingPropertiesForKeys: [.creationDateKey])) ?? []
+        for folder in folders {
+            let created = (try? folder.resourceValues(forKeys: [.creationDateKey]).creationDate) ?? now
+            if now.timeIntervalSince(created) > stagedFileLifetime { try? fileManager.removeItem(at: folder) }
+        }
     }
 
     private func forget(_ sessionID: UUID, in bottleID: UUID) {

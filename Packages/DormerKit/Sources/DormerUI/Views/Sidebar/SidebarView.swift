@@ -34,27 +34,39 @@ struct SidebarView: View {
         }
         .listStyle(.sidebar)
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            HStack(spacing: 4) {
-                Button {
-                    model.activeSheet = .newBottle
-                } label: {
-                    Label("Nueva botella", systemImage: "plus")
+            VStack(spacing: 0) {
+                if let activity = model.activity {
+                    HStack(spacing: 8) {
+                        ProgressView().controlSize(.small)
+                        Text(activity).font(.caption).foregroundStyle(.secondary).lineLimit(2)
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .accessibilityElement(children: .combine)
                 }
-                .help("Nueva botella (⌘N)")
+                HStack(spacing: 4) {
+                    Button {
+                        model.activeSheet = .newBottle
+                    } label: {
+                        Label("Nueva botella", systemImage: "plus")
+                    }
+                    .help("Nueva botella (⌘N)")
 
-                Menu {
-                    Button("Importar botella…") { model.explainUnavailable("Importar botella", phase: 3) }
-                } label: {
-                    Label("Más opciones", systemImage: "ellipsis.circle")
+                    Menu {
+                        Button("Importar botella…") { Task { await model.importBottle() } }
+                    } label: {
+                        Label("Más opciones", systemImage: "ellipsis.circle")
+                    }
+                    .menuIndicator(.hidden)
+                    .fixedSize()
+                    Spacer()
                 }
-                .menuIndicator(.hidden)
-                .fixedSize()
-                Spacer()
+                .labelStyle(.iconOnly)
+                .buttonStyle(.borderless)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
             }
-            .labelStyle(.iconOnly)
-            .buttonStyle(.borderless)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
         }
         .onDeleteCommand {
             bottlePendingDeletion = model.selectedBottle
@@ -77,7 +89,7 @@ struct SidebarView: View {
     private func contextMenu(for bottle: Bottle) -> some View {
         Button("Renombrar…") { model.activeSheet = .renameBottle(bottle.id) }
         Button("Duplicar") { Task { await model.duplicateBottle(bottle.id) } }
-        Button("Exportar…") { model.explainUnavailable("Exportar botella", phase: 3) }
+        Button("Exportar…") { Task { await model.exportBottle(bottle.id) } }
         Button("Mostrar en Finder") { model.openCDrive(of: bottle.id) }
         Divider()
         Button("Eliminar…", role: .destructive) { bottlePendingDeletion = bottle }

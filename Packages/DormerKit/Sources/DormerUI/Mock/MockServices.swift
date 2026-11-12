@@ -55,6 +55,14 @@ actor MockBottleService: BottleServicing {
         AppPaths.standard().cDrive(id: bottle.id)
     }
 
+    struct PreviewOnlyError: LocalizedError {
+        var errorDescription: String? { String(localized: "No disponible en la vista previa con datos de ejemplo.") }
+    }
+
+    func exportBottle(_ bottle: Bottle, to archive: URL) async throws { throw PreviewOnlyError() }
+
+    func importBottle(from archive: URL) async throws -> Bottle { throw PreviewOnlyError() }
+
     /// Simulates an installer adding a program to the bottle.
     func addDetected(_ program: Program, to bottleID: UUID) {
         if detected[bottleID]?.contains(where: { $0.pathKey == program.pathKey }) == false {
@@ -70,6 +78,8 @@ actor MockProgramRunner: ProgramRunning {
     init(bottleService: MockBottleService) {
         self.bottleService = bottleService
     }
+
+    func prepare(_ bottle: Bottle) async throws -> BottleSettings { bottle.settings }
 
     func launch(_ request: LaunchRequest, in bottle: Bottle) async throws -> RunSession {
         let (stream, continuation) = AsyncStream.makeStream(of: RunEvent.self)
@@ -106,6 +116,10 @@ actor MockProgramRunner: ProgramRunning {
         continuation.yield(.exited(status: status))
         continuation.finish()
     }
+}
+
+struct MockIconProvider: ProgramIconProviding {
+    func iconPNG(for program: Program, in bottle: Bottle) async -> Data? { nil }
 }
 
 struct MockRuntimeService: RuntimeServicing {
@@ -171,6 +185,7 @@ extension AppModel {
             runner: MockProgramRunner(bottleService: bottleService),
             runtimeService: MockRuntimeService(),
             dependencyInstaller: MockDependencyInstaller(),
+            iconProvider: MockIconProvider(),
             isPreview: true,
             defaults: defaults)
     }

@@ -127,3 +127,15 @@ final class RuntimeDescriptorTests: XCTestCase {
         XCTAssertEqual(descriptor(minimum: "14.0", esync: true).supportedSyncModes, [.standard, .esync])
     }
 }
+
+final class AppPathsOverrideTests: XCTestCase {
+    func testDataFolderCanBeOverriddenForDevelopment() {
+        let paths = AppPaths.standard(environment: ["DORMER_DATA_DIR": "/tmp/dormer-dev"])
+        XCTAssertEqual(paths.root.path(percentEncoded: false), "/tmp/dormer-dev/")
+    }
+
+    func testEmptyOverrideIsIgnored() {
+        let paths = AppPaths.standard(environment: ["DORMER_DATA_DIR": ""])
+        XCTAssertTrue(paths.root.path(percentEncoded: false).hasSuffix("Application Support/Dormer/"))
+    }
+}

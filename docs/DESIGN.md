@@ -203,7 +203,7 @@ Modelo de `bottle.json` (resumido):
 }
 ```
 
-**Duplicar** usa `clonefile` de APFS (copia instantánea, sin ocupar espacio extra). **Exportar e importar** usan Apple Archive (`.aar`, framework del sistema), con el `bottle.json` dentro y verificación de esquema al importar.
+**Duplicar** usa `clonefile` de APFS (copia instantánea, sin ocupar espacio extra). **Exportar e importar** usan Apple Archive (`.aar`) mediante la herramienta `aa` del sistema (**cambio en la Fase 3:** en vez del framework en Swift, porque `aa list -list-format json` da el tipo y el destino de cada entrada, lo que permite validar el archivo antes de extraerlo), con el `bottle.json` dentro y verificación de esquema al importar.
 
 ### 3.4 Flujos principales
 
@@ -267,8 +267,8 @@ sequenceDiagram
 |---|---|
 | `ProcessRunner` | Envoltorio `async` de `Foundation.Process`. Lee los pipes en un `AsyncStream`, escribe el log a disco con buffer y cancela con `wineserver -k` en el prefijo. Es testeable porque se inyecta un `FakeProcessRunner`. |
 | Concurrencia | `actor` para `BottleStore`, `RuntimeStore` y `Downloader`. ViewModels `@MainActor @Observable`. Nada bloquea el hilo principal. |
-| Íconos de `.exe` | Parser **PE propio en Swift** (sección `.rsrc`, `RT_GROUP_ICON`/`RT_ICON`): reconstruye un `.ico` y lo decodifica con ImageIO. Sin dependencias y con tests usando fixtures pequeños. |
-| Descubrimiento de programas | 1) Accesos `.lnk` en el *Start Menu* del prefijo (parser de Shell Link propio). 2) `.exe` en *Program Files* filtrando desinstaladores, `setup` y `crash handlers`. |
+| Íconos de `.exe` | Parser **PE propio en Swift** (sección `.rsrc`, `RT_GROUP_ICON`/`RT_ICON`): reconstruye un `.ico` y lo decodifica con ImageIO. Sin dependencias y con tests usando fixtures pequeños. | **Verificado en Fase 3** con `notepad++.exe` (PNG de 256 px y DIB de 8/32 bits), el Bloc de notas de Wine y un `uninstall.exe`.
+| Descubrimiento de programas | 1) Accesos `.lnk` en el *Start Menu* del prefijo (parser de Shell Link propio). 2) `.exe` en *Program Files* filtrando desinstaladores, `setup` y `crash handlers`. | **Nota de Fase 3:** Wine escribe las cadenas del `.lnk` con un NUL final; el parser lo recorta.
 | Ajustes de Windows | Versión con `wine winecfg -v win10`. DPI, Retina y Mac Driver vía `wine reg add` (o escribiendo `.reg` con el parser propio cuando Wine está detenido). |
 | Backends gráficos | DXMT: copia sus DLL al prefijo y añade `WINEDLLOVERRIDES`. GPTK: el usuario elige el `.dmg` y se verifica su estructura antes de copiar. WineD3D por defecto. |
 | winetricks | Script fijado por commit y sha256, más `cabextract`/`7zz` compilados en CI. Lista curada en `winetricks-curated.json` (vcrun2022, dotnet48, corefonts, d3dcompiler_47…). |
@@ -451,7 +451,7 @@ sequenceDiagram
 |---|---|
 | Descargas | Solo HTTPS, con SHA-256 fijado en el manifiesto embebido en la app. Si no coincide, se borra y se reintenta. Nunca se ejecuta nada que no esté verificado. |
 | Ejecutables desconocidos | Si el archivo tiene `com.apple.quarantine`, se muestra el origen (`kMDItemWhereFroms`) y se pide confirmación. |
-| Aislamiento de archivos | Opción por botella (activa por defecto en botellas nuevas) que elimina `dosdevices/z:` para que Windows no vea `/`. Los documentos se comparten solo mediante carpetas que el usuario elija. |
+| Aislamiento de archivos | Opción por botella (activa por defecto en botellas nuevas) que elimina `dosdevices/z:` para que Windows no vea `/`. Los documentos se comparten solo mediante carpetas que el usuario elija. | **Verificado en Fase 3:** sin `Z:` un programa no puede arrancar desde su ruta del Mac (el instalador de Notepad++ falla con código 2), pero sí desde `C:`. Por eso, en botellas aisladas, los archivos que se ejecutan desde el Mac se **clonan** (`copyItem` sobre APFS) a `C:\Dormer\Incoming\<id>\` y se borran a las 24 h. Un instalador que necesite otros archivos de su carpeta requiere desactivar el aislamiento. Además de `z:`, se reemplazan por carpetas reales los enlaces de Escritorio, Documentos, etc. del perfil.
 | Integración con el sistema | `winemenubuilder.exe` desactivado (`WINEDLLOVERRIDES`) para que Wine no cree asociaciones de archivos ni accesos en el Mac. |
 | Permisos | Sin privilegios de administrador salvo para instalar Rosetta (diálogo nativo y consentimiento explícito). Sin sandbox (§2.2), con Hardened Runtime si algún día se firma. |
 | Privacidad | **Cero telemetría** y ninguna llamada de red salvo descargas que el usuario inicia. La comprobación de actualizaciones es manual (Fase 6). |

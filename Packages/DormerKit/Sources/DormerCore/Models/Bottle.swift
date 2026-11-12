@@ -14,6 +14,11 @@ public struct Bottle: Codable, Hashable, Sendable, Identifiable {
     public var runtimeID: String
     public var createdAt: Date
     public var settings: BottleSettings
+    /// The settings last written into the Wine prefix (registry, Windows version, drive links).
+    ///
+    /// Changing ``settings`` only records what the user wants; the prefix is brought in line right
+    /// before the next program starts, by comparing against this value. `nil` means "never applied".
+    public var appliedSettings: BottleSettings?
     /// Programs the user pinned, in display order.
     public var pinnedPrograms: [Program]
 
@@ -24,6 +29,7 @@ public struct Bottle: Codable, Hashable, Sendable, Identifiable {
         runtimeID: String,
         createdAt: Date = Date(),
         settings: BottleSettings = BottleSettings(),
+        appliedSettings: BottleSettings? = nil,
         pinnedPrograms: [Program] = []
     ) {
         self.schemaVersion = Self.currentSchemaVersion
@@ -33,6 +39,7 @@ public struct Bottle: Codable, Hashable, Sendable, Identifiable {
         self.runtimeID = runtimeID
         self.createdAt = createdAt
         self.settings = settings
+        self.appliedSettings = appliedSettings
         self.pinnedPrograms = pinnedPrograms
     }
 

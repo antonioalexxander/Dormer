@@ -15,7 +15,11 @@ public struct DormerCommands: Commands {
             Button("Ejecutar…") { model.isFileImporterPresented = true }
                 .keyboardShortcut("r")
             Divider()
-            Button("Importar botella…") { model.explainUnavailable("Importar botella", phase: 3) }
+            Button("Importar botella…") { Task { await model.importBottle() } }
+            Button("Exportar botella…") {
+                if let id = model.selectedBottleID { Task { await model.exportBottle(id) } }
+            }
+            .disabled(model.selectedBottle == nil)
         }
 
         CommandMenu("Botella") {

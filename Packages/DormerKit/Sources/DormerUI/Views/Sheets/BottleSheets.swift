@@ -115,23 +115,52 @@ struct RenameBottleSheet: View {
     }
 }
 
-struct RenameProgramSheet: View {
+/// Name, command-line arguments and environment of a pinned program.
+struct EditProgramSheet: View {
     @Environment(AppModel.self) private var model
     let bottleID: UUID
     let programID: UUID
     @State private var name = ""
+    @State private var arguments = ""
+    @State private var environment: [EnvironmentVariable] = []
 
     var body: some View {
         SheetScaffold(
-            title: "Renombrar programa", confirmTitle: "Guardar",
+            title: "Editar programa", confirmTitle: "Guardar",
             isConfirmDisabled: name.trimmingCharacters(in: .whitespaces).isEmpty
         ) {
-            model.renameProgram(programID, in: bottleID, to: name)
+            model.updateProgram(programID, in: bottleID, name: name, arguments: arguments, environment: environment)
         } content: {
-            TextField("Nombre", text: $name)
-                .textFieldStyle(.roundedBorder)
+            Form {
+                TextField("Nombre", text: $name)
+                TextField("Argumentos", text: $arguments, prompt: Text("p. ej. -safe-mode"))
+                    .font(.body.monospaced())
+                if let program = model.pinnedProgram(programID, in: bottleID) {
+                    LabeledContent("Ruta") {
+                        Text(program.windowsPath)
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                    }
+                }
+                Section {
+                    EnvironmentEditor(variables: $environment)
+                } header: {
+                    Text("Variables de entorno")
+                } footer: {
+                    Text("Solo para este programa; tienen prioridad sobre las de la botella.")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .formStyle(.grouped)
+            .frame(height: 360)
         }
-        .onAppear { name = model.pinnedProgram(programID, in: bottleID)?.name ?? "" }
+        .onAppear {
+            guard let program = model.pinnedProgram(programID, in: bottleID) else { return }
+            name = program.name
+            arguments = program.arguments
+            environment = program.environment
+        }
     }
 }
 

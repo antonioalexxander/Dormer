@@ -111,6 +111,8 @@ public struct WineLaunchPlan: Sendable, Equatable {
             case .batch:
                 return WineLaunchPlan(arguments: ["cmd", "/c", windowsPath], workingDirectory: directory)
             }
+        case .tool(let tool):
+            return WineLaunchPlan(arguments: [tool.rawValue], workingDirectory: cDrive)
         case .program(let program):
             // Many programs expect to start in their own folder.
             let directory =

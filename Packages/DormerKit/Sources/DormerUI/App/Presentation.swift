@@ -44,7 +44,7 @@ public enum ActiveSheet: Identifiable, Hashable {
     case onboarding
     case newBottle
     case renameBottle(UUID)
-    case renameProgram(bottleID: UUID, programID: UUID)
+    case editProgram(bottleID: UUID, programID: UUID)
     case confirmRun(PendingRun)
     case winetricks(bottleID: UUID, preselected: Set<String>)
 
@@ -53,7 +53,7 @@ public enum ActiveSheet: Identifiable, Hashable {
         case .onboarding: "onboarding"
         case .newBottle: "newBottle"
         case .renameBottle(let id): "renameBottle-\(id)"
-        case .renameProgram(_, let id): "renameProgram-\(id)"
+        case .editProgram(_, let id): "editProgram-\(id)"
         case .confirmRun(let pending): "confirmRun-\(pending.id)"
         case .winetricks(let id, _): "winetricks-\(id)"
         }

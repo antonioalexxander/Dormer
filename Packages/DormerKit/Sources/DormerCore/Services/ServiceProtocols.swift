@@ -38,10 +38,23 @@ public protocol BottleServicing: Sendable {
     func detectPrograms(in bottle: Bottle) async throws -> [Program]
     /// Folder of the bottle's `C:` drive on the Mac.
     func cDriveURL(for bottle: Bottle) -> URL
+    /// Writes the bottle (prefix and metadata) to an Apple Archive (`.aar`) file.
+    func exportBottle(_ bottle: Bottle, to archive: URL) async throws
+    /// Validates and unpacks an exported bottle as a new bottle with its own identity.
+    func importBottle(from archive: URL) async throws -> Bottle
+}
+
+/// Supplies program icons read from the executables inside bottles.
+public protocol ProgramIconProviding: Sendable {
+    /// PNG data of the program's icon, or `nil` if the executable has none.
+    func iconPNG(for program: Program, in bottle: Bottle) async -> Data?
 }
 
 /// Launches and stops Windows programs.
 public protocol ProgramRunning: Sendable {
+    /// Brings the Wine prefix in line with `bottle.settings` (Windows version, DPI, Retina, drive
+    /// isolation) and returns what is now applied. Called right before a program starts.
+    func prepare(_ bottle: Bottle) async throws -> BottleSettings
     func launch(_ request: LaunchRequest, in bottle: Bottle) async throws -> RunSession
     /// Stops every process in the bottle (`wineserver -k`).
     func terminateAll(in bottle: Bottle) async throws

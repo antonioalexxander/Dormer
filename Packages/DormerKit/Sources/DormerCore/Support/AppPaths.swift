@@ -12,7 +12,15 @@ public struct AppPaths: Sendable, Equatable {
     }
 
     /// `~/Library/Application Support/Dormer`.
-    public static func standard(fileManager: FileManager = .default) -> AppPaths {
+    ///
+    /// For development and tests, the `DORMER_DATA_DIR` environment variable moves everything elsewhere
+    /// so experiments never touch real bottles.
+    public static func standard(
+        fileManager: FileManager = .default, environment: [String: String] = ProcessInfo.processInfo.environment
+    ) -> AppPaths {
+        if let override = environment["DORMER_DATA_DIR"], !override.isEmpty {
+            return AppPaths(root: URL(filePath: override, directoryHint: .isDirectory))
+        }
         let support = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         return AppPaths(root: support.appending(path: "Dormer", directoryHint: .isDirectory))
     }

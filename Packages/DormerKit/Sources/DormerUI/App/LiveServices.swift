@@ -39,6 +39,7 @@ extension AppModel {
             runner: WineRunner(paths: paths, runtimes: runtimes),
             runtimeService: runtimes,
             dependencyInstaller: UnavailableDependencyInstaller(),
+            iconProvider: ProgramIconStore(paths: paths),
             isPreview: false,
             dataFolder: paths.root)
     }

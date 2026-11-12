@@ -63,8 +63,8 @@ private struct SheetHost: View {
             NewBottleSheet()
         case .renameBottle(let id):
             RenameBottleSheet(bottleID: id)
-        case .renameProgram(let bottleID, let programID):
-            RenameProgramSheet(bottleID: bottleID, programID: programID)
+        case .editProgram(let bottleID, let programID):
+            EditProgramSheet(bottleID: bottleID, programID: programID)
         case .confirmRun(let pending):
             RunConfirmationSheet(pending: pending)
         case .winetricks(let bottleID, let preselected):
