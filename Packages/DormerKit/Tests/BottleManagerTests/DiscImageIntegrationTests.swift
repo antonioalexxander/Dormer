@@ -37,12 +37,16 @@ final class DiscImageIntegrationTests: XCTestCase {
         let before = Set(
             (try? FileManager.default.contentsOfDirectory(atPath: temporary.path(percentEncoded: false))) ?? [])
         // `DORMER_DISC_PROGRAM` is a program the user picks on the disc instead of the one it suggests.
+        // `DORMER_DISC_MERGE=1` combines the discs of the set into one drive.
+        let merge = environment["DORMER_DISC_MERGE"] == "1"
+        let program = environment["DORMER_DISC_PROGRAM"]
         let target =
-            environment["DORMER_DISC_PROGRAM"].map { RunTarget(disc: URL(filePath: imagePath), program: $0) }
-            ?? RunTarget(url: URL(filePath: imagePath))!
-        let listed = try await runner.discPrograms(in: URL(filePath: imagePath))
-        print("DISC programs on the disc: \(listed.map(\.path))")
-        XCTAssertFalse(listed.isEmpty)
+            program != nil || merge
+            ? RunTarget(disc: URL(filePath: imagePath), program: program, mergesDiscs: merge)
+            : RunTarget(url: URL(filePath: imagePath))!
+        let listed = try await runner.discListing(of: URL(filePath: imagePath))
+        print("DISC programs on the disc: \(listed.programs.map(\.path)), discs in set: \(listed.discCount)")
+        XCTAssertFalse(listed.programs.isEmpty)
         let session = try await runner.launch(.file(target), in: bottle)
         var status: Int32 = -1
         for await event in session.events {
@@ -55,6 +59,10 @@ final class DiscImageIntegrationTests: XCTestCase {
         XCTAssertNotNil(log.firstMatch(of: /exe=[D-H]:\\/), "the installer runs from a disc drive")
         XCTAssertTrue(log.contains("payload=hello from the disc"), "files next to the installer are visible")
         XCTAssertTrue(log.contains("zdrive=1"), "the Mac's disk stays hidden (1 = no such drive)")
+        if merge {
+            XCTAssertTrue(log.contains("drivetype=5"), "the combined drive is shown as a CD")
+            XCTAssertTrue(log.contains("files=1:1;2:1;3:1;"), "files from every disc are on the one drive")
+        }
         for name in (environment["DORMER_DISC_MARKS"] ?? "").split(separator: ",") {
             XCTAssertTrue(log.contains(":\(name);"), "disc \(name) of the set is mounted as a drive")
         }

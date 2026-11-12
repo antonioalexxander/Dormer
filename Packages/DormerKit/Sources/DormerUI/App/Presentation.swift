@@ -44,6 +44,7 @@ public struct DiscChoice: Identifiable, Hashable, Sendable {
     public let id = UUID()
     public let image: URL
     public let programs: [DiscProgram]
+    public let discCount: Int
     public let bottleID: UUID
 
     public static func == (lhs: DiscChoice, rhs: DiscChoice) -> Bool { lhs.id == rhs.id }

@@ -170,6 +170,41 @@ final class DiscImageTests: XCTestCase {
         XCTAssertNil(DiscImage.existingProgram("", in: root))
     }
 
+    func testMergingDiscsKeepsEveryFileAndTheFirstDiscsVersion() throws {
+        let discs = ["a", "b"].map { root.appending(path: "disc-\($0)") }
+        let merged = root.appending(path: "merged")
+        try touch("disc-a/Setup.exe", "one")
+        try touch("disc-a/Data/shared.bin", "from a")
+        try touch("disc-b/DATA/SHARED.BIN", "from b")
+        try touch("disc-b/Data/extra.cab", "only on b")
+        try fileManager.createDirectory(at: merged, withIntermediateDirectories: true)
+        for disc in discs { try DiscImage.copyContents(of: disc, into: merged) }
+        func text(_ relative: String) -> String? {
+            try? String(contentsOf: merged.appending(path: relative), encoding: .utf8)
+        }
+        XCTAssertEqual(text("Setup.exe"), "one")
+        XCTAssertEqual(text("Data/shared.bin"), "from a")
+        XCTAssertEqual(text("Data/extra.cab"), "only on b")
+    }
+
+    func testCopiesFromAReadOnlyDiscCanBeDeleted() throws {
+        try touch("disc/Data/file.bin", "x")
+        try fileManager.setAttributes(
+            [.posixPermissions: 0o444],
+            ofItemAtPath: root.appending(path: "disc/Data/file.bin").path(percentEncoded: false))
+        try fileManager.setAttributes(
+            [.posixPermissions: 0o555], ofItemAtPath: root.appending(path: "disc/Data").path(percentEncoded: false))
+        defer {
+            try? fileManager.setAttributes(
+                [.posixPermissions: 0o755], ofItemAtPath: root.appending(path: "disc/Data").path(percentEncoded: false))
+        }
+        let merged = root.appending(path: "merged")
+        try fileManager.createDirectory(at: merged, withIntermediateDirectories: true)
+        try DiscImage.copyContents(of: root.appending(path: "disc"), into: merged)
+        try fileManager.removeItem(at: merged)
+        XCTAssertFalse(fileManager.fileExists(atPath: merged.path(percentEncoded: false)))
+    }
+
     func testThePlanStartsTheInstallerFromTheDiscDrive() {
         let disc = DiscImage.Mounted(
             mountPoint: URL(filePath: "/tmp/disc"), driveLetter: "D", link: URL(filePath: "/tmp/p/dosdevices/d:"),

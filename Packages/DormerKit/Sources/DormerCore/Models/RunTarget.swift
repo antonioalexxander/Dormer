@@ -18,6 +18,9 @@ public struct RunTarget: Hashable, Sendable {
     /// For a disc image: the program to start, as a path relative to the disc's root (`Bin/Setup.exe`).
     /// `nil` lets Dormer pick the one the disc itself names (`autorun.inf`) or a `setup.exe`.
     public let discProgram: String?
+    /// For a disc image that is part of a numbered set: copy every disc into one folder and show it as a single
+    /// drive, for installers that expect all the files together.
+    public let mergesDiscs: Bool
 
     /// Lowercase file extensions Dormer accepts.
     public static let supportedExtensions = ["exe", "msi", "bat", "iso"]
@@ -33,13 +36,15 @@ public struct RunTarget: Hashable, Sendable {
         }
         self.url = url
         self.discProgram = nil
+        self.mergesDiscs = false
     }
 
     /// A disc image together with the program on it the user chose.
-    public init(disc image: URL, program: String) {
+    public init(disc image: URL, program: String?, mergesDiscs: Bool = false) {
         self.url = image
         self.kind = .discImage
         self.discProgram = program
+        self.mergesDiscs = mergesDiscs
     }
 
     public var displayName: String { url.lastPathComponent }
@@ -57,6 +62,18 @@ public struct DiscProgram: Hashable, Sendable, Identifiable {
     public init(path: String, isSuggested: Bool) {
         self.path = path
         self.isSuggested = isSuggested
+    }
+}
+
+/// What is on a disc image and how many discs it belongs to.
+public struct DiscListing: Hashable, Sendable {
+    public let programs: [DiscProgram]
+    /// Discs in the numbered set the image belongs to (1 when it stands alone).
+    public let discCount: Int
+
+    public init(programs: [DiscProgram], discCount: Int) {
+        self.programs = programs
+        self.discCount = discCount
     }
 }
 

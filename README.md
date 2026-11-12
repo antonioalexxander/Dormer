@@ -58,7 +58,7 @@ Si necesitas que *cualquier* programa de Windows funcione, lo que se parece a Wi
 - **Notepad++:** la barra de menú se ve apilada en filas (problema de Wine con esa app); se puede usar.
 - **Apps modernas que piden Direct3D 11 real** (por ejemplo Audacity 4) no abren con WineD3D (solo ofrece el nivel 9.3 en este Mac). Con el backend **DXMT (experimental)** sí se dibujan (probado con Audacity 4 y Warzone 2100); usa un [controlador de Wine parcheado](packaging/wine/README.md) que Dormer descarga. Pocos programas probados y ningún juego comercial.
 - **D3DMetal (Game Porting Toolkit):** puedes importarlo, pero todavía no se puede usar (necesita un motor Wine del Game Porting Toolkit que Dormer no incluye). DXVK no se ofrece (sin versiones desde 2024).
-- **Imágenes de disco:** solo `.iso`. Si la carpeta tiene discos numerados (`CD1.iso`, `CD2.iso`…), Dormer los monta todos a la vez, cada uno como su unidad. Al abrir un `.iso` puedes elegir qué programa del disco ejecutar. Dormer no emula las protecciones anticopia que exigen el disco original ni incluye formas de saltárselas.
+- **Imágenes de disco:** solo `.iso`. Si la carpeta tiene discos numerados (`CD1.iso`, `CD2.iso`…), Dormer los monta todos a la vez, cada uno como su unidad. Al abrir un `.iso` puedes elegir qué programa del disco ejecutar y, en series de varios discos, combinarlos en una sola unidad. Dormer no emula las protecciones anticopia que exigen el disco original ni incluye formas de saltárselas.
 - **Wine Gecko** (motor web de Windows) sin verificar en botellas aisladas.
 - Compilación del `.dmg` y publicación automática (CI): escritas pero **sin probar** en GitHub todavía.
 

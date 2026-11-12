@@ -25,35 +25,66 @@ public actor WineRunner: ProgramRunning {
         let cDrive = paths.cDrive(id: bottle.id)
         var request = request
         var discs: [DiscImage.Mounted] = []
+        var mergedDisc: DiscImage.Mounted?
         let plan: WineLaunchPlan
         if case .file(let target) = request, target.kind == .discImage {
             // Each disc image becomes a drive of its own, so an installer finds the files next to it, and the
             // other discs of a set (CD1, CD2…) are there when it asks for them.
             var chosen: DiscImage.Mounted?
-            do {
-                for image in DiscImage.discSet(containing: target.url) {
-                    let mounted = try await DiscImage.mount(image, prefix: paths.prefix(id: bottle.id))
-                    discs.append(mounted)
-                    if image == target.url { chosen = mounted }
+            let set = DiscImage.discSet(containing: target.url)
+            if target.mergesDiscs, set.count > 1 {
+                let merged = try await DiscImage.merge(set, prefix: paths.prefix(id: bottle.id), cDrive: cDrive)
+                mergedDisc = merged
+                // Wine sees a plain folder as a hard disk; installers that look for a CD need to see one.
+                _ = try? await ProcessRunner.run(
+                    installation.wineSpec(
+                        [
+                            "reg", "add", "HKLM\\Software\\Wine\\Drives", "/v", merged.driveLetter + ":",
+                            "/d", "cdrom", "/f",
+                        ], prefix: paths.prefix(id: bottle.id), settings: bottle.settings))
+                // Wine's mount manager reads drive types only when its server starts, so restart the server, but
+                // never underneath a program that is already running in this bottle.
+                if running[bottle.id]?.isEmpty ?? true {
+                    _ = try? await ProcessRunner.run(
+                        installation.wineserverSpec(["-k"], prefix: paths.prefix(id: bottle.id)))
+                    _ = try? await ProcessRunner.run(
+                        installation.wineserverSpec(["-w"], prefix: paths.prefix(id: bottle.id)))
                 }
-            } catch {
-                discs.forEach { DiscImage.unmount($0) }
-                throw error
-            }
-            if let first = chosen, let relative = target.discProgram {
-                // The user picked the program; it must be on the disc they picked it from.
-                guard let program = DiscImage.existingProgram(relative, in: first.mountPoint) else {
+                let chosenProgram = target.discProgram.flatMap {
+                    DiscImage.existingProgram($0, in: merged.mountPoint)
+                }
+                guard let program = chosenProgram ?? DiscImage.setupProgram(in: merged.mountPoint) else {
+                    DiscImage.unmount(merged)
+                    try? FileManager.default.removeItem(at: merged.mountPoint)
+                    throw DiscImage.DiscError.noSetupProgram
+                }
+                plan = WineLaunchPlan.make(forProgram: program, onDisc: merged)
+            } else {
+                do {
+                    for image in DiscImage.discSet(containing: target.url) {
+                        let mounted = try await DiscImage.mount(image, prefix: paths.prefix(id: bottle.id))
+                        discs.append(mounted)
+                        if image == target.url { chosen = mounted }
+                    }
+                } catch {
+                    discs.forEach { DiscImage.unmount($0) }
+                    throw error
+                }
+                if let first = chosen, let relative = target.discProgram {
+                    // The user picked the program; it must be on the disc they picked it from.
+                    guard let program = DiscImage.existingProgram(relative, in: first.mountPoint) else {
+                        discs.forEach { DiscImage.unmount($0) }
+                        throw DiscImage.DiscError.noSetupProgram
+                    }
+                    plan = WineLaunchPlan.make(forProgram: program, onDisc: first)
+                } else if let first = chosen,
+                    let setup = DiscImage.setupProgram(among: discs, preferring: first)
+                {
+                    plan = WineLaunchPlan.make(forProgram: setup.program, onDisc: setup.disc)
+                } else {
                     discs.forEach { DiscImage.unmount($0) }
                     throw DiscImage.DiscError.noSetupProgram
                 }
-                plan = WineLaunchPlan.make(forProgram: program, onDisc: first)
-            } else if let first = chosen,
-                let setup = DiscImage.setupProgram(among: discs, preferring: first)
-            {
-                plan = WineLaunchPlan.make(forProgram: setup.program, onDisc: setup.disc)
-            } else {
-                discs.forEach { DiscImage.unmount($0) }
-                throw DiscImage.DiscError.noSetupProgram
             }
         } else {
             // Without the Z: drive a program cannot be started from its Mac path, so it is cloned into C: first.
@@ -74,9 +105,14 @@ public actor WineRunner: ProgramRunning {
                     extraEnvironment: programEnvironment, workingDirectory: plan.workingDirectory))
         } catch {
             discs.forEach { DiscImage.unmount($0) }
+            if let mergedDisc {
+                DiscImage.unmount(mergedDisc)
+                try? FileManager.default.removeItem(at: mergedDisc.mountPoint)
+            }
             throw error
         }
         let mountedDiscs = discs
+        let merged = mergedDisc
         let waitForBottle = installation.wineserverSpec(["-w"], prefix: paths.prefix(id: bottle.id))
 
         let sessionID = UUID()
@@ -99,12 +135,18 @@ public actor WineRunner: ProgramRunning {
                 _ = try? await ProcessRunner.run(waitForBottle)
                 mountedDiscs.forEach { DiscImage.unmount($0) }
             }
+            if let merged {
+                _ = try? await ProcessRunner.run(waitForBottle)
+                DiscImage.unmount(merged)
+                try? FileManager.default.removeItem(at: merged.mountPoint)
+            }
         }
         return RunSession(id: sessionID, bottleID: bottleID, title: request.displayName, events: events)
     }
 
-    public func discPrograms(in image: URL) async throws -> [DiscProgram] {
-        try await DiscImage.programs(on: image)
+    public func discListing(of image: URL) async throws -> DiscListing {
+        DiscListing(
+            programs: try await DiscImage.programs(on: image), discCount: DiscImage.discSet(containing: image).count)
     }
 
     /// `wineserver -k` stops every Windows process of the bottle, including ones started by installers.

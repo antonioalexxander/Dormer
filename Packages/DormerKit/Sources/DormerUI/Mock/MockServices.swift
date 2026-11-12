@@ -105,11 +105,12 @@ actor MockProgramRunner: ProgramRunning {
         return RunSession(id: sessionID, bottleID: bottle.id, title: request.displayName, events: stream)
     }
 
-    func discPrograms(in image: URL) async throws -> [DiscProgram] {
-        [
-            DiscProgram(path: "Setup.exe", isSuggested: true),
-            DiscProgram(path: "Tools/Launcher.exe", isSuggested: false),
-        ]
+    func discListing(of image: URL) async throws -> DiscListing {
+        DiscListing(
+            programs: [
+                DiscProgram(path: "Setup.exe", isSuggested: true),
+                DiscProgram(path: "Tools/Launcher.exe", isSuggested: false),
+            ], discCount: 2)
     }
 
     func terminateAll(in bottle: Bottle) async throws {

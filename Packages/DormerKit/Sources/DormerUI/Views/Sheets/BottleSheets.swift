@@ -190,6 +190,7 @@ struct DiscProgramSheet: View {
     @Environment(\.dismiss) private var dismiss
     let choice: DiscChoice
     @State private var selection: String?
+    @State private var mergesDiscs = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -210,6 +211,14 @@ struct DiscProgramSheet: View {
                 .tag(program.path)
             }
             .frame(height: 220)
+            if choice.discCount > 1 {
+                Toggle("Combinar los \(choice.discCount) discos en una sola unidad", isOn: $mergesDiscs)
+                Text(
+                    "Copia todos los discos a la botella y los muestra como uno, para instaladores que esperan todos los archivos juntos. Usa tanto espacio como los discos y tarda unos minutos."
+                )
+                .font(.callout).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            }
             HStack {
                 Spacer()
                 Button("Cancelar", role: .cancel) { dismiss() }
@@ -217,7 +226,8 @@ struct DiscProgramSheet: View {
                 Button("Ejecutar") {
                     guard let selection else { return }
                     dismiss()
-                    Task { await model.run(RunTarget(disc: choice.image, program: selection), in: choice.bottleID) }
+                    let target = RunTarget(disc: choice.image, program: selection, mergesDiscs: mergesDiscs)
+                    Task { await model.run(target, in: choice.bottleID) }
                 }
                 .keyboardShortcut(.defaultAction)
                 .disabled(selection == nil)

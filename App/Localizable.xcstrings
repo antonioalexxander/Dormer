@@ -504,6 +504,17 @@
         }
       }
     },
+    "Combinar los %lld discos en una sola unidad" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combine the %lld discs into a single drive"
+          }
+        }
+      }
+    },
     "Compilación de Gcenx · %@ · %@" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -577,6 +588,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copies system information and the log, without your user name or personal paths"
+          }
+        }
+      }
+    },
+    "Copia todos los discos a la botella y los muestra como uno, para instaladores que esperan todos los archivos juntos. Usa tanto espacio como los discos y tarda unos minutos." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copies all the discs into the bottle and shows them as one, for installers that expect all the files together. It uses as much space as the discs and takes a few minutes."
           }
         }
       }

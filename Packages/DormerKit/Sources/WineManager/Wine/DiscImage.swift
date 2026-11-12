@@ -176,6 +176,53 @@ public enum DiscImage {
         return programs(in: mountPoint, fileManager: fileManager)
     }
 
+    /// Copies every disc of a set into one folder in the bottle's `C:` and links it as a single drive. A file
+    /// that is on several discs keeps the first disc's version.
+    public static func merge(
+        _ images: [URL], prefix: URL, cDrive: URL, fileManager: FileManager = .default
+    ) async throws -> Mounted {
+        let devices = prefix.appending(path: "dosdevices", directoryHint: .isDirectory)
+        removeStaleLinks(in: devices, fileManager: fileManager)
+        guard let letter = freeDriveLetter(in: devices, fileManager: fileManager) else {
+            throw DiscError.noFreeDriveLetter
+        }
+        let folder = cDrive.appending(path: "Dormer/Incoming/disc-\(UUID().uuidString)", directoryHint: .isDirectory)
+        try fileManager.createDirectory(at: folder, withIntermediateDirectories: true)
+        do {
+            for image in images {
+                let (mountPoint, owned) = try await attach(image, fileManager: fileManager)
+                defer { release(mountPoint, owned: owned, fileManager: fileManager) }
+                try copyContents(of: mountPoint, into: folder, fileManager: fileManager)
+            }
+            let link = devices.appending(path: "\(letter.lowercased()):")
+            try fileManager.createSymbolicLink(
+                atPath: link.path(percentEncoded: false), withDestinationPath: path(of: folder))
+            return Mounted(mountPoint: folder, driveLetter: letter, link: link, owned: false)
+        } catch {
+            try? fileManager.removeItem(at: folder)
+            throw error
+        }
+    }
+
+    /// Copies what is in `source` into `destination`, without replacing files that are already there. Files on a
+    /// disc are read-only; the copies are made writable so the folder can be deleted and installers can touch them.
+    static func copyContents(of source: URL, into destination: URL, fileManager: FileManager = .default) throws {
+        guard let enumerator = fileManager.enumerator(atPath: path(of: source)) else { return }
+        for case let relative as String in enumerator {
+            let from = source.appending(path: relative)
+            let to = destination.appending(path: relative)
+            let kind = (try? fileManager.attributesOfItem(atPath: path(of: from)))?[.type] as? FileAttributeType
+            if kind == .typeDirectory {
+                try fileManager.createDirectory(at: to, withIntermediateDirectories: true)
+                try? fileManager.setAttributes([.posixPermissions: 0o755], ofItemAtPath: path(of: to))
+            } else if kind == .typeRegular, !fileManager.fileExists(atPath: path(of: to)) {
+                try fileManager.createDirectory(at: to.deletingLastPathComponent(), withIntermediateDirectories: true)
+                try fileManager.copyItem(at: from, to: to)
+                try? fileManager.setAttributes([.posixPermissions: 0o644], ofItemAtPath: path(of: to))
+            }
+        }
+    }
+
     /// Installers and games in the disc's root and one folder down, the suggested one first.
     static func programs(in root: URL, fileManager: FileManager = .default) -> [DiscProgram] {
         let suggested = setupProgram(in: root, fileManager: fileManager)

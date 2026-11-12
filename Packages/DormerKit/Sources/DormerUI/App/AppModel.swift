@@ -320,10 +320,12 @@ public final class AppModel {
         if target.kind == .discImage, target.discProgram == nil {
             // A disc's own menu (autorun) is not always the part that works: let the user pick what to start.
             do {
-                let programs = try await runner.discPrograms(in: target.url)
-                if programs.count > 1 {
+                let listing = try await runner.discListing(of: target.url)
+                if listing.programs.count > 1 || listing.discCount > 1 {
                     activeSheet = .chooseDiscProgram(
-                        DiscChoice(image: target.url, programs: programs, bottleID: bottleID))
+                        DiscChoice(
+                            image: target.url, programs: listing.programs, discCount: listing.discCount,
+                            bottleID: bottleID))
                     return
                 }
             } catch {

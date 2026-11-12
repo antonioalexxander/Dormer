@@ -22,6 +22,15 @@ int main(void) {
         if (m) { if (fgets(mark, sizeof mark, m)) mark[strcspn(mark, "\r\n")] = 0; fclose(m); fprintf(out, "%c:%s;", letter, mark); }
     }
     fprintf(out, "\n");
+    // Files that only some discs carry: visible only if the discs really were combined into one drive.
+    fprintf(out, "files=");
+    for (int n = 1; n <= 3; n++) {
+        char file[MAX_PATH];
+        strcpy(file, exe);
+        sprintf(strrchr(file, '\\') + 1, "DISC%d.TXT", n);
+        fprintf(out, "%d:%d;", n, GetFileAttributesA(file) != INVALID_FILE_ATTRIBUTES);
+    }
+    fprintf(out, "\n");
     fclose(out);
     return in ? 0 : 1;
 }
