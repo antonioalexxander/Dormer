@@ -1,6 +1,6 @@
 # Wine con DXMT: parche, receta y resultados
 
-**Estado (2026-11-12):** con un `winemac.so` recompilado con el parche de esta carpeta, DXMT v0.80 **dibuja en ventanas** dentro del Wine 11.21 de Gcenx. Probado con un programa Direct3D 11 propio y con Audacity 4.0.2. Dormer lo ofrece como backend **DXMT (experimental)** para Wine Staging 11.21: descarga el `winemac.so` de la [release `winemac-dxmt-11.21-1`](https://github.com/antonioalexxander/iOS-to-Windows/releases/tag/winemac-dxmt-11.21-1) y lo coloca en una copia del motor.
+**Estado (2026-11-12):** con un `winemac.so` recompilado con el parche de esta carpeta, DXMT v0.80 **dibuja en ventanas** dentro del Wine 11.21 de Gcenx. Probado con un programa Direct3D 11 propio y con Audacity 4.0.2. Dormer lo ofrece como backend **DXMT (experimental)** para Wine Staging 11.21: descarga el `winemac.so` de la [release `winemac-dxmt-11.21-1`](https://github.com/antonioalexxander/Dormer/releases/tag/winemac-dxmt-11.21-1) y lo coloca en una copia del motor.
 
 | | |
 |---|---|

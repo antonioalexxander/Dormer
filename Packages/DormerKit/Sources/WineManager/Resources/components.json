@@ -23,11 +23,11 @@
     "id": "winemac-dxmt-11.21-1",
     "displayName": "Controlador de pantalla de Wine para DXMT",
     "version": "11.21-1",
-    "downloadURL": "https://github.com/antonioalexxander/iOS-to-Windows/releases/download/winemac-dxmt-11.21-1/winemac-dxmt-11.21-1.tar.gz",
+    "downloadURL": "https://github.com/antonioalexxander/Dormer/releases/download/winemac-dxmt-11.21-1/winemac-dxmt-11.21-1.tar.gz",
     "sha256": "b093308159b959aa730849a9e43cc4b8b225f0a72a626e5ffbd838dfc760b481",
     "sizeBytes": 214253,
     "license": "LGPL-2.1-or-later",
-    "sourceURL": "https://github.com/antonioalexxander/iOS-to-Windows/tree/main/packaging/wine",
+    "sourceURL": "https://github.com/antonioalexxander/Dormer/tree/main/packaging/wine",
     "runtimeIDs": ["gcenx-wine-staging-11.21"]
   }
 }
