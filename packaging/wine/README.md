@@ -23,3 +23,19 @@ Lo que sí se puede ofrecer a WineHQ, sin pretender que lo acepten tal cual:
 - **Parche pequeño** (este): exportar esos símbolos. Es el mismo en espíritu que lo que CrossOver hace con su tabla `macdrv_functions`.
 - **Propuesta mejor:** una interfaz documentada en `winemac.drv` para que una capa externa obtenga un `CAMetalLayer` a partir de un `HWND` (como `winevulkan` hace con Vulkan), en lugar de depender de símbolos internos. Es una conversación de diseño con los mantenedores de `winemac.drv`.
 - Envío: lista `wine-devel` o *merge request* en `gitlab.winehq.org`, con cuenta propia de quien envía y siguiendo su guía de contribución. **Dormer no puede enviarlo por ti.**
+
+## Resultados de la primera prueba (2026-11-12)
+
+Se compiló `winemac.so` de Wine 11.21 oficial con el parche (bison 3.8.2 y `llvm-mingw` 20261104 en una carpeta aparte; `CC="/usr/bin/clang -arch x86_64"`, `--host=x86_64-apple-darwin`, `--enable-win64`; 1 minuto de compilación) y se colocó en una **copia** del motor Wine de Gcenx con DXMT v0.80.
+
+- ✅ `nm -gU` muestra exportados los cinco símbolos (`get_win_data`, `release_win_data`, `macdrv_view_create_metal_view`, `macdrv_view_get_metal_layer`, `macdrv_view_release_metal_view`).
+- ✅ El `winemac.so` propio **funciona dentro del Wine de Gcenx** (no hay desajuste de ABI visible: el programa arranca y crea ventanas).
+- ✅ Audacity 4 ya **no** falla con «Failed to initialize graphics backend for D3D11» ni con «no exported symbols needed by DXMT»: Qt consigue un dispositivo Direct3D 11 (nivel 11.0) con DXMT y crea su ventana principal (1928×1058).
+- ❌ Pero la ventana se queda **en gris sin dibujar** y el proceso queda inactivo; DXMT registra un `err: Not implemented`. Causa sin determinar (puede ser una función de Direct3D 11 que DXMT v0.80 aún no implementa y que usa Qt 6, o la forma en que se captura la capa Metal). **No se puede afirmar que Audacity 4 funcione.**
+- ℹ️ SHA-256 del `winemac.so` compilado: `ac5ddf4bcbae66f09ae22d81ea419a489ace1602631c01f08805507debc2c4b7` (no se publica el binario).
+
+### Siguiente
+
+1. Probar un programa Direct3D 11 más simple que Audacity (un juego o demo ligero) para separar «el parche funciona» de «Audacity 4 pide algo que DXMT no implementa».
+2. Mirar qué función dispara el `Not implemented` (compilar DXMT desde fuente con registro, o consultar su wiki/estado).
+3. Cuando haya un programa Direct3D 11 que se dibuje bien: integrar el motor parcheado de serie en Dormer (compilarlo en CI, con la receta y el parche públicos) y activar la capacidad `dxmt`.

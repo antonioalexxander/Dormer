@@ -27,7 +27,7 @@ La lista curada tiene otros verbos (`dotnet48`, `dotnet40`, `xact`, `msxml6`…)
 | Backend | Estado | Notas |
 |---|---|---|
 | **WineD3D** (el de Wine) | ✅ Disponible | En este Mac ofrece Direct3D 11 con nivel de características 9.3 (a través de OpenGL). Suficiente para programas de oficina; insuficiente para programas que exigen Direct3D 11 real. |
-| **DXMT** (v0.80, MIT) | ❌ No disponible | Crea el dispositivo Direct3D 11 (nivel 11.0) pero **no puede dibujar en ventanas** con el Wine de Gcenx: a su `winemac.drv` le faltan símbolos que DXMT necesita. Se activará cuando el catálogo incluya un motor Wine compatible (el catálogo ya tiene la capacidad `dxmt`, que hoy es `false`). |
+| **DXMT** (v0.80, MIT) | ❌ No disponible | Crea el dispositivo Direct3D 11 (nivel 11.0) pero **no puede dibujar en ventanas** con el Wine de Gcenx: a su `winemac.drv` le faltan símbolos que DXMT necesita. Con un `winemac.so` recompilado con un parche de 5 líneas ([packaging/wine](../packaging/wine/README.md)) Audacity 4 ya consigue un dispositivo Direct3D 11 y crea su ventana, pero esta se queda en gris sin dibujar; en investigación. Sigue desactivado (la capacidad `dxmt` es `false`). |
 | **DXVK-macOS** | ❌ No ofrecido | Sin versiones desde 2024. |
 | **D3DMetal** (Game Porting Toolkit) | ❌ No disponible | Puedes importarlo desde tu copia del GPTK, pero necesita un motor Wine del GPTK que Dormer no incluye. No verificado. |
 
