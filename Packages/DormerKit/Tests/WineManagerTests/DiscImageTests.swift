@@ -103,7 +103,8 @@ final class DiscImageTests: XCTestCase {
         try Data().write(to: second.appending(path: "setup.exe"))
         func disc(_ url: URL, _ letter: String) -> DiscImage.Mounted {
             DiscImage.Mounted(
-                mountPoint: url, driveLetter: letter, link: root.appending(path: "\(letter.lowercased()):"))
+                mountPoint: url, driveLetter: letter, link: root.appending(path: "\(letter.lowercased()):"), owned: true
+            )
         }
         let a = disc(first, "D"), b = disc(second, "E")
         let found = DiscImage.setupProgram(among: [a, b], preferring: a)
@@ -125,9 +126,31 @@ final class DiscImageTests: XCTestCase {
             fileManager.fileExists(atPath: root.appending(path: "unrelated/file.txt").path(percentEncoded: false)))
     }
 
+    func testFindsWhereAnImageIsAlreadyMounted() {
+        let plist = """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <plist version="1.0"><dict><key>images</key><array>
+            <dict><key>image-path</key><string>/Users/x/Games/CD2.iso</string><key>system-entities</key><array>
+              <dict><key>dev-entry</key><string>/dev/disk9</string></dict></array></dict>
+            <dict><key>image-path</key><string>/Users/x/Games/CD1.iso</string><key>system-entities</key><array>
+              <dict><key>dev-entry</key><string>/dev/disk8</string></dict>
+              <dict><key>mount-point</key><string>/Volumes/CD1</string></dict></array></dict>
+            </array></dict></plist>
+            """
+        let data = Data(plist.utf8)
+        XCTAssertEqual(
+            DiscImage.existingMountPoint(of: URL(filePath: "/Users/x/Games/CD1.iso"), in: data)?.path(
+                percentEncoded: false),
+            "/Volumes/CD1")
+        XCTAssertNil(DiscImage.existingMountPoint(of: URL(filePath: "/Users/x/Games/CD2.iso"), in: data))
+        XCTAssertNil(DiscImage.existingMountPoint(of: URL(filePath: "/Users/x/Games/CD3.iso"), in: data))
+        XCTAssertNil(DiscImage.existingMountPoint(of: URL(filePath: "/x"), in: Data("nonsense".utf8)))
+    }
+
     func testThePlanStartsTheInstallerFromTheDiscDrive() {
         let disc = DiscImage.Mounted(
-            mountPoint: URL(filePath: "/tmp/disc"), driveLetter: "D", link: URL(filePath: "/tmp/p/dosdevices/d:"))
+            mountPoint: URL(filePath: "/tmp/disc"), driveLetter: "D", link: URL(filePath: "/tmp/p/dosdevices/d:"),
+            owned: true)
         XCTAssertEqual(WineLaunchPlan.make(forProgram: "bin/setup.exe", onDisc: disc).arguments, ["D:\\bin\\setup.exe"])
         XCTAssertEqual(
             WineLaunchPlan.make(forProgram: "Setup.MSI", onDisc: disc).arguments, ["msiexec", "/i", "D:\\Setup.MSI"])

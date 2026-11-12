@@ -28,6 +28,14 @@ final class DiscImageIntegrationTests: XCTestCase {
         XCTAssertTrue(bottle.settings.hidesHostFileSystem)
         bottle.appliedSettings = try await runner.prepare(bottle)
 
+        // Wine may already have given a drive letter to a volume that was mounted before the bottle was created.
+        let devices = paths.prefix(id: bottle.id).appending(path: "dosdevices")
+        let linksBefore = Set(
+            (try? FileManager.default.contentsOfDirectory(atPath: devices.path(percentEncoded: false))) ?? [])
+        let temporary = FileManager.default.temporaryDirectory
+        // Mounts that existed before the test (for example one left by an earlier run) are not its business.
+        let before = Set(
+            (try? FileManager.default.contentsOfDirectory(atPath: temporary.path(percentEncoded: false))) ?? [])
         let target = try XCTUnwrap(RunTarget(url: URL(filePath: imagePath)))
         let session = try await runner.launch(.file(target), in: bottle)
         var status: Int32 = -1
@@ -38,23 +46,21 @@ final class DiscImageIntegrationTests: XCTestCase {
 
         let log = try String(contentsOf: paths.cDrive(id: bottle.id).appending(path: "disc-test.log"), encoding: .utf8)
         print("DISC \(log.replacingOccurrences(of: "\n", with: " | "))")
-        XCTAssertTrue(log.contains("exe=D:\\"), "the installer runs from the disc's own drive")
+        XCTAssertNotNil(log.firstMatch(of: /exe=[D-H]:\\/), "the installer runs from a disc drive")
         XCTAssertTrue(log.contains("payload=hello from the disc"), "files next to the installer are visible")
         XCTAssertTrue(log.contains("zdrive=1"), "the Mac's disk stays hidden (1 = no such drive)")
-        if let expected = environment["DORMER_DISC_MARKS"] {
-            XCTAssertTrue(log.contains("marks=\(expected)"), "every disc of the set is mounted as its own drive")
+        for name in (environment["DORMER_DISC_MARKS"] ?? "").split(separator: ",") {
+            XCTAssertTrue(log.contains(":\(name);"), "disc \(name) of the set is mounted as a drive")
         }
 
         // Every disc is ejected once the bottle is idle: no links left and nothing still mounted.
-        let devices = paths.prefix(id: bottle.id).appending(path: "dosdevices")
-        let temporary = FileManager.default.temporaryDirectory
         func leftovers() -> Int {
             let links =
                 ((try? FileManager.default.contentsOfDirectory(atPath: devices.path(percentEncoded: false))) ?? [])
-                .filter { $0.count == 2 && $0 != "c:" && $0 != "z:" }
+                .filter { $0.count == 2 && !linksBefore.contains($0) }
             let mounts =
                 ((try? FileManager.default.contentsOfDirectory(atPath: temporary.path(percentEncoded: false))) ?? [])
-                .filter { $0.hasPrefix(DiscImage.mountPrefix) }
+                .filter { $0.hasPrefix(DiscImage.mountPrefix) && !before.contains($0) }
             return links.count + mounts.count
         }
         for _ in 0..<120 where leftovers() > 0 { try await Task.sleep(for: .milliseconds(500)) }

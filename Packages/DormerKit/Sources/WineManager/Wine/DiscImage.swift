@@ -34,6 +34,60 @@ public enum DiscImage {
         /// Uppercase drive letter, without the colon.
         public let driveLetter: String
         let link: URL
+        /// Dormer mounted the image (or adopted its own earlier mount), so Dormer ejects it. A disc the user
+        /// mounted in Finder is only linked, never ejected.
+        let owned: Bool
+    }
+
+    /// How many bottles' runs are using each mount folder Dormer owns; the last one to finish ejects the disc.
+    private final class Users: @unchecked Sendable {
+        private let lock = NSLock()
+        private var counts: [String: Int] = [:]
+
+        func add(_ mountPoint: String) {
+            lock.lock()
+            defer { lock.unlock() }
+            counts[mountPoint, default: 0] += 1
+        }
+
+        /// Returns `true` when nobody uses the mount folder any more.
+        func remove(_ mountPoint: String) -> Bool {
+            lock.lock()
+            defer { lock.unlock() }
+            let left = (counts[mountPoint] ?? 1) - 1
+            counts[mountPoint] = left > 0 ? left : nil
+            return left <= 0
+        }
+    }
+    private static let users = Users()
+
+    /// Where `image` is mounted right now, according to the output of `hdiutil info -plist`.
+    static func existingMountPoint(of image: URL, in plist: Data) -> URL? {
+        guard let root = try? PropertyListSerialization.propertyList(from: plist, format: nil) as? [String: Any],
+            let images = root["images"] as? [[String: Any]]
+        else { return nil }
+        let wanted = image.resolvingSymlinksInPath().standardizedFileURL.path(percentEncoded: false)
+        for entry in images {
+            guard let imagePath = entry["image-path"] as? String,
+                URL(filePath: imagePath).resolvingSymlinksInPath().standardizedFileURL.path(percentEncoded: false)
+                    == wanted
+            else { continue }
+            for case let entity as [String: Any] in entry["system-entities"] as? [Any] ?? [] {
+                if let mountPoint = entity["mount-point"] as? String { return URL(filePath: mountPoint) }
+            }
+        }
+        return nil
+    }
+
+    private static func currentMountPoint(of image: URL) async -> URL? {
+        guard
+            let info = try? await ProcessRunner.run(
+                ProcessSpec(
+                    executable: URL(filePath: "/usr/bin/hdiutil"), arguments: ["info", "-plist"],
+                    environment: ["PATH": "/usr/bin:/bin"])),
+            info.status == 0
+        else { return nil }
+        return existingMountPoint(of: image, in: Data(info.lines.joined(separator: "\n").utf8))
     }
 
     /// Mount points live in the temporary folder under this prefix, which is how stale links are recognised.
@@ -69,6 +123,18 @@ public enum DiscImage {
         guard let letter = freeDriveLetter(in: devices, fileManager: fileManager) else {
             throw DiscError.noFreeDriveLetter
         }
+        let link = devices.appending(path: "\(letter.lowercased()):")
+
+        // Already mounted: by the user in Finder, by an earlier run that quit before ejecting it, or by another
+        // bottle running at the same time. A second `hdiutil attach` would fail with "resource busy".
+        if let existing = await currentMountPoint(of: image) {
+            let ours = existing.lastPathComponent.hasPrefix(mountPrefix)
+            try fileManager.createSymbolicLink(
+                atPath: link.path(percentEncoded: false), withDestinationPath: path(of: existing))
+            if ours { users.add(path(of: existing)) }
+            return Mounted(mountPoint: existing, driveLetter: letter, link: link, owned: ours)
+        }
+
         let mountPoint = fileManager.temporaryDirectory.appending(
             path: mountPrefix + UUID().uuidString, directoryHint: .isDirectory)
         try fileManager.createDirectory(at: mountPoint, withIntermediateDirectories: true)
@@ -81,22 +147,25 @@ public enum DiscImage {
                 ], environment: ["PATH": "/usr/bin:/bin"]))
         guard attach.status == 0 else {
             try? fileManager.removeItem(at: mountPoint)
-            throw DiscError.mountFailed(attach.lines.suffix(2).joined(separator: " "))
+            // hdiutil also prints a deprecation notice; the useful part is the last line.
+            let detail = attach.lines.filter { !$0.contains("deprecated") }.suffix(2).joined(separator: " ")
+            throw DiscError.mountFailed(detail)
         }
-        let link = devices.appending(path: "\(letter.lowercased()):")
+        users.add(path(of: mountPoint))
         do {
             try fileManager.createSymbolicLink(
                 atPath: link.path(percentEncoded: false), withDestinationPath: path(of: mountPoint))
         } catch {
-            detach(mountPoint, fileManager: fileManager)
+            if users.remove(path(of: mountPoint)) { detach(mountPoint, fileManager: fileManager) }
             throw error
         }
-        return Mounted(mountPoint: mountPoint, driveLetter: letter, link: link)
+        return Mounted(mountPoint: mountPoint, driveLetter: letter, link: link, owned: true)
     }
 
     public static func unmount(_ mounted: Mounted, fileManager: FileManager = .default) {
         try? fileManager.removeItem(at: mounted.link)
-        detach(mounted.mountPoint, fileManager: fileManager)
+        guard mounted.owned else { return }
+        if users.remove(path(of: mounted.mountPoint)) { detach(mounted.mountPoint, fileManager: fileManager) }
     }
 
     /// The first setup program among `discs`, starting with `first` (the disc the user chose).
