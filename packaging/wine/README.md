@@ -60,7 +60,14 @@ Audacity 4.0.2 (Qt 6, `.msi`, con `vcrun2022`):
 - ℹ️ DXMT registra `err: Not implemented` al arrancar: Qt pide primero una cadena de intercambio de DirectComposition (`CreateSwapChainForComposition`), que DXMT no implementa, y recurre a la cadena normal por ventana. No impide dibujar.
 - ❓ **Sin probar:** grabar, reproducir, importar/exportar audio, efectos, uso prolongado. «Se dibuja y responde» no es «funciona todo».
 
-Ningún juego probado todavía.
+Warzone 2100 4.7.0 (juego libre; zip portable del repositorio oficial, SHA-256 verificado; `--gfxbackend=directx`, es decir ANGLE sobre Direct3D 11):
+
+- ✅ ANGLE obtiene un dispositivo Direct3D 11 de nivel 11.1 (`vs_5_0 ps_5_0`); se dibujan el menú y una partida rápida en 3D, y responde a clics.
+- ❓ **Sin probar:** sonido, partidas largas, rendimiento medido, pantalla completa.
+
+![Warzone 2100 con DXMT](../../docs/images/warzone2100-dxmt.png)
+
+Ningún juego comercial probado todavía (Euro Truck Simulator 2, versión de prueba oficial, pendiente).
 
 ## Para Wine (upstream)
 
@@ -73,6 +80,6 @@ Envío: lista `wine-devel` o *merge request* en `gitlab.winehq.org`, con cuenta 
 
 ## Siguiente
 
-1. Probar más programas Direct3D 11 (y Direct3D 10) y algún juego libre; anotar cada resultado en [docs/COMPATIBILITY.md](../../docs/COMPATIBILITY.md).
+1. Probar más programas Direct3D 11 (y Direct3D 10) y juegos más exigentes; anotar cada resultado en [docs/COMPATIBILITY.md](../../docs/COMPATIBILITY.md).
 2. Probar Retina, pantalla completa y ventanas hijas.
 3. Integrarlo de serie en Dormer: compilar `winemac.so` en CI con esta receta y sumas verificadas, publicar el binario con su fuente y parche (LGPL), y activar la capacidad `dxmt` solo para ese motor.
