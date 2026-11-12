@@ -50,8 +50,8 @@ public struct ComponentCatalog: Codable, Sendable, Equatable {
             throw RuntimeCatalog.CatalogError.missingResource
         }
         let catalog = try JSONDecoder().decode(ComponentCatalog.self, from: Data(contentsOf: url))
-        for component in [catalog.winetricks, catalog.dxmt, catalog.winemacDXMT] where component.sha256.wholeMatch(of: /[0-9a-f]{64}/) == nil
-        {
+        for component in [catalog.winetricks, catalog.dxmt, catalog.winemacDXMT]
+        where component.sha256.wholeMatch(of: /[0-9a-f]{64}/) == nil {
             throw RuntimeCatalog.CatalogError.invalidChecksum(runtimeID: component.id)
         }
         return catalog

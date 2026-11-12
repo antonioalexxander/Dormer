@@ -142,7 +142,8 @@ public actor GraphicsStore: GraphicsServicing {
     // MARK: Patched Mac driver
 
     private var driverFile: URL {
-        paths.graphics.appending(path: catalog.winemacDXMT.id, directoryHint: .isDirectory).appending(path: "winemac.so")
+        paths.graphics.appending(path: catalog.winemacDXMT.id, directoryHint: .isDirectory).appending(
+            path: "winemac.so")
     }
 
     /// The patched `winemac.so`, downloading and unpacking it if needed.
