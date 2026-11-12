@@ -39,6 +39,17 @@ public struct PendingRun: Identifiable, Hashable, Sendable {
     public func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }
 
+/// A disc image whose programs the user can choose from.
+public struct DiscChoice: Identifiable, Hashable, Sendable {
+    public let id = UUID()
+    public let image: URL
+    public let programs: [DiscProgram]
+    public let bottleID: UUID
+
+    public static func == (lhs: DiscChoice, rhs: DiscChoice) -> Bool { lhs.id == rhs.id }
+    public func hash(into hasher: inout Hasher) { hasher.combine(id) }
+}
+
 /// Modal sheets presented over the main window.
 public enum ActiveSheet: Identifiable, Hashable {
     case onboarding
@@ -46,6 +57,7 @@ public enum ActiveSheet: Identifiable, Hashable {
     case renameBottle(UUID)
     case editProgram(bottleID: UUID, programID: UUID)
     case confirmRun(PendingRun)
+    case chooseDiscProgram(DiscChoice)
     case winetricks(bottleID: UUID, preselected: Set<String>)
 
     public var id: String {
@@ -55,6 +67,7 @@ public enum ActiveSheet: Identifiable, Hashable {
         case .renameBottle(let id): "renameBottle-\(id)"
         case .editProgram(_, let id): "editProgram-\(id)"
         case .confirmRun(let pending): "confirmRun-\(pending.id)"
+        case .chooseDiscProgram(let choice): "chooseDiscProgram-\(choice.id)"
         case .winetricks(let id, _): "winetricks-\(id)"
         }
     }

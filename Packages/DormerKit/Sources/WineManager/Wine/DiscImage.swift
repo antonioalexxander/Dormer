@@ -116,25 +116,16 @@ public enum DiscImage {
         return found.count > 1 && found.count <= 8 ? found.sorted { $0.key < $1.key }.map(\.value) : [image]
     }
 
-    public static func mount(_ image: URL, prefix: URL, fileManager: FileManager = .default) async throws -> Mounted {
-        let devices = prefix.appending(path: "dosdevices", directoryHint: .isDirectory)
-        removeStaleLinks(in: devices, fileManager: fileManager)
+    /// Mounts `image` read-only (or finds where it already is) and says whether Dormer must eject it later.
+    private static func attach(_ image: URL, fileManager: FileManager) async throws -> (mountPoint: URL, owned: Bool) {
         removeEmptyMountPoints(in: fileManager.temporaryDirectory, fileManager: fileManager)
-        guard let letter = freeDriveLetter(in: devices, fileManager: fileManager) else {
-            throw DiscError.noFreeDriveLetter
-        }
-        let link = devices.appending(path: "\(letter.lowercased()):")
-
         // Already mounted: by the user in Finder, by an earlier run that quit before ejecting it, or by another
         // bottle running at the same time. A second `hdiutil attach` would fail with "resource busy".
         if let existing = await currentMountPoint(of: image) {
             let ours = existing.lastPathComponent.hasPrefix(mountPrefix)
-            try fileManager.createSymbolicLink(
-                atPath: link.path(percentEncoded: false), withDestinationPath: path(of: existing))
             if ours { users.add(path(of: existing)) }
-            return Mounted(mountPoint: existing, driveLetter: letter, link: link, owned: ours)
+            return (existing, ours)
         }
-
         let mountPoint = fileManager.temporaryDirectory.appending(
             path: mountPrefix + UUID().uuidString, directoryHint: .isDirectory)
         try fileManager.createDirectory(at: mountPoint, withIntermediateDirectories: true)
@@ -152,20 +143,79 @@ public enum DiscImage {
             throw DiscError.mountFailed(detail)
         }
         users.add(path(of: mountPoint))
+        return (mountPoint, true)
+    }
+
+    private static func release(_ mountPoint: URL, owned: Bool, fileManager: FileManager) {
+        guard owned else { return }
+        if users.remove(path(of: mountPoint)) { detach(mountPoint, fileManager: fileManager) }
+    }
+
+    public static func mount(_ image: URL, prefix: URL, fileManager: FileManager = .default) async throws -> Mounted {
+        let devices = prefix.appending(path: "dosdevices", directoryHint: .isDirectory)
+        removeStaleLinks(in: devices, fileManager: fileManager)
+        guard let letter = freeDriveLetter(in: devices, fileManager: fileManager) else {
+            throw DiscError.noFreeDriveLetter
+        }
+        let link = devices.appending(path: "\(letter.lowercased()):")
+        let (mountPoint, owned) = try await attach(image, fileManager: fileManager)
         do {
             try fileManager.createSymbolicLink(
                 atPath: link.path(percentEncoded: false), withDestinationPath: path(of: mountPoint))
         } catch {
-            if users.remove(path(of: mountPoint)) { detach(mountPoint, fileManager: fileManager) }
+            release(mountPoint, owned: owned, fileManager: fileManager)
             throw error
         }
-        return Mounted(mountPoint: mountPoint, driveLetter: letter, link: link, owned: true)
+        return Mounted(mountPoint: mountPoint, driveLetter: letter, link: link, owned: owned)
+    }
+
+    /// The programs on `image`, mounting it only for as long as it takes to look.
+    public static func programs(on image: URL, fileManager: FileManager = .default) async throws -> [DiscProgram] {
+        let (mountPoint, owned) = try await attach(image, fileManager: fileManager)
+        defer { release(mountPoint, owned: owned, fileManager: fileManager) }
+        return programs(in: mountPoint, fileManager: fileManager)
+    }
+
+    /// Installers and games in the disc's root and one folder down, the suggested one first.
+    static func programs(in root: URL, fileManager: FileManager = .default) -> [DiscProgram] {
+        let suggested = setupProgram(in: root, fileManager: fileManager)
+        let skipped = ["unins", "uninst", "dxsetup", "vcredist", "dotnet", "directx"]
+        var found: [String] = []
+        func scan(_ folder: URL, relative: String) {
+            for name in ((try? fileManager.contentsOfDirectory(atPath: path(of: folder))) ?? []).sorted() {
+                let lower = name.lowercased()
+                let isProgram = ["exe", "msi"].contains(URL(filePath: lower).pathExtension)
+                if isProgram, !skipped.contains(where: { lower.contains($0) }) {
+                    found.append(relative.isEmpty ? name : "\(relative)/\(name)")
+                }
+            }
+        }
+        scan(root, relative: "")
+        for name in ((try? fileManager.contentsOfDirectory(atPath: path(of: root))) ?? []).sorted() {
+            var isDirectory: ObjCBool = false
+            let folder = root.appending(path: name)
+            if fileManager.fileExists(atPath: path(of: folder), isDirectory: &isDirectory), isDirectory.boolValue,
+                found.count < 60
+            {
+                scan(folder, relative: name)
+            }
+        }
+        if let suggested, !found.contains(suggested) { found.append(suggested) }
+        let programs = found.prefix(60).map { DiscProgram(path: $0, isSuggested: $0 == suggested) }
+        return programs.filter(\.isSuggested) + programs.filter { !$0.isSuggested }
+    }
+
+    /// Checks that a program the user chose really is on the disc, below its root.
+    static func existingProgram(_ relative: String, in root: URL, fileManager: FileManager = .default) -> String? {
+        guard !relative.isEmpty, !relative.hasPrefix("/"), !relative.split(separator: "/").contains("..") else {
+            return nil
+        }
+        return fileManager.fileExists(atPath: path(of: root.appending(path: relative))) ? relative : nil
     }
 
     public static func unmount(_ mounted: Mounted, fileManager: FileManager = .default) {
         try? fileManager.removeItem(at: mounted.link)
-        guard mounted.owned else { return }
-        if users.remove(path(of: mounted.mountPoint)) { detach(mounted.mountPoint, fileManager: fileManager) }
+        release(mounted.mountPoint, owned: mounted.owned, fileManager: fileManager)
     }
 
     /// The first setup program among `discs`, starting with `first` (the disc the user chose).

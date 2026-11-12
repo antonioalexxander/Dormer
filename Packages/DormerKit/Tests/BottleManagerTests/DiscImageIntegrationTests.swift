@@ -36,7 +36,13 @@ final class DiscImageIntegrationTests: XCTestCase {
         // Mounts that existed before the test (for example one left by an earlier run) are not its business.
         let before = Set(
             (try? FileManager.default.contentsOfDirectory(atPath: temporary.path(percentEncoded: false))) ?? [])
-        let target = try XCTUnwrap(RunTarget(url: URL(filePath: imagePath)))
+        // `DORMER_DISC_PROGRAM` is a program the user picks on the disc instead of the one it suggests.
+        let target =
+            environment["DORMER_DISC_PROGRAM"].map { RunTarget(disc: URL(filePath: imagePath), program: $0) }
+            ?? RunTarget(url: URL(filePath: imagePath))!
+        let listed = try await runner.discPrograms(in: URL(filePath: imagePath))
+        print("DISC programs on the disc: \(listed.map(\.path))")
+        XCTAssertFalse(listed.isEmpty)
         let session = try await runner.launch(.file(target), in: bottle)
         var status: Int32 = -1
         for await event in session.events {

@@ -1,3498 +1,3542 @@
 {
-  "sourceLanguage": "es",
-  "strings": {
-    "%@ de %@ · %@/s": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ of %@ · %@/s"
+  "sourceLanguage" : "es",
+  "strings" : {
+    "%@ de %@ · %@/s" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ of %@ · %@/s"
           }
         }
       }
     },
-    "%@ · %@": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "%@ · %@" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "%@ · nativo · %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ · native · %@"
+    "%@ · nativo · %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · native · %@"
           }
         }
       }
     },
-    "%@ · requiere Rosetta · %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ · requires Rosetta · %@"
+    "%@ · requiere Rosetta · %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · requires Rosetta · %@"
           }
         }
       }
     },
-    "%lld procesos en ejecución": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld processes running"
+    "%lld procesos en ejecución" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld processes running"
           }
         }
       }
     },
-    "(experimental)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(experimental)"
+    "(experimental)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(experimental)"
           }
         }
       }
     },
-    "(no disponible)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(unavailable)"
+    "(no disponible)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(unavailable)"
           }
         }
       }
     },
-    ".NET": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    ".NET" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Abre un programa de esta botella para ver aquí lo que dice Wine, en vivo.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open a program in this bottle to see Wine's output here, live."
+    "Abre un programa de esta botella para ver aquí lo que dice Wine, en vivo." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open a program in this bottle to see Wine's output here, live."
           }
         }
       }
     },
-    "Abrir": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open"
+    "Abrir" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
           }
         }
       }
     },
-    "Abrir %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open %@"
+    "Abrir %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open %@"
           }
         }
       }
     },
-    "Abrir la unidad C: de esta botella en Finder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open this bottle's C: drive in Finder"
+    "Abrir la unidad C: de esta botella en Finder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open this bottle's C: drive in Finder"
           }
         }
       }
     },
-    "Abrir unidad C:": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open C: Drive"
+    "Abrir unidad C:" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open C: Drive"
           }
         }
       }
     },
-    "Abrir winecfg": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open winecfg"
+    "Abrir winecfg" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open winecfg"
           }
         }
       }
     },
-    "Aceptar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OK"
+    "Aceptar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }
     },
-    "Acerca de": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "About"
+    "Acerca de" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
           }
         }
       }
     },
-    "Aislamiento": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Isolation"
+    "Aislamiento" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isolation"
           }
         }
       }
     },
-    "Ancla un programa detectado para tenerlo siempre a mano.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pin a detected program to keep it at hand."
+    "Ancla un programa detectado para tenerlo siempre a mano." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin a detected program to keep it at hand."
           }
         }
       }
     },
-    "Anclados": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pinned"
+    "Anclados" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinned"
           }
         }
       }
     },
-    "Anclar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pin"
+    "Anclar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin"
           }
         }
       }
     },
-    "Anclar %@ arriba": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pin %@ to the top"
+    "Anclar %@ arriba" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin %@ to the top"
           }
         }
       }
     },
-    "Aplicando ajustes de «%@»…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Applying settings for “%@”…"
+    "Aplicando ajustes de «%@»…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applying settings for “%@”…"
           }
         }
       }
     },
-    "Aportado por ti": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Provided by you"
+    "Aportado por ti" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provided by you"
           }
         }
       }
     },
-    "Apple anunció que Rosetta seguirá completo hasta macOS 27 y que en macOS 28 solo quedará para algunos juegos antiguos. Dormer está preparado para cambiar a un motor Wine nativo para Apple Silicon cuando exista uno gratuito; si Rosetta deja de funcionar, la app te lo dirá claramente.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple announced that Rosetta will stay complete through macOS 27, and that in macOS 28 it will only remain for some older games. Dormer is ready to switch to a native Wine engine for Apple silicon once a free one exists; if Rosetta stops working, the app will tell you clearly."
+    "Apple anunció que Rosetta seguirá completo hasta macOS 27 y que en macOS 28 solo quedará para algunos juegos antiguos. Dormer está preparado para cambiar a un motor Wine nativo para Apple Silicon cuando exista uno gratuito; si Rosetta deja de funcionar, la app te lo dirá claramente." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple announced that Rosetta will stay complete through macOS 27, and that in macOS 28 it will only remain for some older games. Dormer is ready to switch to a native Wine engine for Apple silicon once a free one exists; if Rosetta stops working, the app will tell you clearly."
           }
         }
       }
     },
-    "Apple limitará Rosetta a partir de macOS 28.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple will limit Rosetta starting with macOS 28."
+    "Apple limitará Rosetta a partir de macOS 28." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple will limit Rosetta starting with macOS 28."
           }
         }
       }
     },
-    "Apple mantiene Rosetta completo hasta macOS 27. Desde macOS 28 quedará limitado, y los motores Wine actuales podrían dejar de funcionar.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple keeps Rosetta complete through macOS 27. From macOS 28 it will be limited, and today's Wine engines may stop working."
+    "Apple mantiene Rosetta completo hasta macOS 27. Desde macOS 28 quedará limitado, y los motores Wine actuales podrían dejar de funcionar." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple keeps Rosetta complete through macOS 27. From macOS 28 it will be limited, and today's Wine engines may stop working."
           }
         }
       }
     },
-    "Apple no permite redistribuir D3DMetal. Descarga el Game Porting Toolkit desde developer.apple.com con un Apple ID gratuito y elige su imagen de disco: Dormer copia solo los archivos necesarios, en tu Mac. Importarlo no lo activa: usarlo requiere un motor Wine del Game Porting Toolkit, que Dormer todavía no incluye.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple does not allow redistributing D3DMetal. Download the Game Porting Toolkit from developer.apple.com with a free Apple ID and choose its disk image: Dormer copies only the files it needs, on your Mac. Importing it does not enable it: using it requires a Game Porting Toolkit build of Wine, which Dormer does not include yet."
+    "Apple no permite redistribuir D3DMetal. Descarga el Game Porting Toolkit desde developer.apple.com con un Apple ID gratuito y elige su imagen de disco: Dormer copia solo los archivos necesarios, en tu Mac. Importarlo no lo activa: usarlo requiere un motor Wine del Game Porting Toolkit, que Dormer todavía no incluye." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple does not allow redistributing D3DMetal. Download the Game Porting Toolkit from developer.apple.com with a free Apple ID and choose its disk image: Dormer copies only the files it needs, on your Mac. Importing it does not enable it: using it requires a Game Porting Toolkit build of Wine, which Dormer does not include yet."
           }
         }
       }
     },
-    "Argumentos": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arguments"
+    "Argumentos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arguments"
           }
         }
       }
     },
-    "Arrastra aquí un instalador (.exe o .msi) o elige uno desde tu Mac.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drag an installer (.exe or .msi) here, or pick one from your Mac."
+    "Arrastra aquí un instalador (.exe o .msi) o elige uno desde tu Mac." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drag an installer (.exe or .msi) here, or pick one from your Mac."
           }
         }
       }
     },
-    "Asistente de inicio": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Setup Assistant"
+    "Asistente de inicio" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setup Assistant"
           }
         }
       }
     },
-    "Aumenta el tamaño del texto y de los controles dentro de los programas.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Increases the size of text and controls inside programs."
+    "Aumenta el tamaño del texto y de los controles dentro de los programas." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Increases the size of text and controls inside programs."
           }
         }
       }
     },
-    "Avanzado": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Advanced"
+    "Avanzado" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced"
           }
         }
       }
     },
-    "Avisar antes de ejecutar archivos descargados": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Warn before running downloaded files"
+    "Avisar antes de ejecutar archivos descargados" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warn before running downloaded files"
           }
         }
       }
     },
-    "Avisos": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Warnings"
+    "Avisos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warnings"
           }
         }
       }
     },
-    "Añadir variable": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add Variable"
+    "Añadir variable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Variable"
           }
         }
       }
     },
-    "Aún no tienes botellas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You don't have any bottles yet"
+    "Aún no tienes botellas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any bottles yet"
           }
         }
       }
     },
-    "Backend gráfico": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Graphics backend"
+    "Backend gráfico" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphics backend"
           }
         }
       }
     },
-    "Botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bottle"
+    "Botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bottle"
           }
         }
       }
     },
-    "Botellas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bottles"
+    "Botellas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bottles"
           }
         }
       }
     },
-    "Buscar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search"
+    "Buscar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
           }
         }
       }
     },
-    "Cada botella es un Windows aislado. Puedes tener una para cada programa o agrupar varios en la misma.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Each bottle is an isolated Windows. You can have one per program or group several in the same one."
+    "Cada botella es un Windows aislado. Puedes tener una para cada programa o agrupar varios en la misma." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each bottle is an isolated Windows. You can have one per program or group several in the same one."
           }
         }
       }
     },
-    "Caja": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Box"
+    "Caja" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Box"
           }
         }
       }
     },
-    "Cancelar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
+    "Cancelar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         }
       }
     },
-    "Capas gráficas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Graphics layers"
+    "Capas gráficas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphics layers"
           }
         }
       }
     },
-    "Carpeta de datos": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data folder"
+    "Carpeta de datos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data folder"
           }
         }
       }
     },
-    "Cerrar todos los programas de esta botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Close all programs in this bottle"
+    "Cerrar todos los programas de esta botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close all programs in this bottle"
           }
         }
       }
     },
-    "Cierra los programas primero": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Close the programs first"
+    "Cierra los programas primero" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close the programs first"
           }
         }
       }
     },
-    "Compilación de Gcenx · %@ · %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gcenx build · %@ · %@"
+    "Compilación de Gcenx · %@ · %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gcenx build · %@ · %@"
           }
         }
       }
     },
-    "Componentes de Windows": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows Components"
+    "Componentes de Windows" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows Components"
           }
         }
       }
     },
-    "Componentes de terceros": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Third-party components"
+    "Componentes de terceros" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Third-party components"
           }
         }
       }
     },
-    "Componentes instalados": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Components installed"
+    "Componentes instalados" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Components installed"
           }
         }
       }
     },
-    "Configuración": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
+    "Configuración" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         }
       }
     },
-    "Continuar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continue"
+    "Continuar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
           }
         }
       }
     },
-    "Copia la información del sistema y el registro, sin tu nombre de usuario ni rutas personales": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copies system information and the log, without your user name or personal paths"
+    "Copia la información del sistema y el registro, sin tu nombre de usuario ni rutas personales" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copies system information and the log, without your user name or personal paths"
           }
         }
       }
     },
-    "Copiado": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copied"
+    "Copiado" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copied"
           }
         }
       }
     },
-    "Copiar para reporte": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copy for Report"
+    "Copiar para reporte" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy for Report"
           }
         }
       }
     },
-    "Crea tu primera botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create your first bottle"
+    "Crea tu primera botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your first bottle"
           }
         }
       }
     },
-    "Creada": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Created"
+    "Creada" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created"
           }
         }
       }
     },
-    "Creando…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Creating…"
+    "Creando…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating…"
           }
         }
       }
     },
-    "Creando… (unos 30 s)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Creating… (about 30 s)"
+    "Creando… (unos 30 s)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating… (about 30 s)"
           }
         }
       }
     },
-    "Crear": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create"
+    "Crear" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create"
           }
         }
       }
     },
-    "Crear botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create Bottle"
+    "Crear botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Bottle"
           }
         }
       }
     },
-    "Crear lanzador .app…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create .app Launcher…"
+    "Crear lanzador .app…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create .app Launcher…"
           }
         }
       }
     },
-    "Cámara": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Camera"
+    "Cámara" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera"
           }
         }
       }
     },
-    "D3DMetal (Game Porting Toolkit)": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "D3DMetal (Game Porting Toolkit)" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "D3DMetal importado (%@)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "D3DMetal imported (%@)"
+    "D3DMetal importado (%@)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal imported (%@)"
           }
         }
       }
     },
-    "D3DMetal no está importado. Ve a Ajustes › Gráficos para añadirlo desde el Game Porting Toolkit de Apple.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "D3DMetal is not imported. Go to Settings › Graphics to add it from Apple's Game Porting Toolkit."
+    "D3DMetal no está importado. Ve a Ajustes › Gráficos para añadirlo desde el Game Porting Toolkit de Apple." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal is not imported. Go to Settings › Graphics to add it from Apple's Game Porting Toolkit."
           }
         }
       }
     },
-    "DPI": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "DPI" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "DXMT no está disponible con este motor Wine. Algunas apps modernas que piden Direct3D 11 real (por ejemplo Audacity 4) no abrirán.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DXMT is not available with this Wine engine. Some modern apps that need real Direct3D 11 (for example Audacity 4) will not open."
+    "DXMT no está disponible con este motor Wine. Algunas apps modernas que piden Direct3D 11 real (por ejemplo Audacity 4) no abrirán." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DXMT is not available with this Wine engine. Some modern apps that need real Direct3D 11 (for example Audacity 4) will not open."
           }
         }
       }
     },
-    "DXMT no funciona con el motor «%@»: Dormer no tiene un controlador de pantalla compatible para él. Elige WineD3D.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DXMT doesn't work with the “%@” engine: Dormer has no compatible display driver for it. Choose WineD3D."
+    "DXMT no funciona con el motor «%@»: Dormer no tiene un controlador de pantalla compatible para él. Elige WineD3D." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DXMT doesn't work with the “%@” engine: Dormer has no compatible display driver for it. Choose WineD3D."
           }
         }
       }
     },
-    "DXMT · MIT": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "DXMT · MIT" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "DXVK": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "DXVK" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "DXVK-macOS no publica versiones desde 2024, así que Dormer no lo ofrece.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DXVK-macOS has had no releases since 2024, so Dormer does not offer it."
+    "DXVK-macOS no publica versiones desde 2024, así que Dormer no lo ofrece." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DXVK-macOS has had no releases since 2024, so Dormer does not offer it."
           }
         }
       }
     },
-    "Datos de Dormer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dormer data"
+    "Datos de Dormer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormer data"
           }
         }
       }
     },
-    "Desanclar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unpin"
+    "Desanclar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpin"
           }
         }
       }
     },
-    "Descargado de **%@**%@.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Downloaded from **%@**%@."
+    "Descargado de **%@**%@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloaded from **%@**%@."
           }
         }
       }
     },
-    "Descargando DXMT…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Downloading DXMT…"
+    "Descargando DXMT…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloading DXMT…"
           }
         }
       }
     },
-    "Descargando Wine": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Downloading Wine"
+    "Descargando Wine" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloading Wine"
           }
         }
       }
     },
-    "Descargar e instalar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Download and Install"
+    "Descargar e instalar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download and Install"
           }
         }
       }
     },
-    "Descomprimiendo…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unpacking…"
+    "Descomprimiendo…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unpacking…"
           }
         }
       }
     },
-    "Desinstaladores, actualizadores y otros ejecutables que normalmente no abres tú": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uninstallers, updaters and other executables you don't normally open yourself"
+    "Desinstaladores, actualizadores y otros ejecutables que normalmente no abres tú" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uninstallers, updaters and other executables you don't normally open yourself"
           }
         }
       }
     },
-    "Detalle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detail"
+    "Detalle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detail"
           }
         }
       }
     },
-    "Detectados en esta botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detected in this bottle"
+    "Detectados en esta botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detected in this bottle"
           }
         }
       }
     },
-    "Detener todo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stop All"
+    "Detener todo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop All"
           }
         }
       }
     },
-    "Detener todos los programas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stop all programs"
+    "Detener todos los programas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop all programs"
           }
         }
       }
     },
-    "DirectX": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "DirectX" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "DirectX 10 y 11 sobre Metal. Experimental: abre apps que piden Direct3D 11 real, pero puede fallar con otras. Descarga unos 19 MB la primera vez.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DirectX 10 and 11 on Metal. Experimental: it opens apps that need real Direct3D 11, but may fail with others. Downloads about 19 MB the first time."
+    "DirectX 10 y 11 sobre Metal. Experimental: abre apps que piden Direct3D 11 real, pero puede fallar con otras. Descarga unos 19 MB la primera vez." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DirectX 10 and 11 on Metal. Experimental: it opens apps that need real Direct3D 11, but may fail with others. Downloads about 19 MB the first time."
           }
         }
       }
     },
-    "DirectX 10/11 → Metal. Crea dispositivos Direct3D 11 con el motor incluido, pero no puede dibujar en ventanas: a su winemac.drv le faltan símbolos que DXMT necesita. Se activará cuando el catálogo incluya un motor Wine compatible.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DirectX 10/11 → Metal. It creates Direct3D 11 devices with the included engine, but can't draw into windows: its winemac.drv lacks symbols DXMT needs. It will be enabled once the catalog includes a compatible Wine engine."
+    "DirectX 10/11 → Metal. Crea dispositivos Direct3D 11 con el motor incluido, pero no puede dibujar en ventanas: a su winemac.drv le faltan símbolos que DXMT necesita. Se activará cuando el catálogo incluya un motor Wine compatible." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DirectX 10/11 → Metal. It creates Direct3D 11 devices with the included engine, but can't draw into windows: its winemac.drv lacks symbols DXMT needs. It will be enabled once the catalog includes a compatible Wine engine."
           }
         }
       }
     },
-    "DirectX 11 y 12 de Apple (Game Porting Toolkit). Debes importarlo tú: su licencia prohíbe redistribuirlo.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple's DirectX 11 and 12 (Game Porting Toolkit). You must import it yourself: its license forbids redistribution."
+    "DirectX 11 y 12 de Apple (Game Porting Toolkit). Debes importarlo tú: su licencia prohíbe redistribuirlo." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple's DirectX 11 and 12 (Game Porting Toolkit). You must import it yourself: its license forbids redistribution."
           }
         }
       }
     },
-    "DirectX 9 a 11 sobre Vulkan (MoltenVK). Sin mantenimiento activo en Mac.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DirectX 9 to 11 on Vulkan (MoltenVK). Not actively maintained on Mac."
+    "DirectX 9 a 11 sobre Vulkan (MoltenVK). Sin mantenimiento activo en Mac." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DirectX 9 to 11 on Vulkan (MoltenVK). Not actively maintained on Mac."
           }
         }
       }
     },
-    "Doble clic o Retorno para abrir": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Double-click or press Return to open"
+    "Doble clic o Retorno para abrir" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Double-click or press Return to open"
           }
         }
       }
     },
-    "Documento": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Document"
+    "Documento" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Document"
           }
         }
       }
     },
-    "Dormer": {
-      "shouldTranslate": false
+    "Dormer" : {
+      "shouldTranslate" : false
     },
-    "Dormer gestiona esta variable; no se puede cambiar aquí.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dormer manages this variable; it can't be changed here."
+    "Dormer gestiona esta variable; no se puede cambiar aquí." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormer manages this variable; it can't be changed here."
           }
         }
       }
     },
-    "Dormer no envía telemetría ni se conecta a internet salvo para las descargas que tú inicias.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dormer sends no telemetry and doesn't connect to the internet except for downloads you start."
+    "Dormer no envía telemetría ni se conecta a internet salvo para las descargas que tú inicias." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormer sends no telemetry and doesn't connect to the internet except for downloads you start."
           }
         }
       }
     },
-    "Dormer puede ejecutar archivos .exe, .msi y .bat, e imágenes de disco .iso.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dormer can run .exe, .msi and .bat files, and .iso disc images."
+    "Dormer puede ejecutar archivos .exe, .msi y .bat, e imágenes de disco .iso." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormer can run .exe, .msi and .bat files, and .iso disc images."
           }
         }
       }
     },
-    "Dormer solo descarga archivos por HTTPS.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dormer only downloads files over HTTPS."
+    "Dormer solo descarga archivos por HTTPS." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormer only downloads files over HTTPS."
           }
         }
       }
     },
-    "Duplicar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duplicate"
+    "Duplicar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplicate"
           }
         }
       }
     },
-    "Editar programa": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit Program"
+    "Editar programa" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Program"
           }
         }
       }
     },
-    "Editar…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit…"
+    "Editar…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit…"
           }
         }
       }
     },
-    "Editor del registro": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Registry Editor"
+    "Editor del registro" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registry Editor"
           }
         }
       }
     },
-    "Ejecutar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Run"
+    "Ejecutar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run"
           }
         }
       }
     },
-    "Ejecutar instalador…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Run Installer…"
+    "Ejecutar instalador…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run Installer…"
           }
         }
       }
     },
-    "Ejecutar un archivo .exe, .msi, .bat o .iso en esta botella (⌘R)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Run an .exe, .msi, .bat or .iso file in this bottle (⌘R)"
+    "Ejecutar un archivo .exe, .msi, .bat o .iso en esta botella (⌘R)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run an .exe, .msi, .bat or .iso file in this bottle (⌘R)"
           }
         }
       }
     },
-    "Ejecutar…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Run…"
+    "Ejecutar…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run…"
           }
         }
       }
     },
-    "El archivo contiene una ruta insegura («%@») y no se importó.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The file contains an unsafe path (“%@”) and was not imported."
+    "El archivo contiene una ruta insegura («%@») y no se importó." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file contains an unsafe path (“%@”) and was not imported."
           }
         }
       }
     },
-    "El archivo descargado no contiene una instalación de Wine reconocible.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The downloaded file doesn't contain a recognizable Wine installation."
+    "El archivo descargado no contiene una instalación de Wine reconocible." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The downloaded file doesn't contain a recognizable Wine installation."
           }
         }
       }
     },
-    "El archivo no contiene una botella de Dormer (falta bottle.json o prefix).": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The file doesn't contain a Dormer bottle (bottle.json or prefix is missing)."
+    "El archivo no contiene una botella de Dormer (falta bottle.json o prefix)." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file doesn't contain a Dormer bottle (bottle.json or prefix is missing)."
           }
         }
       }
     },
-    "El archivo no es un archivo de Apple Archive válido.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The file is not a valid Apple Archive."
+    "El archivo no es un archivo de Apple Archive válido." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file is not a valid Apple Archive."
           }
         }
       }
     },
-    "El backend gráfico %@ todavía no se puede usar en Dormer. Elige WineD3D o DXMT en la configuración de la botella.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The %@ graphics backend can't be used in Dormer yet. Choose WineD3D or DXMT in the bottle's settings."
+    "El backend gráfico %@ todavía no se puede usar en Dormer. Elige WineD3D o DXMT en la configuración de la botella." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The %@ graphics backend can't be used in Dormer yet. Choose WineD3D or DXMT in the bottle's settings."
           }
         }
       }
     },
-    "El backend, Retina y la escala se aplican la próxima vez que abras un programa.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The backend, Retina and scale are applied the next time you open a program."
+    "El backend, Retina y la escala se aplican la próxima vez que abras un programa." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The backend, Retina and scale are applied the next time you open a program."
           }
         }
       }
     },
-    "El editor del registro de Windows de esta botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This bottle's Windows registry editor"
+    "El disco sugiere uno, pero su menú no siempre funciona con Wine. Si falla, vuelve a abrir el disco y elige otro." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The disc suggests one, but its menu doesn't always work with Wine. If it fails, open the disc again and pick another."
           }
         }
       }
     },
-    "El motor Wine instalado solo admite la sincronización estándar.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The installed Wine engine only supports standard synchronization."
+    "El editor del registro de Windows de esta botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This bottle's Windows registry editor"
           }
         }
       }
     },
-    "El motor Wine «%@» no está instalado. Instálalo desde Ajustes › Motores Wine.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The Wine engine “%@” is not installed. Install it from Settings › Wine Engines."
+    "El motor Wine instalado solo admite la sincronización estándar." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The installed Wine engine only supports standard synchronization."
           }
         }
       }
     },
-    "El paquete de DXMT no tiene la estructura esperada. No se instaló.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The DXMT package doesn't have the expected structure. It was not installed."
+    "El motor Wine «%@» no está instalado. Instálalo desde Ajustes › Motores Wine." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Wine engine “%@” is not installed. Install it from Settings › Wine Engines."
           }
         }
       }
     },
-    "El programa o la botella de este lanzador ya no existen. Vuelve a crearlo desde Dormer.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This launcher's program or bottle no longer exists. Create it again from Dormer."
+    "El paquete de DXMT no tiene la estructura esperada. No se instaló." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The DXMT package doesn't have the expected structure. It was not installed."
           }
         }
       }
     },
-    "El servidor respondió con el código %lld. Inténtalo más tarde.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The server responded with code %lld. Try again later."
+    "El programa o la botella de este lanzador ya no existen. Vuelve a crearlo desde Dormer." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This launcher's program or bottle no longer exists. Create it again from Dormer."
           }
         }
       }
     },
-    "Elige la imagen de disco del Game Porting Toolkit, o su volumen ya montado.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose the Game Porting Toolkit disk image, or its already-mounted volume."
+    "El servidor respondió con el código %lld. Inténtalo más tarde." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server responded with code %lld. Try again later."
           }
         }
       }
     },
-    "Elige un archivo de botella exportado desde Dormer.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose a bottle file exported from Dormer."
+    "Elige la imagen de disco del Game Porting Toolkit, o su volumen ya montado." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the Game Porting Toolkit disk image, or its already-mounted volume."
           }
         }
       }
     },
-    "Elige una botella en la barra lateral para ver sus programas.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose a bottle in the sidebar to see its programs."
+    "Elige un archivo de botella exportado desde Dormer." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a bottle file exported from Dormer."
           }
         }
       }
     },
-    "Eliminar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete"
+    "Elige una botella en la barra lateral para ver sus programas." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a bottle in the sidebar to see its programs."
           }
         }
       }
     },
-    "Eliminar botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete Bottle"
+    "Eliminar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
           }
         }
       }
     },
-    "Eliminar…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete…"
+    "Eliminar botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Bottle"
           }
         }
       }
     },
-    "En ejecución": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Running"
+    "Eliminar…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete…"
           }
         }
       }
     },
-    "En vivo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Live"
+    "En ejecución" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running"
           }
         }
       }
     },
-    "Errores": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Errors"
+    "En vivo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live"
           }
         }
       }
     },
-    "Escala (DPI)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scale (DPI)"
+    "Errores" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Errors"
           }
         }
       }
     },
-    "Esperando salida de Wine…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Waiting for Wine output…"
+    "Escala (DPI)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scale (DPI)"
           }
         }
       }
     },
-    "Esta botella aún no tiene programas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This bottle has no programs yet"
+    "Esperando salida de Wine…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for Wine output…"
           }
         }
       }
     },
-    "Esta es una botella de ejemplo: no existe en el disco.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This is a sample bottle: it doesn't exist on disk."
+    "Esta botella aún no tiene programas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This bottle has no programs yet"
           }
         }
       }
     },
-    "Estado": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Status"
+    "Esta es una botella de ejemplo: no existe en el disco." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is a sample bottle: it doesn't exist on disk."
           }
         }
       }
     },
-    "Este archivo se descargó de internet.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This file was downloaded from the internet."
+    "Estado" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
           }
         }
       }
     },
-    "Este motor Wine necesita Rosetta 2. Instálalo desde el asistente de bienvenida.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This Wine engine needs Rosetta 2. Install it from the welcome assistant."
+    "Este archivo se descargó de internet." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This file was downloaded from the internet."
           }
         }
       }
     },
-    "Estándar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Standard"
+    "Este motor Wine necesita Rosetta 2. Instálalo desde el asistente de bienvenida." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Wine engine needs Rosetta 2. Install it from the welcome assistant."
           }
         }
       }
     },
-    "Esync": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Estándar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        }
+      }
+    },
+    "Esync" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Esync puede mejorar el rendimiento en juegos.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Esync can improve performance in games."
+    "Esync puede mejorar el rendimiento en juegos." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esync can improve performance in games."
           }
         }
       }
     },
-    "Exporta la botella con todos sus programas y ajustes a un solo archivo.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Export the bottle with all its programs and settings to a single file."
+    "Exporta la botella con todos sus programas y ajustes a un solo archivo." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export the bottle with all its programs and settings to a single file."
           }
         }
       }
     },
-    "Exportando «%@»…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exporting “%@”…"
+    "Exportando «%@»…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exporting “%@”…"
           }
         }
       }
     },
-    "Exportar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Export"
+    "Exportar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export"
           }
         }
       }
     },
-    "Exportar botella…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Export Bottle…"
+    "Exportar botella…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export Bottle…"
           }
         }
       }
     },
-    "Exportar…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Export…"
+    "Exportar…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export…"
           }
         }
       }
     },
-    "Falta %@.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ is missing."
+    "Falta %@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is missing."
           }
         }
       }
     },
-    "Falta el asistente de extracción incluido en Dormer. Reinstala la app.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The extraction helper included with Dormer is missing. Reinstall the app."
+    "Falta el asistente de extracción incluido en Dormer. Reinstala la app." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The extraction helper included with Dormer is missing. Reinstall the app."
           }
         }
       }
     },
-    "Filtrar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Filter"
+    "Filtrar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter"
           }
         }
       }
     },
-    "Fixme": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Fixme" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Fuentes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fonts"
+    "Fuentes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fonts"
           }
         }
       }
     },
-    "General": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "General"
+    "General" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
           }
         }
       }
     },
-    "Globo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Globe"
+    "Globo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Globe"
           }
         }
       }
     },
-    "Gráfico": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chart"
+    "Gráfico" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chart"
           }
         }
       }
     },
-    "Gráficos": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Graphics"
+    "Gráficos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphics"
           }
         }
       }
     },
-    "Guardar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save"
+    "Guardar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
           }
         }
       }
     },
-    "Importando D3DMetal…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Importing D3DMetal…"
+    "Importando D3DMetal…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importing D3DMetal…"
           }
         }
       }
     },
-    "Importando «%@»…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Importing “%@”…"
+    "Importando «%@»…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importing “%@”…"
           }
         }
       }
     },
-    "Importar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import"
+    "Importar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import"
           }
         }
       }
     },
-    "Importar botella…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import Bottle…"
+    "Importar botella…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import Bottle…"
           }
         }
       }
     },
-    "Importar…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import…"
+    "Importar…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import…"
           }
         }
       }
     },
-    "Instala bibliotecas que algunos programas necesitan. Usa winetricks (LGPL).": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Installs libraries that some programs need. Uses winetricks (LGPL)."
+    "Instala bibliotecas que algunos programas necesitan. Usa winetricks (LGPL)." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installs libraries that some programs need. Uses winetricks (LGPL)."
           }
         }
       }
     },
-    "Instalado": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Installed"
+    "Instalado" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installed"
           }
         }
       }
     },
-    "Instalados": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Installed"
+    "Instalados" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installed"
           }
         }
       }
     },
-    "Instalando %@ (%lld de %lld)…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Installing %@ (%lld of %lld)…"
+    "Instalando %@ (%lld de %lld)…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installing %@ (%lld of %lld)…"
           }
         }
       }
     },
-    "Instalando…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Installing…"
+    "Instalando…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installing…"
           }
         }
       }
     },
-    "Instalar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Install"
+    "Instalar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Install"
           }
         }
       }
     },
-    "Instalar %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Install %@"
+    "Instalar %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Install %@"
           }
         }
       }
     },
-    "Instalar Rosetta": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Install Rosetta"
+    "Instalar Rosetta" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Install Rosetta"
           }
         }
       }
     },
-    "Instalar componentes de Windows (Visual C++, .NET, fuentes…)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Install Windows components (Visual C++, .NET, fonts…)"
+    "Instalar componentes de Windows (Visual C++, .NET, fuentes…)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Install Windows components (Visual C++, .NET, fonts…)"
           }
         }
       }
     },
-    "La botella no tiene letras de unidad libres para el disco.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The bottle has no free drive letters for the disc."
+    "La botella no tiene letras de unidad libres para el disco." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The bottle has no free drive letters for the disc."
           }
         }
       }
     },
-    "La botella, con sus programas y archivos, se moverá a la Papelera.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The bottle, with its programs and files, will be moved to the Trash."
+    "La botella, con sus programas y archivos, se moverá a la Papelera." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The bottle, with its programs and files, will be moved to the Trash."
           }
         }
       }
     },
-    "La carpeta no existe": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The folder doesn't exist"
+    "La carpeta no existe" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The folder doesn't exist"
           }
         }
       }
     },
-    "La descarga no tiene el tamaño esperado (%lld de %lld bytes). Se borró por seguridad; inténtalo de nuevo.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The download isn't the expected size (%lld of %lld bytes). It was deleted for safety; try again."
+    "La descarga no tiene el tamaño esperado (%lld de %lld bytes). Se borró por seguridad; inténtalo de nuevo." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The download isn't the expected size (%lld of %lld bytes). It was deleted for safety; try again."
           }
         }
       }
     },
-    "La imagen de disco no tiene un instalador reconocible (autorun.inf, setup.exe o similar) en su carpeta principal.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The disc image has no recognisable installer (autorun.inf, setup.exe or similar) in its top folder."
+    "La imagen de disco no tiene un instalador reconocible (autorun.inf, setup.exe o similar) en su carpeta principal." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The disc image has no recognisable installer (autorun.inf, setup.exe or similar) in its top folder."
           }
         }
       }
     },
-    "La ruta %@ no está en la unidad C: ni en Z:.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The path %@ is not on the C: or Z: drive."
+    "La ruta %@ no está en la unidad C: ni en Z:." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The path %@ is not on the C: or Z: drive."
           }
         }
       }
     },
-    "La suma SHA-256 de la descarga no coincide con la esperada. El archivo se borró por seguridad y no se instaló nada.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The download's SHA-256 doesn't match the expected one. The file was deleted for safety and nothing was installed."
+    "La suma SHA-256 de la descarga no coincide con la esperada. El archivo se borró por seguridad y no se instaló nada." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The download's SHA-256 doesn't match the expected one. The file was deleted for safety and nothing was installed."
           }
         }
       }
     },
-    "La ventana de configuración de Wine (unidades, bibliotecas, audio…)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine's configuration window (drives, libraries, audio…)"
+    "La ventana de configuración de Wine (unidades, bibliotecas, audio…)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine's configuration window (drives, libraries, audio…)"
           }
         }
       }
     },
-    "La versión que los programas creen estar usando. Windows 10 funciona con casi todo.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The version programs think they're running on. Windows 10 works with almost everything."
+    "La versión que los programas creen estar usando. Windows 10 funciona con casi todo." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The version programs think they're running on. Windows 10 works with almost everything."
           }
         }
       }
     },
-    "Lanzador sin destino": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Launcher without a target"
+    "Lanzador sin destino" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launcher without a target"
           }
         }
       }
     },
-    "Libro": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Book"
+    "Libro" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Book"
           }
         }
       }
     },
-    "Limpiar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Clear"
+    "Limpiar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear"
           }
         }
       }
     },
-    "Listo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
+    "Listo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
           }
         }
       }
     },
-    "Los archivos que abres desde el Mac se copian a la unidad C: de la botella. Si un instalador necesita otros archivos de su carpeta, desactiva esta opción.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Files you open from the Mac are copied to the bottle's C: drive. If an installer needs other files from its folder, turn this option off."
+    "Los archivos que abres desde el Mac se copian a la unidad C: de la botella. Si un instalador necesita otros archivos de su carpeta, desactiva esta opción." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Files you open from the Mac are copied to the bottle's C: drive. If an installer needs other files from its folder, turn this option off."
           }
         }
       }
     },
-    "Los cambios se aplican la próxima vez que abras un programa.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Changes are applied the next time you open a program."
+    "Los cambios se aplican la próxima vez que abras un programa." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changes are applied the next time you open a program."
           }
         }
       }
     },
-    "Los motores Wine gratuitos para Mac están hechos para procesadores Intel. Rosetta 2, de Apple, los traduce para que funcionen en tu Mac con Apple Silicon.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Free Wine engines for Mac are built for Intel processors. Apple's Rosetta 2 translates them so they work on your Apple silicon Mac."
+    "Los motores Wine gratuitos para Mac están hechos para procesadores Intel. Rosetta 2, de Apple, los traduce para que funcionen en tu Mac con Apple Silicon." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free Wine engines for Mac are built for Intel processors. Apple's Rosetta 2 translates them so they work on your Apple silicon Mac."
           }
         }
       }
     },
-    "Los programas de Windows pueden leer y modificar todo lo que haya en la botella. Ejecútalo solo si confías en su origen.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows programs can read and modify everything in the bottle. Only run it if you trust where it came from."
+    "Los programas de Windows pueden leer y modificar todo lo que haya en la botella. Ejecútalo solo si confías en su origen." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows programs can read and modify everything in the bottle. Only run it if you trust where it came from."
           }
         }
       }
     },
-    "Los programas de Windows solo verán su propia unidad C: y no el resto de tu disco.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows programs will only see their own C: drive and not the rest of your disk."
+    "Los programas de Windows solo verán su propia unidad C: y no el resto de tu disco." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows programs will only see their own C: drive and not the rest of your disk."
           }
         }
       }
     },
-    "Maletín": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Briefcase"
+    "Maletín" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Briefcase"
           }
         }
       }
     },
-    "Mando": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Game controller"
+    "Mando" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game controller"
           }
         }
       }
     },
-    "Martillo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hammer"
+    "Martillo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hammer"
           }
         }
       }
     },
-    "Mis programas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My Programs"
+    "Mis programas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Programs"
           }
         }
       }
     },
-    "Modo Retina": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retina Mode"
+    "Modo Retina" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retina Mode"
           }
         }
       }
     },
-    "Mostrar bienvenida": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show Welcome"
+    "Mostrar bienvenida" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Welcome"
           }
         }
       }
     },
-    "Mostrar ejecutables auxiliares": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show helper executables"
+    "Mostrar ejecutables auxiliares" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show helper executables"
           }
         }
       }
     },
-    "Mostrar en Finder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show in Finder"
+    "Mostrar en Finder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show in Finder"
           }
         }
       }
     },
-    "Motor Wine": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine engine"
+    "Motor Wine" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine engine"
           }
         }
       }
     },
-    "Motores Wine": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine Engines"
+    "Motores Wine" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine Engines"
           }
         }
       }
     },
-    "Msync": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Msync" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "Muestra el origen del archivo y pide confirmación si macOS lo marcó como descargado de internet." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shows where the file came from and asks for confirmation if macOS marked it as downloaded from the internet."
+          }
+        }
+      }
     },
-    "Muestra el origen del archivo y pide confirmación si macOS lo marcó como descargado de internet.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shows where the file came from and asks for confirmation if macOS marked it as downloaded from the internet."
+    "Más opciones" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More Options"
           }
         }
       }
     },
-    "Más opciones": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "More Options"
+    "Música" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Music"
           }
         }
       }
     },
-    "Música": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Music"
+    "NOMBRE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NAME"
           }
         }
       }
     },
-    "NOMBRE": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NAME"
+    "Ninguna línea coincide con el filtro." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No lines match the filter."
           }
         }
       }
     },
-    "Ninguna línea coincide con el filtro.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No lines match the filter."
+    "Ningún motor instalado." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No engine installed."
           }
         }
       }
     },
-    "Ningún motor instalado.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No engine installed."
+    "No disponible" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unavailable"
           }
         }
       }
     },
-    "No disponible": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unavailable"
+    "No disponible en la vista previa con datos de ejemplo." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not available in the preview with sample data."
           }
         }
       }
     },
-    "No disponible en la vista previa con datos de ejemplo.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not available in the preview with sample data."
+    "No está disponible en la vista previa con datos de ejemplo." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's not available in the preview with sample data."
           }
         }
       }
     },
-    "No está disponible en la vista previa con datos de ejemplo.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "It's not available in the preview with sample data."
+    "No hay ningún motor Wine compatible con esta versión de macOS." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Wine engine is compatible with this version of macOS."
           }
         }
       }
     },
-    "No hay ningún motor Wine compatible con esta versión de macOS.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Wine engine is compatible with this version of macOS."
+    "No hay otros programas instalados." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There are no other programs installed."
           }
         }
       }
     },
-    "No hay otros programas instalados.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "There are no other programs installed."
+    "No importado" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not imported"
           }
         }
       }
     },
-    "No importado": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not imported"
+    "No instalado" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not installed"
           }
         }
       }
     },
-    "No instalado": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not installed"
+    "No necesario (Intel)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not needed (Intel)"
           }
         }
       }
     },
-    "No necesario (Intel)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not needed (Intel)"
+    "No se encontró %@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ was not found."
           }
         }
       }
     },
-    "No se encontró %@.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ was not found."
+    "No se encontró D3DMetal.framework ni libd3dshared.dylib. Elige la imagen de disco del Game Porting Toolkit o la carpeta del volumen ya montado." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D3DMetal.framework and libd3dshared.dylib were not found. Choose the Game Porting Toolkit disk image or the folder of its mounted volume."
           }
         }
       }
     },
-    "No se encontró D3DMetal.framework ni libd3dshared.dylib. Elige la imagen de disco del Game Porting Toolkit o la carpeta del volumen ya montado.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "D3DMetal.framework and libd3dshared.dylib were not found. Choose the Game Porting Toolkit disk image or the folder of its mounted volume."
+    "No se pudieron buscar programas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't search for programs"
           }
         }
       }
     },
-    "No se pudieron buscar programas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't search for programs"
+    "No se pudieron cargar las botellas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load the bottles"
           }
         }
       }
     },
-    "No se pudieron cargar las botellas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't load the bottles"
+    "No se pudieron detener los procesos" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't stop the processes"
           }
         }
       }
     },
-    "No se pudieron detener los procesos": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't stop the processes"
+    "No se pudieron guardar los cambios" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't save the changes"
           }
         }
       }
     },
-    "No se pudieron guardar los cambios": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't save the changes"
+    "No se pudieron instalar los componentes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't install the components"
           }
         }
       }
     },
-    "No se pudieron instalar los componentes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't install the components"
+    "No se pudo abrir la imagen de disco" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The disc image couldn't be opened"
           }
         }
       }
     },
-    "No se pudo abrir la imagen de disco (%@).": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The disc image couldn't be opened (%@)."
+    "No se pudo abrir la imagen de disco (%@)." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The disc image couldn't be opened (%@)."
           }
         }
       }
     },
-    "No se pudo abrir la imagen de disco (%@). Si pide aceptar una licencia, ábrela tú en Finder y elige el volumen montado.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The disk image couldn't be opened (%@). If it asks you to accept a license, open it yourself in Finder and choose the mounted volume."
+    "No se pudo abrir la imagen de disco (%@). Si pide aceptar una licencia, ábrela tú en Finder y elige el volumen montado." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The disk image couldn't be opened (%@). If it asks you to accept a license, open it yourself in Finder and choose the mounted volume."
           }
         }
       }
     },
-    "No se pudo cargar la lista": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't load the list"
+    "No se pudo cargar la lista" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load the list"
           }
         }
       }
     },
-    "No se pudo crear el lanzador": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't create the launcher"
+    "No se pudo crear el lanzador" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't create the launcher"
           }
         }
       }
     },
-    "No se pudo crear el lanzador: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't create the launcher: %@"
+    "No se pudo crear el lanzador: %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't create the launcher: %@"
           }
         }
       }
     },
-    "No se pudo crear la botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't create the bottle"
+    "No se pudo crear la botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't create the bottle"
           }
         }
       }
     },
-    "No se pudo descargar DXMT": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't download DXMT"
+    "No se pudo descargar DXMT" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't download DXMT"
           }
         }
       }
     },
-    "No se pudo descomprimir Wine: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't unpack Wine: %@"
+    "No se pudo descomprimir Wine: %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't unpack Wine: %@"
           }
         }
       }
     },
-    "No se pudo duplicar la botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't duplicate the bottle"
+    "No se pudo duplicar la botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't duplicate the bottle"
           }
         }
       }
     },
-    "No se pudo ejecutar «%@»": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't run “%@”"
+    "No se pudo ejecutar «%@»" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't run “%@”"
           }
         }
       }
     },
-    "No se pudo eliminar la botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't delete the bottle"
+    "No se pudo eliminar la botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't delete the bottle"
           }
         }
       }
     },
-    "No se pudo exportar la botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't export the bottle"
+    "No se pudo exportar la botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't export the bottle"
           }
         }
       }
     },
-    "No se pudo importar D3DMetal": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't import D3DMetal"
+    "No se pudo importar D3DMetal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't import D3DMetal"
           }
         }
       }
     },
-    "No se pudo importar la botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't import the bottle"
+    "No se pudo importar la botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't import the bottle"
           }
         }
       }
     },
-    "No se pudo instalar Rosetta": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't install Rosetta"
+    "No se pudo instalar Rosetta" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't install Rosetta"
           }
         }
       }
     },
-    "No se pudo procesar el archivo: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't process the file: %@"
+    "No se pudo procesar el archivo: %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't process the file: %@"
           }
         }
       }
     },
-    "No se pudo quitar D3DMetal": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't remove D3DMetal"
+    "No se pudo quitar D3DMetal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't remove D3DMetal"
           }
         }
       }
     },
-    "No se puede mostrar en Finder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Can't show in Finder"
+    "No se puede mostrar en Finder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can't show in Finder"
           }
         }
       }
     },
-    "Nombre": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Name"
+    "Nombre" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
           }
         }
       }
     },
-    "Nombre de la variable": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Variable name"
+    "Nombre de la variable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variable name"
           }
         }
       }
     },
-    "Nueva botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New Bottle"
+    "Nueva botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Bottle"
           }
         }
       }
     },
-    "Nueva botella (⌘N)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New bottle (⌘N)"
+    "Nueva botella (⌘N)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New bottle (⌘N)"
           }
         }
       }
     },
-    "Nueva botella…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New Bottle…"
+    "Nueva botella…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Bottle…"
           }
         }
       }
     },
-    "Ocultar los archivos del Mac (unidad Z:)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hide the Mac's files (Z: drive)"
+    "Ocultar los archivos del Mac (unidad Z:)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide the Mac's files (Z: drive)"
           }
         }
       }
     },
-    "Omitir": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skip"
+    "Omitir" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip"
           }
         }
       }
     },
-    "Otros": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Other"
+    "Otros" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other"
           }
         }
       }
     },
-    "Paso %lld de 3": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Step %lld of 3"
+    "Paso %lld de 3" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step %lld of 3"
           }
         }
       }
     },
-    "Pincel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paintbrush"
+    "Pincel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paintbrush"
           }
         }
       }
     },
-    "Primera botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First Bottle"
+    "Primera botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Bottle"
           }
         }
       }
     },
-    "Primero crea una botella para instalar este programa.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First create a bottle to install this program."
+    "Primero crea una botella para instalar este programa." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First create a bottle to install this program."
           }
         }
       }
     },
-    "Primero instala un motor Wine desde el asistente de bienvenida o Ajustes › Motores Wine.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First install a Wine engine from the welcome assistant or Settings › Wine Engines."
+    "Primero instala un motor Wine desde el asistente de bienvenida o Ajustes › Motores Wine." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First install a Wine engine from the welcome assistant or Settings › Wine Engines."
           }
         }
       }
     },
-    "Programas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Programs"
+    "Programas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programs"
           }
         }
       }
     },
-    "Puede tardar unos minutos. Algunos instaladores abren ventanas propias.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This can take a few minutes. Some installers open their own windows."
+    "Puede tardar unos minutos. Algunos instaladores abren ventanas propias." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This can take a few minutes. Some installers open their own windows."
           }
         }
       }
     },
-    "Quedó guardado en tu Mac. Todavía no se puede elegir como backend: necesita un motor Wine del Game Porting Toolkit, que el catálogo de Dormer aún no incluye.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "It's saved on your Mac. It can't be chosen as a backend yet: it needs a Game Porting Toolkit build of Wine, which Dormer's catalog doesn't include yet."
+    "Quedó guardado en tu Mac. Todavía no se puede elegir como backend: necesita un motor Wine del Game Porting Toolkit, que el catálogo de Dormer aún no incluye." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's saved on your Mac. It can't be chosen as a backend yet: it needs a Game Porting Toolkit build of Wine, which Dormer's catalog doesn't include yet."
           }
         }
       }
     },
-    "Quitar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove"
+    "Quitar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove"
           }
         }
       }
     },
-    "Registros": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Logs"
+    "Registros" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logs"
           }
         }
       }
     },
-    "Reintentar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retry"
+    "Reintentar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         }
       }
     },
-    "Rendimiento": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Performance"
+    "Rendimiento" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performance"
           }
         }
       }
     },
-    "Renombrar botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rename Bottle"
+    "Renombrar botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename Bottle"
           }
         }
       }
     },
-    "Renombrar…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rename…"
+    "Renombrar…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename…"
           }
         }
       }
     },
-    "Rosetta": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Rosetta" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Rosetta 2": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Rosetta 2" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Rosetta está listo.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rosetta is ready."
+    "Rosetta está listo." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta is ready."
           }
         }
       }
     },
-    "Rosetta no está instalado. Al pulsar Instalar aceptas la licencia de Rosetta de Apple; macOS te pedirá tu contraseña.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rosetta isn't installed. By clicking Install you accept Apple's Rosetta license; macOS will ask for your password."
+    "Rosetta no está instalado. Al pulsar Instalar aceptas la licencia de Rosetta de Apple; macOS te pedirá tu contraseña." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rosetta isn't installed. By clicking Install you accept Apple's Rosetta license; macOS will ask for your password."
           }
         }
       }
     },
-    "Ruta": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Path"
+    "Ruta" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Path"
           }
         }
       }
     },
-    "Saber más": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Learn More"
+    "Saber más" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learn More"
           }
         }
       }
     },
-    "Salida": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Output"
+    "Salida" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Output"
           }
         }
       }
     },
-    "Salida de winetricks": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "winetricks output"
+    "Salida de winetricks" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "winetricks output"
           }
         }
       }
     },
-    "Se aplican a todos los programas de esta botella. Úsalas solo si una guía te lo indica.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Applied to every program in this bottle. Only use them if a guide tells you to."
+    "Se aplican a todos los programas de esta botella. Úsalas solo si una guía te lo indica." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applied to every program in this bottle. Only use them if a guide tells you to."
           }
         }
       }
     },
-    "Se canceló la instalación de Rosetta.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The Rosetta installation was canceled."
+    "Se canceló la instalación de Rosetta." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Rosetta installation was canceled."
           }
         }
       }
     },
-    "Sección": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Section"
+    "Sección" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Section"
           }
         }
       }
     },
-    "Selecciona una botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select a bottle"
+    "Selecciona una botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a bottle"
           }
         }
       }
     },
-    "Sesión": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Session"
+    "Sesión" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session"
           }
         }
       }
     },
-    "Sin motor Wine": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Wine engine"
+    "Sin motor Wine" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Wine engine"
           }
         }
       }
     },
-    "Sin registros": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No logs"
+    "Sin registros" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No logs"
           }
         }
       }
     },
-    "Sincronización": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Synchronization"
+    "Sincronización" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronization"
           }
         }
       }
     },
-    "Software libre bajo GPL-3.0-or-later. Dormer no está afiliado a Microsoft ni a Apple.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Free software under GPL-3.0-or-later. Dormer is not affiliated with Microsoft or Apple."
+    "Software libre bajo GPL-3.0-or-later. Dormer no está afiliado a Microsoft ni a Apple." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free software under GPL-3.0-or-later. Dormer is not affiliated with Microsoft or Apple."
           }
         }
       }
     },
-    "Solo para este programa; tienen prioridad sobre las de la botella.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Only for this program; they take priority over the bottle's."
+    "Solo para este programa; tienen prioridad sobre las de la botella." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only for this program; they take priority over the bottle's."
           }
         }
       }
     },
-    "Suelta aquí un .exe, .msi, .bat o .iso para ejecutarlo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop an .exe, .msi, .bat or .iso here to run it"
+    "Suelta aquí un .exe, .msi, .bat o .iso para ejecutarlo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drop an .exe, .msi, .bat or .iso here to run it"
           }
         }
       }
     },
-    "Suelta para ejecutar en «%@»": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop to run in “%@”"
+    "Suelta para ejecutar en «%@»" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drop to run in “%@”"
           }
         }
       }
     },
-    "Suelta para instalar en «%@»": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop to install in “%@”"
+    "Suelta para instalar en «%@»" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drop to install in “%@”"
           }
         }
       }
     },
-    "Terminal": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terminal"
+    "Sugerido" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggested"
           }
         }
       }
     },
-    "Terminó · código %d": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exited · code %d"
+    "Terminal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminal"
           }
         }
       }
     },
-    "Tipo de archivo no compatible": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unsupported file type"
+    "Terminó · código %d" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exited · code %d"
           }
         }
       }
     },
-    "Traducción integrada de Wine. La más compatible; ideal para programas de oficina.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine's built-in translation. The most compatible; ideal for office programs."
+    "Tipo de archivo no compatible" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unsupported file type"
           }
         }
       }
     },
-    "Trazas": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Traces"
+    "Traducción integrada de Wine. La más compatible; ideal para programas de oficina." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine's built-in translation. The most compatible; ideal for office programs."
           }
         }
       }
     },
-    "Una botella es un espacio aislado donde se instalan tus programas de Windows.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A bottle is an isolated space where your Windows programs are installed."
+    "Trazas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traces"
           }
         }
       }
     },
-    "Usa la resolución completa de tu pantalla: más nítido, pero los programas se ven a la mitad de tamaño. Combínalo con una escala de 192 DPI.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uses your screen's full resolution: sharper, but programs appear at half size. Combine it with a scale of 192 DPI."
+    "Una botella es un espacio aislado donde se instalan tus programas de Windows." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A bottle is an isolated space where your Windows programs are installed."
           }
         }
       }
     },
-    "Usa solo letras, números y _ (sin empezar por número).": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Use only letters, numbers and _ (not starting with a number)."
+    "Usa la resolución completa de tu pantalla: más nítido, pero los programas se ven a la mitad de tamaño. Combínalo con una escala de 192 DPI." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uses your screen's full resolution: sharper, but programs appear at half size. Combine it with a scale of 192 DPI."
           }
         }
       }
     },
-    "Valor de %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Value of %@"
+    "Usa solo letras, números y _ (sin empezar por número)." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use only letters, numbers and _ (not starting with a number)."
           }
         }
       }
     },
-    "Variables de entorno": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Environment variables"
+    "Valor de %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Value of %@"
           }
         }
       }
     },
-    "Ver la salida de Wine (⌘3)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "View Wine's output (⌘3)"
+    "Variables de entorno" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Environment variables"
           }
         }
       }
     },
-    "Ver registro": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "View Log"
+    "Ver la salida de Wine (⌘3)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Wine's output (⌘3)"
           }
         }
       }
     },
-    "Verificando la suma SHA-256…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Verifying the SHA-256 checksum…"
+    "Ver registro" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Log"
           }
         }
       }
     },
-    "Versión %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Version %@"
+    "Verificando la suma SHA-256…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifying the SHA-256 checksum…"
           }
         }
       }
     },
-    "Versión de Windows": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Windows version"
+    "Versión %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
           }
         }
       }
     },
-    "Vista previa con datos de ejemplo · Wine aún no está conectado": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preview with sample data · Wine is not connected yet"
+    "Versión de Windows" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows version"
           }
         }
       }
     },
-    "Vista previa: la descarga es simulada.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preview: the download is simulated."
+    "Vista previa con datos de ejemplo · Wine aún no está conectado" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview with sample data · Wine is not connected yet"
           }
         }
       }
     },
-    "Vista previa: la instalación es simulada.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preview: the installation is simulated."
+    "Vista previa: la descarga es simulada." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview: the download is simulated."
           }
         }
       }
     },
-    "Visual C++": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Vista previa: la instalación es simulada." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview: the installation is simulated."
+          }
+        }
+      }
+    },
+    "Visual C++" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Vuelve a revisar Rosetta y el motor Wine.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review Rosetta and the Wine engine again."
+    "Vuelve a revisar Rosetta y el motor Wine." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review Rosetta and the Wine engine again."
           }
         }
       }
     },
-    "Windows": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Windows" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Wine devolvió el código %d. El registro puede indicar la causa.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine returned code %d. The log may show the cause."
+    "Wine devolvió el código %d. El registro puede indicar la causa." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine returned code %d. The log may show the cause."
           }
         }
       }
     },
-    "Wine es el software libre que permite abrir programas de Windows. Dormer lo descarga una sola vez y comprueba que el archivo no haya sido alterado.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine is the free software that lets you open Windows programs. Dormer downloads it once and checks that the file hasn't been tampered with."
+    "Wine es el software libre que permite abrir programas de Windows. Dormer lo descarga una sola vez y comprueba que el archivo no haya sido alterado." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine is the free software that lets you open Windows programs. Dormer downloads it once and checks that the file hasn't been tampered with."
           }
         }
       }
     },
-    "Wine está instalado y verificado.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine is installed and verified."
+    "Wine está instalado y verificado." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine is installed and verified."
           }
         }
       }
     },
-    "Wine falló al %@: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine failed to %@: %@"
+    "Wine falló al %@: %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine failed to %@: %@"
           }
         }
       }
     },
-    "Wine se instaló pero no arranca: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wine was installed but won't start: %@"
+    "Wine se instaló pero no arranca: %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wine was installed but won't start: %@"
           }
         }
       }
     },
-    "Winetricks": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Winetricks" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Winetricks…": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "Winetricks…" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
-    "Ya puedes buscar el programa en la botella.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You can now look for the program in the bottle."
+    "Ya puedes buscar el programa en la botella." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can now look for the program in the bottle."
           }
         }
       }
     },
-    "^[%lld componente](inflect: true) · ~%lld min": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld component](inflect: true) · ~%lld min"
+    "^[%lld componente](inflect: true) · ~%lld min" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%lld component](inflect: true) · ~%lld min"
           }
         }
       }
     },
-    "^[%lld proceso](inflect: true) en ejecución": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld process](inflect: true) running"
+    "^[%lld proceso](inflect: true) en ejecución" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%lld process](inflect: true) running"
           }
         }
       }
     },
-    "aplicar la resolución y el modo Retina": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "apply the scale and Retina mode"
+    "aplicar la resolución y el modo Retina" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "apply the scale and Retina mode"
           }
         }
       }
     },
-    "cambiar la versión de Windows": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "change the Windows version"
+    "cambiar la versión de Windows" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "change the Windows version"
           }
         }
       }
     },
-    "configurar la versión de Windows": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "set the Windows version"
+    "configurar la versión de Windows" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "set the Windows version"
           }
         }
       }
     },
-    "crear la botella": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "create the bottle"
+    "crear la botella" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "create the bottle"
           }
         }
       }
     },
-    "código %d": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "code %d"
+    "código %d" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "code %d"
           }
         }
       }
     },
-    "desactivar winemenubuilder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "disable winemenubuilder"
+    "desactivar winemenubuilder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "disable winemenubuilder"
           }
         }
       }
     },
-    "macOS no pudo instalar Rosetta: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "macOS couldn't install Rosetta: %@"
+    "macOS no pudo instalar Rosetta: %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS couldn't install Rosetta: %@"
           }
         }
       }
     },
-    "p. ej. -safe-mode": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "e.g. -safe-mode"
+    "p. ej. -safe-mode" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. -safe-mode"
           }
         }
       }
     },
-    "p. ej. Oficina": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "e.g. Office"
+    "p. ej. Oficina" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. Office"
           }
         }
       }
     },
-    "valor": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "value"
+    "valor" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "value"
           }
         }
       }
     },
-    "versión desconocida": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "unknown version"
+    "versión desconocida" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unknown version"
           }
         }
       }
     },
-    "winetricks no pudo instalar «%@» (código %d). %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "winetricks couldn't install “%@” (code %d). %@"
+    "winetricks no pudo instalar «%@» (código %d). %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "winetricks couldn't install “%@” (code %d). %@"
           }
         }
       }
     },
-    "winetricks terminó en «%@».": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "winetricks finished in “%@”."
+    "winetricks terminó en «%@»." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "winetricks finished in “%@”."
           }
         }
       }
     },
-    "~%lld min": {
-      "extractionState": "manual",
-      "shouldTranslate": false
+    "~%lld min" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "«%@» no es un componente válido." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” isn't a valid component."
+          }
+        }
+      }
     },
-    "«%@» no es un componente válido.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "“%@” isn't a valid component."
+    "«%@» terminó" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” finished"
           }
         }
       }
     },
-    "«%@» terminó": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "“%@” finished"
+    "«%@» terminó con un error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” finished with an error"
           }
         }
       }
     },
-    "«%@» terminó con un error": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "“%@” finished with an error"
+    "«%@» tiene programas abiertos. Pulsa «Detener todo» antes de duplicarla." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” has programs open. Click “Stop All” before duplicating it."
           }
         }
       }
     },
-    "«%@» tiene programas abiertos. Pulsa «Detener todo» antes de duplicarla.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "“%@” has programs open. Click “Stop All” before duplicating it."
+    "«%@» tiene programas abiertos. Pulsa «Detener todo» antes de exportarla." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%@” has programs open. Click “Stop All” before exporting it."
           }
         }
       }
     },
-    "«%@» tiene programas abiertos. Pulsa «Detener todo» antes de exportarla.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "“%@” has programs open. Click “Stop All” before exporting it."
+    "¿Ejecutar «%@»?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run “%@”?"
           }
         }
       }
     },
-    "¿Ejecutar «%@»?": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Run “%@”?"
+    "¿Eliminar «%@»?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete “%@”?"
           }
         }
       }
     },
-    "¿Eliminar «%@»?": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete “%@”?"
+    "¿Qué programa del disco quieres ejecutar?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which program on the disc do you want to run?"
           }
         }
       }
     },
-    "Ícono": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Icon"
+    "Ícono" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icon"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

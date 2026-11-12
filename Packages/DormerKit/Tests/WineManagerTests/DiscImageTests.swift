@@ -147,6 +147,29 @@ final class DiscImageTests: XCTestCase {
         XCTAssertNil(DiscImage.existingMountPoint(of: URL(filePath: "/x"), in: Data("nonsense".utf8)))
     }
 
+    func testListsProgramsOfTheDiscWithTheSuggestedOneFirst() throws {
+        try touch("autorun.inf", "[autorun]\nopen=Menu.exe\n")
+        try touch("Menu.exe")
+        try touch("Game/Setup.exe")
+        try touch("Game/uninstall.exe")
+        try touch("Redist/vcredist_x86.exe")
+        try touch("Docs/readme.txt")
+        try touch("Install.msi")
+        let programs = DiscImage.programs(in: root)
+        XCTAssertEqual(programs.first, DiscProgram(path: "Menu.exe", isSuggested: true))
+        XCTAssertEqual(Set(programs.map(\.path)), ["Menu.exe", "Install.msi", "Game/Setup.exe"])
+        XCTAssertEqual(programs.filter(\.isSuggested).count, 1)
+    }
+
+    func testAProgramChosenOnTheDiscMustExistBelowItsRoot() throws {
+        try touch("Game/Setup.exe")
+        XCTAssertEqual(DiscImage.existingProgram("Game/Setup.exe", in: root), "Game/Setup.exe")
+        XCTAssertNil(DiscImage.existingProgram("Game/Missing.exe", in: root))
+        XCTAssertNil(DiscImage.existingProgram("../Game/Setup.exe", in: root))
+        XCTAssertNil(DiscImage.existingProgram("/etc/hosts", in: root))
+        XCTAssertNil(DiscImage.existingProgram("", in: root))
+    }
+
     func testThePlanStartsTheInstallerFromTheDiscDrive() {
         let disc = DiscImage.Mounted(
             mountPoint: URL(filePath: "/tmp/disc"), driveLetter: "D", link: URL(filePath: "/tmp/p/dosdevices/d:"),

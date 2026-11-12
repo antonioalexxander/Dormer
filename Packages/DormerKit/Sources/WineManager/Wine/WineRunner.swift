@@ -40,13 +40,21 @@ public actor WineRunner: ProgramRunning {
                 discs.forEach { DiscImage.unmount($0) }
                 throw error
             }
-            guard let first = chosen,
+            if let first = chosen, let relative = target.discProgram {
+                // The user picked the program; it must be on the disc they picked it from.
+                guard let program = DiscImage.existingProgram(relative, in: first.mountPoint) else {
+                    discs.forEach { DiscImage.unmount($0) }
+                    throw DiscImage.DiscError.noSetupProgram
+                }
+                plan = WineLaunchPlan.make(forProgram: program, onDisc: first)
+            } else if let first = chosen,
                 let setup = DiscImage.setupProgram(among: discs, preferring: first)
-            else {
+            {
+                plan = WineLaunchPlan.make(forProgram: setup.program, onDisc: setup.disc)
+            } else {
                 discs.forEach { DiscImage.unmount($0) }
                 throw DiscImage.DiscError.noSetupProgram
             }
-            plan = WineLaunchPlan.make(forProgram: setup.program, onDisc: setup.disc)
         } else {
             // Without the Z: drive a program cannot be started from its Mac path, so it is cloned into C: first.
             if case .file(let target) = request, bottle.settings.hidesHostFileSystem {
@@ -93,6 +101,10 @@ public actor WineRunner: ProgramRunning {
             }
         }
         return RunSession(id: sessionID, bottleID: bottleID, title: request.displayName, events: events)
+    }
+
+    public func discPrograms(in image: URL) async throws -> [DiscProgram] {
+        try await DiscImage.programs(on: image)
     }
 
     /// `wineserver -k` stops every Windows process of the bottle, including ones started by installers.

@@ -67,6 +67,8 @@ private struct SheetHost: View {
             EditProgramSheet(bottleID: bottleID, programID: programID)
         case .confirmRun(let pending):
             RunConfirmationSheet(pending: pending)
+        case .chooseDiscProgram(let choice):
+            DiscProgramSheet(choice: choice)
         case .winetricks(let bottleID, let preselected):
             WinetricksSheet(bottleID: bottleID, preselected: preselected)
         }

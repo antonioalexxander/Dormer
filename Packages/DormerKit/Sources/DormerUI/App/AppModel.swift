@@ -317,6 +317,20 @@ public final class AppModel {
 
     public func run(_ target: RunTarget, in bottleID: UUID) async {
         selectedBottleID = bottleID
+        if target.kind == .discImage, target.discProgram == nil {
+            // A disc's own menu (autorun) is not always the part that works: let the user pick what to start.
+            do {
+                let programs = try await runner.discPrograms(in: target.url)
+                if programs.count > 1 {
+                    activeSheet = .chooseDiscProgram(
+                        DiscChoice(image: target.url, programs: programs, bottleID: bottleID))
+                    return
+                }
+            } catch {
+                present(error, title: "No se pudo abrir la imagen de disco")
+                return
+            }
+        }
         await start(.file(target), in: bottleID, programPathKey: nil)
     }
 

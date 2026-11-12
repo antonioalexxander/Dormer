@@ -58,6 +58,8 @@ public protocol ProgramRunning: Sendable {
     func launch(_ request: LaunchRequest, in bottle: Bottle) async throws -> RunSession
     /// Stops every process in the bottle (`wineserver -k`).
     func terminateAll(in bottle: Bottle) async throws
+    /// The programs on a disc image (installers and games), to let the user pick which one to run.
+    func discPrograms(in image: URL) async throws -> [DiscProgram]
 }
 
 /// Manages Rosetta and Wine runtimes.

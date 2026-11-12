@@ -15,6 +15,9 @@ public struct RunTarget: Hashable, Sendable {
 
     public let url: URL
     public let kind: Kind
+    /// For a disc image: the program to start, as a path relative to the disc's root (`Bin/Setup.exe`).
+    /// `nil` lets Dormer pick the one the disc itself names (`autorun.inf`) or a `setup.exe`.
+    public let discProgram: String?
 
     /// Lowercase file extensions Dormer accepts.
     public static let supportedExtensions = ["exe", "msi", "bat", "iso"]
@@ -29,9 +32,32 @@ public struct RunTarget: Hashable, Sendable {
         default: return nil
         }
         self.url = url
+        self.discProgram = nil
+    }
+
+    /// A disc image together with the program on it the user chose.
+    public init(disc image: URL, program: String) {
+        self.url = image
+        self.kind = .discImage
+        self.discProgram = program
     }
 
     public var displayName: String { url.lastPathComponent }
+}
+
+/// A program found on a disc image.
+public struct DiscProgram: Hashable, Sendable, Identifiable {
+    /// Path relative to the disc's root, with `/` separators.
+    public let path: String
+    /// The one Dormer would start by itself.
+    public let isSuggested: Bool
+
+    public var id: String { path }
+
+    public init(path: String, isSuggested: Bool) {
+        self.path = path
+        self.isSuggested = isSuggested
+    }
 }
 
 /// Programs that ship with Wine and are useful to open by hand.

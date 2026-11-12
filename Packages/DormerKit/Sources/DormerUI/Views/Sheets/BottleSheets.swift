@@ -184,6 +184,51 @@ struct EditProgramSheet: View {
 }
 
 /// Shown before running a file: which bottle, and a warning if it came from the internet.
+/// Which program of a disc image to start.
+struct DiscProgramSheet: View {
+    @Environment(AppModel.self) private var model
+    @Environment(\.dismiss) private var dismiss
+    let choice: DiscChoice
+    @State private var selection: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("¿Qué programa del disco quieres ejecutar?").font(.title3.bold())
+            Text(
+                "El disco sugiere uno, pero su menú no siempre funciona con Wine. Si falla, vuelve a abrir el disco y elige otro."
+            )
+            .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
+            List(choice.programs, selection: $selection) { program in
+                HStack {
+                    Text(program.path)
+                    Spacer()
+                    if program.isSuggested {
+                        Text("Sugerido").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                .tag(program.path)
+            }
+            .frame(height: 220)
+            HStack {
+                Spacer()
+                Button("Cancelar", role: .cancel) { dismiss() }
+                    .keyboardShortcut(.cancelAction)
+                Button("Ejecutar") {
+                    guard let selection else { return }
+                    dismiss()
+                    Task { await model.run(RunTarget(disc: choice.image, program: selection), in: choice.bottleID) }
+                }
+                .keyboardShortcut(.defaultAction)
+                .disabled(selection == nil)
+            }
+        }
+        .padding(24)
+        .frame(width: 520)
+        .onAppear { selection = choice.programs.first?.path }
+    }
+}
+
 struct RunConfirmationSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss

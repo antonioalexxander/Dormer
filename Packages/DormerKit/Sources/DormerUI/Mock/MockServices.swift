@@ -105,6 +105,13 @@ actor MockProgramRunner: ProgramRunning {
         return RunSession(id: sessionID, bottleID: bottle.id, title: request.displayName, events: stream)
     }
 
+    func discPrograms(in image: URL) async throws -> [DiscProgram] {
+        [
+            DiscProgram(path: "Setup.exe", isSuggested: true),
+            DiscProgram(path: "Tools/Launcher.exe", isSuggested: false),
+        ]
+    }
+
     func terminateAll(in bottle: Bottle) async throws {
         for sessionID in continuations[bottle.id]?.keys.map({ $0 }) ?? [] {
             finish(sessionID, in: bottle.id, status: 0)
