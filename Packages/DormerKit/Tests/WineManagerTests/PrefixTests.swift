@@ -132,3 +132,74 @@ final class StagingTests: XCTestCase {
         XCTAssertEqual(WineLaunchPlan.make(for: .tool(.regedit), cDrive: drive).arguments, ["regedit"])
     }
 }
+
+final class PrefixComponentsTests: XCTestCase {
+    private var root: URL!
+    private var installation: WineInstallation!
+    private var prefix: URL!
+
+    override func setUpWithError() throws {
+        root = FileManager.default.temporaryDirectory.appending(path: "dormer-mono-\(UUID().uuidString)")
+        prefix = root.appending(path: "prefix")
+        let wine = root.appending(path: "wine")
+        installation = WineInstallation(
+            descriptor: WineRuntimeDescriptor(
+                id: "t", displayName: "T", version: "1", flavor: .staging, architecture: .x86_64,
+                requiresRosetta: false, minimumMacOS: "14.0", downloadURL: URL(string: "https://example.com/w")!,
+                sha256: String(repeating: "0", count: 64), sizeBytes: 1, license: "LGPL-2.1-or-later",
+                sourceURL: URL(string: "https://example.com")!,
+                capabilities: .init(wow64: true, esync: false, msync: false)),
+            root: wine)
+    }
+
+    override func tearDownWithError() throws {
+        try? FileManager.default.removeItem(at: root)
+    }
+
+    private func bundleMono(_ version: String, marker: String) throws {
+        let folder = installation.shareDirectory.appending(path: "mono/wine-mono-\(version)/bin")
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        try Data(marker.utf8).write(to: folder.appending(path: "libmono-2.0-x86_64.dll"))
+    }
+
+    private var installedDLL: URL {
+        prefix.appending(path: "drive_c/windows/mono/mono-2.0/bin/libmono-2.0-x86_64.dll")
+    }
+
+    func testClonesTheBundledMonoWhereWineLooksForIt() throws {
+        try bundleMono("11.3.0", marker: "mono 11.3.0")
+        try PrefixComponents.installMono(from: installation, into: prefix)
+        XCTAssertEqual(try String(contentsOf: installedDLL, encoding: .utf8), "mono 11.3.0")
+        XCTAssertEqual(
+            try String(contentsOf: prefix.appending(path: "drive_c/windows/mono/.dormer-source"), encoding: .utf8),
+            "wine-mono-11.3.0")
+        let siblings = try FileManager.default.contentsOfDirectory(
+            atPath: prefix.appending(path: "drive_c/windows/mono").path(percentEncoded: false))
+        XCTAssertEqual(Set(siblings), ["mono-2.0", ".dormer-source"], "No partial copy is left behind")
+    }
+
+    func testSecondCallLeavesAnUpToDateCopyAlone() throws {
+        try bundleMono("11.3.0", marker: "a")
+        try PrefixComponents.installMono(from: installation, into: prefix)
+        let sentinel = installedDLL.deletingLastPathComponent().appending(path: "sentinel")
+        try Data("x".utf8).write(to: sentinel)
+        try PrefixComponents.installMono(from: installation, into: prefix)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: sentinel.path(percentEncoded: false)))
+    }
+
+    func testANewerBundledVersionReplacesTheCopy() throws {
+        try bundleMono("11.3.0", marker: "old")
+        try PrefixComponents.installMono(from: installation, into: prefix)
+        try FileManager.default.removeItem(at: installation.shareDirectory.appending(path: "mono"))
+        try bundleMono("11.10.0", marker: "new")
+        try PrefixComponents.installMono(from: installation, into: prefix)
+        XCTAssertEqual(try String(contentsOf: installedDLL, encoding: .utf8), "new", "11.10.0 sorts after 11.3.0")
+    }
+
+    func testRuntimeWithoutMonoIsNotAnError() throws {
+        XCTAssertNoThrow(try PrefixComponents.installMono(from: installation, into: prefix))
+        XCTAssertFalse(
+            FileManager.default.fileExists(
+                atPath: prefix.appending(path: "drive_c/windows/mono").path(percentEncoded: false)))
+    }
+}

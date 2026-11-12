@@ -86,6 +86,26 @@ final class WineIntegrationTests: XCTestCase {
         _ = try await runner.prepare(bottle)
         XCTAssertLessThan(clock.now - noOpStart, .seconds(1), "Nothing to apply: Wine is not started")
 
+        // 3b. A .NET program runs in the isolated bottle. Wine Mono sits outside the prefix and is reached
+        // through Z: unless Dormer clones it into C:, so this fails with "Wine Mono is not installed" if
+        // the clone is missing. (The compiler that ships inside Mono is a convenient real .NET program.)
+        let installation = try await runtimes.installation(forID: bottle.runtimeID)
+        let monoCompiler = installation.shareDirectory.appending(path: "mono/wine-mono-11.3.0/lib/mono/4.5/mcs.exe")
+        let stagedCompiler = try WineRunner.stage(
+            try XCTUnwrap(RunTarget(url: monoCompiler)), in: paths.cDrive(id: bottle.id))
+        let compiler = Program(
+            name: "mcs",
+            windowsPath: WindowsPath.windowsPath(for: stagedCompiler.url, cDrive: paths.cDrive(id: bottle.id)),
+            arguments: "--version")
+        let dotNetRun = try await runner.launch(.program(compiler), in: bottle)
+        var dotNetOutput: [String] = []
+        for await event in dotNetRun.events {
+            if case .output(let line) = event { dotNetOutput.append(line.raw) }
+        }
+        XCTAssertTrue(
+            dotNetOutput.contains { $0.contains("Mono C# compiler") },
+            ".NET program output: \(dotNetOutput.filter { !$0.contains("fixme") })")
+
         // 4. Silent install of a file from the Mac: it is cloned into C: because Z: is hidden.
         let staged = try WineRunner.stage(
             try XCTUnwrap(RunTarget(url: URL(filePath: installerPath))), in: paths.cDrive(id: bottle.id))

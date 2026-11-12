@@ -18,6 +18,8 @@ public struct WineInstallation: Sendable, Equatable {
     public var binDirectory: URL { root.appending(path: "bin", directoryHint: .isDirectory) }
     public var wine: URL { binDirectory.appending(path: "wine") }
     public var wineserver: URL { binDirectory.appending(path: "wineserver") }
+    /// Wine's data folder (`share/wine`): Wine Mono, Wine Gecko, `wine.inf`.
+    public var shareDirectory: URL { root.appending(path: "share/wine", directoryHint: .isDirectory) }
 
     /// Builds a spec that runs `wine <arguments>` in `prefix`.
     public func wineSpec(

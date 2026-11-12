@@ -25,6 +25,12 @@ make lint     # swift-format + SwiftLint (opcional: brew install swiftlint)
 
 También puedes abrir `Dormer.xcodeproj` en Xcode y pulsar ⌘R. Las vistas tienen SwiftUI Previews en modo claro y oscuro (abre cualquier archivo de `Packages/DormerKit/Sources/DormerUI/Views`).
 
+## Limitaciones conocidas
+
+- **Power BI Desktop** (verificado con `PBIDesktopSetup_x64.exe`): el instalador se cae por dentro con un fallo de memoria (`Unhandled page fault`), también en modo silencioso. La causa probable es que depende de componentes de Windows que Wine Mono no ofrece (.NET Framework completo, WPF). No esperes que funcione.
+- **Notepad++**: la barra de menú se ve apilada en filas. Es un problema de Wine con esa aplicación (ocurre con Windows 7 y 10); el programa se puede usar.
+- **Wine Gecko** (el motor web integrado de Windows): sin verificar en botellas aisladas. Si un programa muestra contenido HTML en blanco, desactiva el aislamiento de esa botella.
+
 ## Estructura
 
 | Ruta | Contenido |

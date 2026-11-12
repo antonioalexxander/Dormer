@@ -24,6 +24,8 @@ public enum PrefixConfigurator {
     ) async throws -> BottleSettings {
         // Cheap and idempotent, so it runs every time: Wine recreates the host links when it updates a prefix.
         try PrefixIsolation.apply(hidesHostFileSystem: settings.hidesHostFileSystem, prefix: prefix, home: home)
+        // Without Z:, Wine cannot reach the Mono it ships with, so .NET programs would not start.
+        if settings.hidesHostFileSystem { try PrefixComponents.installMono(from: installation, into: prefix) }
 
         if previous?.windowsVersion != settings.windowsVersion {
             try await run(

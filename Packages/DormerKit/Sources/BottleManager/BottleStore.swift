@@ -82,6 +82,7 @@ public actor BottleStore: BottleServicing {
             try PrefixIsolation.apply(
                 hidesHostFileSystem: settings.hidesHostFileSystem, prefix: prefix,
                 home: fileManager.homeDirectoryForCurrentUser)
+            if settings.hidesHostFileSystem { try PrefixComponents.installMono(from: installation, into: prefix) }
             bottle.appliedSettings = settings
             try write(bottle)
         } catch {

@@ -39,6 +39,9 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
   - Dormer se niega a duplicar o exportar una botella con programas abiertos, para no copiar un registro a medias.
   - Pruebas: 43 nuevas, incluidas pruebas con archivos truncados y corruptos para los parsers.
 
+### Fixed
+- Los programas .NET fallaban con «Wine Mono is not installed» en botellas aisladas (la configuración por defecto desde la Fase 3). Wine alcanza Mono, que viaja junto al motor, a través de la unidad Z:, y las botellas aisladas no la tienen. Ahora Dormer clona Mono dentro de la botella (`C:\windows\mono\mono-2.0`; en APFS es instantáneo) al crearla y, en las existentes, la próxima vez que se abre un programa. Se añadió a la prueba de extremo a extremo una aplicación .NET real.
+
 ### Changed
 - La app usa los servicios reales; los datos de ejemplo quedan solo para las SwiftUI Previews.
 - Los ajustes que aún no llegan a Wine (solo el backend gráfico: DXMT y D3DMetal) indican en qué fase se aplican.
