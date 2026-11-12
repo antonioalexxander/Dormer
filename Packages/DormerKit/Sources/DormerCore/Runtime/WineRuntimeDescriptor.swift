@@ -22,8 +22,8 @@ public struct WineRuntimeDescriptor: Codable, Hashable, Sendable, Identifiable {
         public var wow64: Bool
         public var esync: Bool
         public var msync: Bool
-        /// The runtime's `winemac.drv` exports the symbols DXMT needs to draw into windows. Without them DXMT
-        /// can create a Direct3D device but fails with "Wine has no exported symbols needed by DXMT".
+        /// DXMT can draw into windows with this runtime, either as shipped or with the patched Mac driver that
+        /// Dormer downloads for it. Otherwise DXMT creates a Direct3D device but cannot present.
         public var dxmt: Bool
 
         public init(wow64: Bool, esync: Bool, msync: Bool, dxmt: Bool = false) {

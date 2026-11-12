@@ -721,13 +721,24 @@
       "extractionState": "manual",
       "shouldTranslate": false
     },
-    "DXMT no funciona con el motor «%@»: a su winemac.drv le faltan símbolos que DXMT necesita para dibujar en ventanas. Elige WineD3D.": {
+    "DXMT no está disponible con este motor Wine. Algunas apps modernas que piden Direct3D 11 real (por ejemplo Audacity 4) no abrirán.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "DXMT doesn't work with the “%@” engine: its winemac.drv lacks symbols DXMT needs to draw into windows. Choose WineD3D."
+            "value": "DXMT is not available with this Wine engine. Some modern apps that need real Direct3D 11 (for example Audacity 4) will not open."
+          }
+        }
+      }
+    },
+    "DXMT no funciona con el motor «%@»: Dormer no tiene un controlador de pantalla compatible para él. Elige WineD3D.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DXMT doesn't work with the “%@” engine: Dormer has no compatible display driver for it. Choose WineD3D."
           }
         }
       }
@@ -735,17 +746,6 @@
     "DXMT · MIT": {
       "extractionState": "manual",
       "shouldTranslate": false
-    },
-    "DXMT, DXVK y D3DMetal no están disponibles con el motor Wine que incluye Dormer. Algunas apps modernas que piden Direct3D 11 real (por ejemplo Audacity 4) no abrirán.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DXMT, DXVK and D3DMetal are not available with the Wine engine that Dormer includes. Some modern apps that require real Direct3D 11 (for example Audacity 4) won't open."
-          }
-        }
-      }
     },
     "DXVK": {
       "extractionState": "manual",
@@ -898,13 +898,13 @@
       "extractionState": "manual",
       "shouldTranslate": false
     },
-    "DirectX 10 y 11 sobre Metal. Necesita un motor Wine compatible; el que incluye Dormer no lo es.": {
+    "DirectX 10 y 11 sobre Metal. Experimental: abre apps que piden Direct3D 11 real, pero puede fallar con otras. Descarga unos 19 MB la primera vez.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "DirectX 10 and 11 on Metal. Needs a compatible Wine engine; the one Dormer includes isn't."
+            "value": "DirectX 10 and 11 on Metal. Experimental: it opens apps that need real Direct3D 11, but may fail with others. Downloads about 19 MB the first time."
           }
         }
       }

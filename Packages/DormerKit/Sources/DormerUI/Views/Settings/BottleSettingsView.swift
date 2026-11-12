@@ -53,7 +53,7 @@ struct BottleSettingsView: View {
                 if !GraphicsBackend.dxmt.isAvailable(on: runtime) {
                     Label {
                         Text(
-                            "DXMT, DXVK y D3DMetal no están disponibles con el motor Wine que incluye Dormer. Algunas apps modernas que piden Direct3D 11 real (por ejemplo Audacity 4) no abrirán."
+                            "DXMT no está disponible con este motor Wine. Algunas apps modernas que piden Direct3D 11 real (por ejemplo Audacity 4) no abrirán."
                         )
                     } icon: {
                         Image(systemName: "info.circle").foregroundStyle(.secondary)

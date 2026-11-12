@@ -14,7 +14,7 @@
       "sizeBytes": 228148688,
       "license": "LGPL-2.1-or-later",
       "sourceURL": "https://gitlab.winehq.org/wine/wine",
-      "capabilities": { "wow64": true, "esync": false, "msync": false, "dxmt": false }
+      "capabilities": { "wow64": true, "esync": false, "msync": false, "dxmt": true }
     },
     {
       "id": "gcenx-wine-devel-11.21",

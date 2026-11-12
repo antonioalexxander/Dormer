@@ -127,10 +127,35 @@ final class GraphicsStoreTests: XCTestCase {
         XCTAssertFalse(capabilities.dxmt)
     }
 
-    func testBundledRuntimesDoNotClaimDXMT() throws {
+    func testBundledRuntimesClaimDXMTOnlyWithAPatchedDriver() throws {
+        let patched = try XCTUnwrap(ComponentCatalog.bundled().winemacDXMT.runtimeIDs)
         for runtime in try RuntimeCatalog.bundled().runtimes {
-            XCTAssertFalse(runtime.capabilities.dxmt, "\(runtime.id): verified not to work with DXMT")
+            XCTAssertEqual(
+                runtime.capabilities.dxmt, patched.contains(runtime.id),
+                "\(runtime.id): the bundled Wine builds only work with DXMT through Dormer's patched driver")
         }
+    }
+
+    func testThePatchedDriverReplacesWinemacInTheVariantOnly() async throws {
+        try placeDXMT()
+        catalog.winemacDXMT.runtimeIDs = ["test-runtime"]
+        let driver = paths.graphics.appending(path: catalog.winemacDXMT.id).appending(path: "winemac.so")
+        try fileManager.createDirectory(at: driver.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data("patched".utf8).write(to: driver)
+        let unix = paths.runtime(id: "test-runtime").appending(path: "wine/lib/wine/x86_64-unix")
+        try fileManager.createDirectory(at: unix, withIntermediateDirectories: true)
+        try Data("original".utf8).write(to: unix.appending(path: "winemac.so"))
+        let store = RuntimeStore(
+            paths: paths,
+            catalog: RuntimeCatalog(recommended: "test-runtime", runtimes: []))
+        graphics = GraphicsStore(paths: paths, runtimes: store, catalog: catalog)
+
+        let variant = try await graphics.installation(for: bottle(.dxmt))
+
+        XCTAssertEqual(
+            try String(contentsOf: variant.root.appending(path: "lib/wine/x86_64-unix/winemac.so"), encoding: .utf8),
+            "patched")
+        XCTAssertEqual(try String(contentsOf: unix.appending(path: "winemac.so"), encoding: .utf8), "original")
     }
 
     func testBackendsThatCannotRunAreRefusedWithAnExplanation() async throws {

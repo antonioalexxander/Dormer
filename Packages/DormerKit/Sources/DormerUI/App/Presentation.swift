@@ -103,7 +103,7 @@ extension GraphicsBackend {
         case .wined3d:
             "Traducción integrada de Wine. La más compatible; ideal para programas de oficina."
         case .dxmt:
-            "DirectX 10 y 11 sobre Metal. Necesita un motor Wine compatible; el que incluye Dormer no lo es."
+            "DirectX 10 y 11 sobre Metal. Experimental: abre apps que piden Direct3D 11 real, pero puede fallar con otras. Descarga unos 19 MB la primera vez."
         case .dxvk:
             "DirectX 9 a 11 sobre Vulkan (MoltenVK). Sin mantenimiento activo en Mac."
         case .d3dmetal:

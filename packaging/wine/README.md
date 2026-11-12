@@ -1,6 +1,6 @@
 # Wine con DXMT: parche, receta y resultados
 
-**Estado (2026-11-12):** con un `winemac.so` recompilado con el parche de esta carpeta, DXMT v0.80 **dibuja en ventanas** dentro del Wine 11.21 de Gcenx. Probado con un programa Direct3D 11 propio y con Audacity 4.0.2. Sigue siendo un experimento: **Dormer todavía no lo incluye** y la capacidad `dxmt` sigue en `false`.
+**Estado (2026-11-12):** con un `winemac.so` recompilado con el parche de esta carpeta, DXMT v0.80 **dibuja en ventanas** dentro del Wine 11.21 de Gcenx. Probado con un programa Direct3D 11 propio y con Audacity 4.0.2. Dormer lo ofrece como backend **DXMT (experimental)** para Wine Staging 11.21: descarga el `winemac.so` de la [release `winemac-dxmt-11.21-1`](https://github.com/antonioalexxander/iOS-to-Windows/releases/tag/winemac-dxmt-11.21-1) y lo coloca en una copia del motor.
 
 | | |
 |---|---|
@@ -26,11 +26,11 @@ DXMT presenta a través de un `CAMetalLayer` que pide al controlador de Mac de W
 
 No modifica DXMT: se usa su versión publicada sin cambios.
 
-**Límites conocidos del parche:** máximo 64 ventanas con cadena de intercambio a la vez por proceso; mientras exista la cadena de intercambio, el contenido GDI de esa ventana queda tapado; cadenas de intercambio sobre ventanas hijas, modo Retina, pantalla completa y varios monitores **sin probar**.
+**Límites conocidos del parche:** máximo 64 ventanas con cadena de intercambio a la vez por proceso; mientras exista la cadena de intercambio, el contenido GDI de esa ventana queda tapado; cadenas de intercambio sobre ventanas hijas **sin probar**. Pantalla completa (sin bordes y exclusiva) y modo Retina probados solo con el programa de prueba.
 
 ## Receta para reconstruir `winemac.so`
 
-Ejecutada a mano en una carpeta aparte, sin instalar nada en el sistema. No está automatizada.
+Automatizada en [build-winemac.sh](build-winemac.sh) (descarga todo a una carpeta aparte, con sumas fijadas, sin instalar nada en el sistema) y ejecutada en CI por `.github/workflows/winemac-dxmt.yml` al subir una etiqueta `winemac-dxmt-*`. Los pasos que hace:
 
 1. Fuente oficial: `https://dl.winehq.org/wine/source/11.x/wine-11.21.tar.xz`.
 2. Herramientas: GNU bison ≥ 3 (se compiló 3.8.2; el de macOS es 2.3) y `llvm-mingw` (20261104, ucrt, macos-universal; Wine 11 exige un compilador cruzado de Windows).
@@ -45,7 +45,7 @@ Ejecutada a mano en una carpeta aparte, sin instalar nada en el sistema. No est�
 5. Reemplazar `lib/wine/x86_64-unix/winemac.so` en una **copia** del motor que ya tenga los archivos de DXMT (Dormer crea esas variantes como clon APFS).
 6. Comprobar: `nm -gU winemac.so | grep macdrv_functions`.
 
-**Sin verificar:** las sumas del tarball de Wine y de `llvm-mingw` contra sus fuentes oficiales. SHA-256 del `winemac.so` resultante en esta máquina: `e03fdeac075cb93ac201f5a28fc15ceaf167a6713808e431f6a91438b0225a72` (no se publica el binario; la compilación no es reproducible bit a bit todavía).
+Sumas verificadas contra las oficiales: Wine (SHA-512 de `sha512sums.asc` de WineHQ), `llvm-mingw` (SHA-256 de su release en GitHub) y bison (GNU). El paquete publicado tiene SHA-256 `b093308159b959aa730849a9e43cc4b8b225f0a72a626e5ffbd838dfc760b481`, que es el que Dormer exige. La compilación **no es reproducible bit a bit** (una compilación local da otro binario), así que la confianza está en el registro público de CI, no en poder recompilar el mismo archivo.
 
 ## Pruebas (MacBook Air M5, macOS 27.2.1, Rosetta 2, pantalla externa 1920×1080)
 
@@ -81,5 +81,5 @@ Envío: lista `wine-devel` o *merge request* en `gitlab.winehq.org`, con cuenta 
 ## Siguiente
 
 1. Probar más programas Direct3D 11 (y Direct3D 10) y juegos más exigentes; anotar cada resultado en [docs/COMPATIBILITY.md](../../docs/COMPATIBILITY.md).
-2. Probar Retina, pantalla completa y ventanas hijas.
-3. Integrarlo de serie en Dormer: compilar `winemac.so` en CI con esta receta y sumas verificadas, publicar el binario con su fuente y parche (LGPL), y activar la capacidad `dxmt` solo para ese motor.
+2. Probar ventanas hijas y sonido.
+3. Quitar la etiqueta de experimental cuando haya más programas probados; hacer la compilación reproducible.

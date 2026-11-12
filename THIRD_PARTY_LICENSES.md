@@ -8,7 +8,8 @@ Dormer es GPL-3.0-or-later (ver [LICENSE](LICENSE)). Usa los programas siguiente
 | **Compilaciones macOS de Wine (Gcenx)** | Licencias de sus componentes (Wine LGPL-2.1+, MoltenVK Apache-2.0, GStreamer LGPL-2.1+, SDL2 zlib, …) | Archivo descargado por el usuario desde GitHub | https://github.com/Gcenx/macOS_Wine_builds |
 | **Wine Mono** y **Wine Gecko** | Varias licencias libres (MIT, MPL-2.0, LGPL…) según el componente; ver su repositorio | Vienen dentro del motor Wine descargado; Dormer clona Mono dentro de las botellas aisladas | https://gitlab.winehq.org/mono/wine-mono · https://gitlab.winehq.org/wine/wine-gecko |
 | **winetricks** | LGPL-2.1-o-posterior (verificado en el encabezado del script) | Script fijado por versión (20260125), ejecutado con `/bin/sh` | https://github.com/Winetricks/winetricks |
-| **DXMT** | MIT (verificado en el `LICENSE` de v0.80) | Código preparado para descargarlo y superponerlo a una **copia** del motor Wine, pero hoy **está desactivado** (no funciona con el Wine incluido); no se descarga | https://github.com/3Shain/dxmt |
+| **DXMT** | MIT (verificado en el `LICENSE` de v0.80) | Se descarga solo si eliges el backend DXMT (experimental) y se superpone a una **copia** del motor Wine | https://github.com/3Shain/dxmt |
+| **`winemac.so` de Wine 11.21 con parche de Dormer** | LGPL-2.1-or-later (es parte de Wine) | Compilado en CI desde el código oficial de Wine con el parche de `packaging/wine`; publicado en las *releases* del repositorio junto a su licencia y parche. Se descarga con DXMT y se coloca en la misma copia del motor | https://dl.winehq.org/wine/source/11.x/ · `packaging/wine/` |
 | `cabextract` (sustituto) | — | **No se usa el programa original.** Dormer incluye un pequeño script propio (GPL-3.0-o-posterior) que usa el `bsdtar` de macOS | — |
 
 ## Lo que Dormer no incluye

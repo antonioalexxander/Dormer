@@ -24,7 +24,7 @@ public actor GraphicsStore: GraphicsServicing {
             case .dxmtNeedsCompatibleWine(let runtime):
                 String(
                     localized:
-                        "DXMT no funciona con el motor «\(runtime)»: a su winemac.drv le faltan símbolos que DXMT necesita para dibujar en ventanas. Elige WineD3D."
+                        "DXMT no funciona con el motor «\(runtime)»: Dormer no tiene un controlador de pantalla compatible para él. Elige WineD3D."
                 )
             case .dxmtPackageInvalid:
                 String(localized: "El paquete de DXMT no tiene la estructura esperada. No se instaló.")
@@ -54,6 +54,7 @@ public actor GraphicsStore: GraphicsServicing {
     private let catalog: ComponentCatalog
     private let fileManager = FileManager.default
     private var dxmtInstall: Task<URL, any Error>?
+    private var driverInstall: Task<URL, any Error>?
 
     public init(paths: AppPaths = .standard(), runtimes: RuntimeStore, catalog: ComponentCatalog) {
         self.paths = paths
@@ -138,10 +139,58 @@ public actor GraphicsStore: GraphicsServicing {
         return dxmtFolder
     }
 
+    // MARK: Patched Mac driver
+
+    private var driverFile: URL {
+        paths.graphics.appending(path: catalog.winemacDXMT.id, directoryHint: .isDirectory).appending(path: "winemac.so")
+    }
+
+    /// The patched `winemac.so`, downloading and unpacking it if needed.
+    func ensureDriver() async throws -> URL {
+        if fileManager.fileExists(atPath: driverFile.path(percentEncoded: false)) { return driverFile }
+        if let running = driverInstall { return try await running.value }
+        let task = Task { try await self.downloadDriver() }
+        driverInstall = task
+        defer { driverInstall = nil }
+        return try await task.value
+    }
+
+    private func downloadDriver() async throws -> URL {
+        let component = catalog.winemacDXMT
+        let archive = paths.downloads.appending(path: "\(component.id).tar.gz")
+        defer { try? fileManager.removeItem(at: archive) }
+        try await component.fetch(to: archive)
+
+        let staging = paths.graphics.appending(path: ".staging-\(UUID().uuidString)", directoryHint: .isDirectory)
+        try fileManager.createDirectory(at: staging, withIntermediateDirectories: true)
+        defer { try? fileManager.removeItem(at: staging) }
+        // Only the one file Dormer needs is taken out of the archive.
+        let member = "\(component.id)/winemac.so"
+        let result = try await ProcessRunner.run(
+            ProcessSpec(
+                executable: URL(filePath: "/usr/bin/tar"),
+                arguments: [
+                    "-xzf", archive.path(percentEncoded: false), "-C", staging.path(percentEncoded: false), member,
+                ],
+                environment: ["PATH": "/usr/bin:/bin"]))
+        let unpacked = staging.appending(path: member)
+        let values = try? unpacked.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
+        guard result.status == 0, values?.isRegularFile == true, values?.isSymbolicLink != true else {
+            throw GraphicsError.dxmtPackageInvalid
+        }
+        let folder = driverFile.deletingLastPathComponent()
+        try? fileManager.removeItem(at: folder)
+        try fileManager.createDirectory(at: folder, withIntermediateDirectories: true)
+        try fileManager.moveItem(at: unpacked, to: driverFile)
+        return driverFile
+    }
+
     /// A clone of `base` with DXMT's files in `lib/wine`, built once and reused.
     private func dxmtVariant(of base: WineInstallation) async throws -> WineInstallation {
         let dxmt = try await ensureDXMT()
-        let stamp = "\(catalog.dxmt.id)|\(base.descriptor.sha256)"
+        let needsDriver = catalog.winemacDXMT.runtimeIDs?.contains(base.descriptor.id) == true
+        let driver = needsDriver ? try await ensureDriver() : nil
+        let stamp = "\(catalog.dxmt.id)|\(base.descriptor.sha256)" + (needsDriver ? "|\(catalog.winemacDXMT.id)" : "")
         let variants = paths.runtimes.appending(path: ".variants", directoryHint: .isDirectory)
         let folder = variants.appending(path: "\(base.descriptor.id)+\(catalog.dxmt.id)", directoryHint: .isDirectory)
         let marker = folder.appending(path: ".dormer-variant")
@@ -167,6 +216,11 @@ public actor GraphicsStore: GraphicsServicing {
                 try? fileManager.removeItem(at: destination)
                 try fileManager.copyItem(at: source.appending(path: name), to: destination)
             }
+        }
+        if let driver {
+            let destination = wine.appending(path: "lib/wine/x86_64-unix/winemac.so")
+            try? fileManager.removeItem(at: destination)
+            try fileManager.copyItem(at: driver, to: destination)
         }
         try Data(stamp.utf8).write(to: partial.appending(path: ".dormer-variant"), options: .atomic)
         try? fileManager.removeItem(at: folder)

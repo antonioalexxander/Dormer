@@ -13,7 +13,7 @@ private func makeFolder() throws -> URL {
 final class ComponentCatalogTests: XCTestCase {
     func testBundledCatalogIsPinnedAndSecure() throws {
         let catalog = try ComponentCatalog.bundled()
-        for component in [catalog.winetricks, catalog.dxmt] {
+        for component in [catalog.winetricks, catalog.dxmt, catalog.winemacDXMT] {
             XCTAssertEqual(component.downloadURL.scheme, "https", component.id)
             XCTAssertEqual(component.sha256.count, 64, component.id)
             XCTAssertGreaterThan(component.sizeBytes, 0)

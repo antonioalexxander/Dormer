@@ -13,6 +13,8 @@ public struct ExternalComponent: Codable, Sendable, Equatable {
     /// SPDX identifier.
     public var license: String
     public var sourceURL: URL
+    /// Runtimes this component is made for, when it only fits specific ones.
+    public var runtimeIDs: [String]?
 
     /// Downloads to `destination` over HTTPS and checks size and SHA-256. A file that fails the check is deleted.
     func fetch(
@@ -40,13 +42,15 @@ public struct ExternalComponent: Codable, Sendable, Equatable {
 public struct ComponentCatalog: Codable, Sendable, Equatable {
     public var winetricks: ExternalComponent
     public var dxmt: ExternalComponent
+    /// Wine's Mac driver rebuilt with Dormer's patch (packaging/wine) so that DXMT can draw into windows.
+    public var winemacDXMT: ExternalComponent
 
     public static func bundled() throws -> ComponentCatalog {
         guard let url = Bundle.module.url(forResource: "components", withExtension: "json") else {
             throw RuntimeCatalog.CatalogError.missingResource
         }
         let catalog = try JSONDecoder().decode(ComponentCatalog.self, from: Data(contentsOf: url))
-        for component in [catalog.winetricks, catalog.dxmt] where component.sha256.wholeMatch(of: /[0-9a-f]{64}/) == nil
+        for component in [catalog.winetricks, catalog.dxmt, catalog.winemacDXMT] where component.sha256.wholeMatch(of: /[0-9a-f]{64}/) == nil
         {
             throw RuntimeCatalog.CatalogError.invalidChecksum(runtimeID: component.id)
         }

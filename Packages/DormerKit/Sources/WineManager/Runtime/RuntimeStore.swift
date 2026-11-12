@@ -117,8 +117,12 @@ public actor RuntimeStore: RuntimeServicing {
     private func installation(at folder: URL) -> WineInstallation? {
         let receipt = folder.appending(path: Self.receiptName)
         guard let data = try? Data(contentsOf: receipt),
-            let descriptor = try? JSONDecoder().decode(WineRuntimeDescriptor.self, from: data)
+            var descriptor = try? JSONDecoder().decode(WineRuntimeDescriptor.self, from: data)
         else { return nil }
+        // What Dormer can do with a runtime may change between versions; the files on disk are the same.
+        if let current = catalog.runtimes.first(where: { $0.id == descriptor.id && $0.sha256 == descriptor.sha256 }) {
+            descriptor.capabilities = current.capabilities
+        }
         let installation = WineInstallation(
             descriptor: descriptor, root: folder.appending(path: "wine", directoryHint: .isDirectory))
         guard fileManager.isExecutableFile(atPath: installation.wine.path(percentEncoded: false)) else { return nil }

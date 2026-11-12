@@ -19,7 +19,7 @@ Si necesitas que *cualquier* programa de Windows funcione, lo que se parece a Wi
 - **Programas con su ícono real**, detectados por los accesos directos que deja el instalador; anclables y con argumentos y variables propios.
 - **Lanzadores `.app`** para abrir un programa con doble clic desde Finder o el Dock.
 - **Componentes de Windows** (Visual C++, .NET, fuentes, DirectX…) con winetricks, desde una lista con búsqueda.
-- **Ajustes por botella:** versión de Windows, escala (DPI), modo Retina, variables de entorno y backend gráfico (hoy solo WineD3D; DXMT espera un motor Wine compatible).
+- **Ajustes por botella:** versión de Windows, escala (DPI), modo Retina, variables de entorno y backend gráfico (WineD3D, o DXMT como opción experimental para apps que piden Direct3D 11).
 - **Registro de Wine en vivo,** con filtros, sugerencias automáticas (si falta una DLL, propone el componente) y «Copiar para reporte» sin tu nombre de usuario ni rutas personales.
 - Español e inglés. Accesible con VoiceOver y teclado (revisión de código; falta una prueba con usuarios).
 
@@ -47,7 +47,7 @@ Si necesitas que *cualquier* programa de Windows funcione, lo que se parece a Wi
 ## Privacidad y seguridad
 
 - **Sin telemetría ni cuentas.** Todo se guarda en `~/Library/Application Support/Dormer/` (y los lanzadores que crees).
-- Las descargas (Wine, winetricks, DXMT) son por HTTPS y se comprueban contra un tamaño y un SHA-256 fijados en el código.
+- Las descargas (Wine, winetricks, DXMT y su controlador) son por HTTPS y se comprueban contra un tamaño y un SHA-256 fijados en el código.
 - Los archivos de botella `.aar` se validan antes de extraerse.
 - Wine **no es un sandbox de seguridad**: un programa malicioso dentro de una botella puede dañar lo que la botella alcance. No ejecutes software en el que no confíes. Más en [SECURITY.md](SECURITY.md).
 
@@ -56,7 +56,7 @@ Si necesitas que *cualquier* programa de Windows funcione, lo que se parece a Wi
 - **No todo funciona.** Probado y documentado en [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
 - **Power BI Desktop:** el instalador falla dentro de Wine; no esperes que funcione.
 - **Notepad++:** la barra de menú se ve apilada en filas (problema de Wine con esa app); se puede usar.
-- **Apps modernas que piden Direct3D 11 real** (por ejemplo Audacity 4) no abren: WineD3D solo ofrece el nivel 9.3 en este Mac. **DXMT** crea el dispositivo pero no puede dibujar en ventanas con el motor Wine incluido, así que está desactivado. Hay un [parche experimental](packaging/wine/README.md) con el que sí dibuja (probado con Audacity 4), aún sin integrar.
+- **Apps modernas que piden Direct3D 11 real** (por ejemplo Audacity 4) no abren con WineD3D (solo ofrece el nivel 9.3 en este Mac). Con el backend **DXMT (experimental)** sí se dibujan (probado con Audacity 4 y Warzone 2100); usa un [controlador de Wine parcheado](packaging/wine/README.md) que Dormer descarga. Pocos programas probados y ningún juego comercial.
 - **D3DMetal (Game Porting Toolkit):** puedes importarlo, pero todavía no se puede usar (necesita un motor Wine del Game Porting Toolkit que Dormer no incluye). DXVK no se ofrece (sin versiones desde 2024).
 - **Wine Gecko** (motor web de Windows) sin verificar en botellas aisladas.
 - Compilación del `.dmg` y publicación automática (CI): escritas pero **sin probar** en GitHub todavía.

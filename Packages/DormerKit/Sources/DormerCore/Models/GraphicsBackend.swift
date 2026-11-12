@@ -24,11 +24,11 @@ public enum GraphicsBackend: String, Codable, CaseIterable, Sendable, Identifiab
     }
 
     /// Whether the backend is shown with an "Experimental" badge.
-    public var isExperimental: Bool { self == .dxvk }
+    public var isExperimental: Bool { self == .dxvk || self == .dxmt }
 
     /// Whether a bottle can use this backend on `runtime`.
     ///
-    /// DXMT needs a Wine that exports certain `winemac.drv` symbols (the bundled one does not); DXVK-macOS has had
+    /// DXMT needs a Wine whose Mac driver it can talk to (Dormer supplies a patched one for some runtimes); DXVK-macOS has had
     /// no release since 2024; D3DMetal needs a Game Porting Toolkit build of Wine that the catalog does not include.
     public func isAvailable(on runtime: WineRuntimeDescriptor?) -> Bool {
         switch self {
