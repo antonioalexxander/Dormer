@@ -1,41 +1,78 @@
-# Wine con DXMT: lo que falta y el plan
+# Wine con DXMT: parche, receta y resultados
 
-**Problema (verificado):** el Wine de Gcenx 11.21 que usa Dormer oculta cinco símbolos de `winemac.so` que DXMT busca con `dlsym`; sin ellos DXMT crea el dispositivo Direct3D 11 pero falla al dibujar en una ventana (`your Wine has no exported symbols needed by DXMT`). Apps como Audacity 4 se quedan por eso en «Failed to initialize graphics backend for D3D11».
+**Estado (2026-11-12):** con un `winemac.so` recompilado con el parche de esta carpeta, DXMT v0.80 **dibuja en ventanas** dentro del Wine 11.21 de Gcenx. Probado con un programa Direct3D 11 propio y con Audacity 4.0.2. Sigue siendo un experimento: **Dormer todavía no lo incluye** y la capacidad `dxmt` sigue en `false`.
 
-**Arreglo mínimo:** [0001-winemac-export-metal-view-symbols.patch](0001-winemac-export-metal-view-symbols.patch) (5 líneas, solo visibilidad de símbolos), aplicado a `winemac.drv` de Wine 11.21.
+| | |
+|---|---|
+| ![Triángulo Direct3D 11](../../docs/images/d3d11-triangle-dxmt.png) | ![Audacity 4 con DXMT](../../docs/images/audacity4-dxmt.png) |
+| Programa de prueba ([tests/d3d11-triangle.cpp](tests/d3d11-triangle.cpp)) | Audacity 4.0.2: editor de proyecto |
 
-## Pasos para reconstruir solo `winemac.so`
+## El problema, en tres capas
 
-No está automatizado ni se ha ejecutado todavía: requiere ejecutar un `configure` y un compilador cruzado descargados, y lo debe aprobar quien mantiene el proyecto.
+DXMT presenta a través de un `CAMetalLayer` que pide al controlador de Mac de Wine (`winemac.so`). Con el Wine de Gcenx fallaban tres cosas, una detrás de otra:
 
-1. Fuente oficial: `https://dl.winehq.org/wine/source/11.x/wine-11.21.tar.xz` (verificar su suma en la página de WineHQ).
-2. Herramientas de compilación (en una carpeta aparte, sin instalar nada en el sistema): GNU bison ≥ 3 (el de macOS es 2.3) y `llvm-mingw` (Wine 11 exige un compilador cruzado de Windows en macOS).
-3. `patch -p1 < 0001-…patch`, luego `arch -x86_64 ./configure --enable-win64 --disable-tests` (+ `--without-…` para dependencias no necesarias) y `make dlls/winemac.drv/winemac.so`.
-4. Reemplazar `lib/wine/x86_64-unix/winemac.so` en una **copia** del motor (Dormer ya sabe crear variantes como clon APFS) y marcar la capacidad `dxmt` de ese motor.
-5. Verificar con una app real (Audacity 4), no solo con la creación del dispositivo.
+1. **Símbolos ocultos.** Wine compila `winemac.so` con visibilidad oculta, así que el `dlsym` de DXMT no encuentra nada (`your Wine has no exported symbols needed by DXMT`).
+2. **Estructura distinta.** Exportar los símbolos no basta (fue el primer intento, commit `ec477d0`): DXMT lee `client_cocoa_view` en la posición que tiene en CrossOver, y en Wine 11.21 esa posición es otro campo. Leía un puntero basura. Además, en Wine actual una ventana no tiene vista cliente hasta que existe una *client surface*.
+3. **La vista se oculta.** Cada vez que Wine vuelca la superficie GDI de la ventana (por ejemplo al redimensionar) oculta la vista cliente y espera que Vulkan/OpenGL la vuelva a mostrar en su siguiente `client_surface_present()`. DXMT no pasa por ahí: la ventana se quedaba en blanco o gris.
 
-Riesgo conocido: el `winemac.drv` (PE) de Gcenx y el `winemac.so` propio deben coincidir en el ABI de llamadas Unix; con la misma versión 11.21 debería, pero se comprueba empíricamente.
+## El parche
+
+[0001-winemac-add-macdrv_functions-for-metal-layers.patch](0001-winemac-add-macdrv_functions-for-metal-layers.patch) (contra `wine-11.21`, ~190 líneas en `window.c`, `surface.c` y `macdrv.h`). Añade a `winemac.so` la tabla `macdrv_functions` que DXMT busca primero, con la forma que espera, y por dentro:
+
+- crea una *client surface* para la ventana cuando DXMT pide su vista (igual que win32u hace para Vulkan/OpenGL);
+- mantiene su tamaño y posición desde `WindowPosChanged`;
+- no la oculta en el volcado GDI mientras exista su vista Metal;
+- la libera junto con la vista Metal o con la ventana.
+
+No modifica DXMT: se usa su versión publicada sin cambios.
+
+**Límites conocidos del parche:** máximo 64 ventanas con cadena de intercambio a la vez por proceso; mientras exista la cadena de intercambio, el contenido GDI de esa ventana queda tapado; cadenas de intercambio sobre ventanas hijas, modo Retina, pantalla completa y varios monitores **sin probar**.
+
+## Receta para reconstruir `winemac.so`
+
+Ejecutada a mano en una carpeta aparte, sin instalar nada en el sistema. No está automatizada.
+
+1. Fuente oficial: `https://dl.winehq.org/wine/source/11.x/wine-11.21.tar.xz`.
+2. Herramientas: GNU bison ≥ 3 (se compiló 3.8.2; el de macOS es 2.3) y `llvm-mingw` (20261104, ucrt, macos-universal; Wine 11 exige un compilador cruzado de Windows).
+3. `patch -p1 < 0001-…patch`
+4. En una carpeta de compilación aparte, con `llvm-mingw/bin` **al final** del `PATH` (si va delante, su `clang` tapa al de Apple):
+   ```sh
+   CC="/usr/bin/clang -arch x86_64" CXX="/usr/bin/clang++ -arch x86_64" \
+     ../wine-11.21/configure --host=x86_64-apple-darwin --enable-win64 --disable-tests \
+     --without-x --without-freetype   # y los demás --without-… que no hagan falta
+   make -j8 dlls/winemac.drv/winemac.so
+   ```
+5. Reemplazar `lib/wine/x86_64-unix/winemac.so` en una **copia** del motor que ya tenga los archivos de DXMT (Dormer crea esas variantes como clon APFS).
+6. Comprobar: `nm -gU winemac.so | grep macdrv_functions`.
+
+**Sin verificar:** las sumas del tarball de Wine y de `llvm-mingw` contra sus fuentes oficiales. SHA-256 del `winemac.so` resultante en esta máquina: `e03fdeac075cb93ac201f5a28fc15ceaf167a6713808e431f6a91438b0225a72` (no se publica el binario; la compilación no es reproducible bit a bit todavía).
+
+## Pruebas (MacBook Air M5, macOS 27.2.1, Rosetta 2, pantalla externa 1920×1080)
+
+Programa propio [tests/d3d11-triangle.cpp](tests/d3d11-triangle.cpp) (compilado con `llvm-mingw`: `x86_64-w64-mingw32-clang++ -O1 -static -mwindows d3d11-triangle.cpp -o tri.exe -ld3d11 -ld3dcompiler_47 -ldxgi`):
+
+- ✅ Dispositivo de nivel 11.0, cadena de intercambio, sombreadores compilados con `D3DCompile`, triángulo girando: 1775 fotogramas en 30 s (sincronizado a ~60 Hz).
+- ✅ Mover la ventana y redimensionarla (`ResizeBuffers`) sigue dibujando.
+
+Audacity 4.0.2 (Qt 6, `.msi`, con `vcrun2022`):
+
+- ✅ Se dibujan la ventana principal, el asistente inicial, los diálogos «Bienvenido» y «Restaurar sesión», la página de proyectos y el editor de un proyecto nuevo. Responde a clics.
+- ℹ️ DXMT registra `err: Not implemented` al arrancar: Qt pide primero una cadena de intercambio de DirectComposition (`CreateSwapChainForComposition`), que DXMT no implementa, y recurre a la cadena normal por ventana. No impide dibujar.
+- ❓ **Sin probar:** grabar, reproducir, importar/exportar audio, efectos, uso prolongado. «Se dibuja y responde» no es «funciona todo».
+
+Ningún juego probado todavía.
 
 ## Para Wine (upstream)
 
-Lo que sí se puede ofrecer a WineHQ, sin pretender que lo acepten tal cual:
+Esto es un parche de compatibilidad, no una propuesta lista para WineHQ: fija dentro de Wine una estructura heredada de CrossOver. Lo razonable es llevarles el **problema** y un diseño más limpio:
 
-- **Parche pequeño** (este): exportar esos símbolos. Es el mismo en espíritu que lo que CrossOver hace con su tabla `macdrv_functions`.
-- **Propuesta mejor:** una interfaz documentada en `winemac.drv` para que una capa externa obtenga un `CAMetalLayer` a partir de un `HWND` (como `winevulkan` hace con Vulkan), en lugar de depender de símbolos internos. Es una conversación de diseño con los mantenedores de `winemac.drv`.
-- Envío: lista `wine-devel` o *merge request* en `gitlab.winehq.org`, con cuenta propia de quien envía y siguiendo su guía de contribución. **Dormer no puede enviarlo por ti.**
+- una interfaz documentada para que una capa externa obtenga una *client surface* registrada en win32u (con sus avisos de cambio de tamaño y de destrucción) y su `CAMetalLayer` a partir de un `HWND`; hoy `use_window_client_surface()` es interno de win32u y por eso el parche tiene que sincronizar a mano;
+- o que la capa llame a `client_surface_present()` en cada fotograma, como hacen Vulkan y OpenGL.
 
-## Resultados de la primera prueba (2026-11-12)
+Envío: lista `wine-devel` o *merge request* en `gitlab.winehq.org`, con cuenta propia de quien envía y siguiendo su guía de contribución. **Dormer no puede enviarlo por ti.** También tiene sentido avisar al proyecto DXMT, que es quien decide qué interfaz consume.
 
-Se compiló `winemac.so` de Wine 11.21 oficial con el parche (bison 3.8.2 y `llvm-mingw` 20261104 en una carpeta aparte; `CC="/usr/bin/clang -arch x86_64"`, `--host=x86_64-apple-darwin`, `--enable-win64`; 1 minuto de compilación) y se colocó en una **copia** del motor Wine de Gcenx con DXMT v0.80.
+## Siguiente
 
-- ✅ `nm -gU` muestra exportados los cinco símbolos (`get_win_data`, `release_win_data`, `macdrv_view_create_metal_view`, `macdrv_view_get_metal_layer`, `macdrv_view_release_metal_view`).
-- ✅ El `winemac.so` propio **funciona dentro del Wine de Gcenx** (no hay desajuste de ABI visible: el programa arranca y crea ventanas).
-- ✅ Audacity 4 ya **no** falla con «Failed to initialize graphics backend for D3D11» ni con «no exported symbols needed by DXMT»: Qt consigue un dispositivo Direct3D 11 (nivel 11.0) con DXMT y crea su ventana principal (1928×1058).
-- ❌ Pero la ventana se queda **en gris sin dibujar** y el proceso queda inactivo; DXMT registra un `err: Not implemented`. Causa sin determinar (puede ser una función de Direct3D 11 que DXMT v0.80 aún no implementa y que usa Qt 6, o la forma en que se captura la capa Metal). **No se puede afirmar que Audacity 4 funcione.**
-- ℹ️ SHA-256 del `winemac.so` compilado: `ac5ddf4bcbae66f09ae22d81ea419a489ace1602631c01f08805507debc2c4b7` (no se publica el binario).
-
-### Siguiente
-
-1. Probar un programa Direct3D 11 más simple que Audacity (un juego o demo ligero) para separar «el parche funciona» de «Audacity 4 pide algo que DXMT no implementa».
-2. Mirar qué función dispara el `Not implemented` (compilar DXMT desde fuente con registro, o consultar su wiki/estado).
-3. Cuando haya un programa Direct3D 11 que se dibuje bien: integrar el motor parcheado de serie en Dormer (compilarlo en CI, con la receta y el parche públicos) y activar la capacidad `dxmt`.
+1. Probar más programas Direct3D 11 (y Direct3D 10) y algún juego libre; anotar cada resultado en [docs/COMPATIBILITY.md](../../docs/COMPATIBILITY.md).
+2. Probar Retina, pantalla completa y ventanas hijas.
+3. Integrarlo de serie en Dormer: compilar `winemac.so` en CI con esta receta y sumas verificadas, publicar el binario con su fuente y parche (LGPL), y activar la capacidad `dxmt` solo para ese motor.

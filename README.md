@@ -56,7 +56,7 @@ Si necesitas que *cualquier* programa de Windows funcione, lo que se parece a Wi
 - **No todo funciona.** Probado y documentado en [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
 - **Power BI Desktop:** el instalador falla dentro de Wine; no esperes que funcione.
 - **Notepad++:** la barra de menú se ve apilada en filas (problema de Wine con esa app); se puede usar.
-- **Apps modernas que piden Direct3D 11 real** (por ejemplo Audacity 4) no abren: WineD3D solo ofrece el nivel 9.3 en este Mac. **DXMT** crea el dispositivo pero no puede dibujar en ventanas con el motor Wine incluido, así que está desactivado.
+- **Apps modernas que piden Direct3D 11 real** (por ejemplo Audacity 4) no abren: WineD3D solo ofrece el nivel 9.3 en este Mac. **DXMT** crea el dispositivo pero no puede dibujar en ventanas con el motor Wine incluido, así que está desactivado. Hay un [parche experimental](packaging/wine/README.md) con el que sí dibuja (probado con Audacity 4), aún sin integrar.
 - **D3DMetal (Game Porting Toolkit):** puedes importarlo, pero todavía no se puede usar (necesita un motor Wine del Game Porting Toolkit que Dormer no incluye). DXVK no se ofrece (sin versiones desde 2024).
 - **Wine Gecko** (motor web de Windows) sin verificar en botellas aisladas.
 - Compilación del `.dmg` y publicación automática (CI): escritas pero **sin probar** en GitHub todavía.

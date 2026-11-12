@@ -63,6 +63,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 ### Changed
 - **DXMT queda desactivado** con el motor Wine incluido: al probar Audacity 4 se vio que falla con *«your Wine has no exported symbols needed by DXMT»* (el `winemac.drv` de la compilación de Gcenx no expone lo que DXMT necesita para presentar imagen). La disponibilidad de DXMT ahora depende de una capacidad del motor (`dxmt`, `false` para los del catálogo). Mi verificación anterior solo comprobaba la creación del dispositivo, no el dibujo.
 - «Acerca de» ya no dice que DXMT es LGPL (es MIT) ni lista DXVK.
+- **Experimento DXMT (sin integrar en la app):** parche para `winemac.drv` de Wine 11.21 (`packaging/wine`) que añade la tabla `macdrv_functions`; con él DXMT v0.80 dibuja en ventanas (programa de prueba Direct3D 11 y Audacity 4.0.2). Sustituye al primer parche de solo exportar símbolos, que no bastaba. La capacidad `dxmt` sigue en `false`.
 - La app usa los servicios reales; los datos de ejemplo quedan solo para las SwiftUI Previews.
 - Los ajustes que aún no llegan a Wine (solo el backend gráfico: DXMT y D3DMetal) indican en qué fase se aplican.
 - "Renombrar programa" pasa a "Editar programa".

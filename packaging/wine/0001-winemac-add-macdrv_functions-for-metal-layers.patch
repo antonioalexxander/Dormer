@@ -1,0 +1,266 @@
+winemac.drv: Add a macdrv_functions table for Direct3D-on-Metal layers.
+
+Translation layers such as DXMT (MIT) present through a CAMetalLayer that
+they obtain from the Mac driver. They look up a `macdrv_functions` table
+with dlsym() and expect a window data layout that upstream Wine no longer
+has: a window only gets a client view once a client surface exists, and
+the driver hides that view again whenever the GDI window surface is
+flushed, expecting the next client_surface_present() to show it.
+
+This adds the table, exported from winemac.so. It creates a client
+surface on demand, keeps its view in sync from WindowPosChanged, leaves
+it visible while its Metal view exists, and releases it with the Metal
+view or the window.
+
+Against wine-11.21. Tested with DXMT v0.80 on macOS 27.2 (Apple M5,
+Rosetta 2): a Direct3D 11 test program and Audacity 4.0.2 (Qt 6).
+
+--- a/dlls/winemac.drv/macdrv.h
++++ b/dlls/winemac.drv/macdrv.h
+@@ -254,6 +254,7 @@
+ extern struct macdrv_client_surface *impl_from_client_surface(struct client_surface *client);
+ extern bool macdrv_client_surface_acquire_metal_swapchain(struct macdrv_client_surface *surface);
+ 
++extern bool macdrv_compat_owns_view(WineContentView *view);
+ extern struct macdrv_win_data *get_win_data(HWND hwnd);
+ extern void release_win_data(struct macdrv_win_data *data);
+ extern void init_win_context(void);
+--- a/dlls/winemac.drv/surface.c
++++ b/dlls/winemac.drv/surface.c
+@@ -124,7 +124,7 @@
+      * content in the window_surface */
+     if ((data = get_win_data(window_surface->hwnd)))
+     {
+-        if (data->client_view)
++        if (data->client_view && !macdrv_compat_owns_view(data->client_view))
+         {
+             macdrv_set_view_hidden(data->client_view, TRUE);
+             data->client_view = NULL;
+--- a/dlls/winemac.drv/window.c
++++ b/dlls/winemac.drv/window.c
+@@ -31,6 +31,9 @@
+ #include <IOKit/pwr_mgt/IOPMLib.h>
+ 
+ WINE_DEFAULT_DEBUG_CHANNEL(macdrv);
++
++static void compat_surfaces_update(HWND hwnd);
++static void compat_surfaces_destroy(HWND hwnd);
+ 
+ 
+ static pthread_mutex_t win_data_mutex;
+@@ -1261,6 +1264,8 @@
+ 
+     TRACE("%p\n", hwnd);
+ 
++    compat_surfaces_destroy(hwnd);
++
+     if (!(data = get_win_data(hwnd))) return;
+ 
+     if (data->drag_event) NtSetEvent(data->drag_event, NULL);
+@@ -1638,7 +1643,11 @@
+     unsigned int new_style = NtUserGetWindowLongW(hwnd, GWL_STYLE);
+     struct window_rects old_rects;
+ 
+-    if (!(data = get_win_data(hwnd))) return;
++    if (!(data = get_win_data(hwnd)))
++    {
++        compat_surfaces_update(hwnd);
++        return;
++    }
+ 
+     thread_data = macdrv_thread_data();
+ 
+@@ -1690,6 +1699,7 @@
+ 
+ done:
+     release_win_data(data);
++    compat_surfaces_update(hwnd);
+ }
+ 
+ 
+@@ -2207,4 +2217,185 @@
+     pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+     pthread_mutex_init(&win_data_mutex, &attr);
+     pthread_mutexattr_destroy(&attr);
++}
++
++
++/***********************************************************************
++ *              macdrv_functions
++ *
++ * Entry points for Direct3D-on-Metal translation layers such as DXMT,
++ * which look this table up with dlsym() and expect the layout below.
++ *
++ * A window only has a client view once a client surface exists, so one
++ * is created on demand, as win32u does for Vulkan and OpenGL. win32u
++ * only tracks the surfaces it created itself, and such a layer never
++ * calls client_surface_present(), so these surfaces are kept in sync
++ * from WindowPosChanged, stay visible while their Metal view exists
++ * and are released with it or with the window.
++ *
++ * The table is protected by win_data_mutex.
++ */
++struct macdrv_compat_win_data
++{
++    HWND             hwnd;
++    WineWindow      *cocoa_window;
++    WineContentView *cocoa_view;
++    WineContentView *client_cocoa_view;
++};
++
++static struct
++{
++    HWND                   hwnd;
++    struct client_surface *client;
++    WineContentView       *view;
++    WineMetalView         *metal_view;
++} compat_surfaces[64];
++
++bool macdrv_compat_owns_view(WineContentView *view)
++{
++    bool ret = false;
++    unsigned int i;
++
++    pthread_mutex_lock(&win_data_mutex);
++    for (i = 0; i < ARRAY_SIZE(compat_surfaces) && !ret; i++)
++        ret = compat_surfaces[i].hwnd && compat_surfaces[i].view == view;
++    pthread_mutex_unlock(&win_data_mutex);
++    return ret;
+ }
++
++static void compat_surfaces_update(HWND hwnd)
++{
++    HWND toplevel = NtUserGetAncestor(hwnd, GA_ROOT);
++    struct macdrv_win_data *data;
++    unsigned int i;
++
++    pthread_mutex_lock(&win_data_mutex);
++    for (i = 0; i < ARRAY_SIZE(compat_surfaces); i++)
++    {
++        HWND client_hwnd = compat_surfaces[i].hwnd;
++        UINT dpi;
++        RECT rect;
++
++        if (!client_hwnd || NtUserGetAncestor(client_hwnd, GA_ROOT) != toplevel) continue;
++        dpi = NtUserGetWinMonitorDpi(client_hwnd, MDT_RAW_DPI);
++        if (!NtUserGetClientRect(client_hwnd, &rect, dpi)) continue;
++        if (client_hwnd != toplevel) NtUserMapWindowPoints(client_hwnd, toplevel, (POINT *)&rect, 2, dpi);
++        if (!(data = get_win_data(toplevel))) continue;
++        OffsetRect(&rect, data->rects.client.left - data->rects.visible.left,
++                   data->rects.client.top - data->rects.visible.top);
++        release_win_data(data);
++        macdrv_set_view_frame(compat_surfaces[i].view, cgrect_from_rect(rect));
++    }
++    pthread_mutex_unlock(&win_data_mutex);
++}
++
++/* release the surfaces of a window, or the one holding a Metal view */
++static void compat_surfaces_release(HWND hwnd, WineMetalView *metal_view)
++{
++    struct client_surface *clients[ARRAY_SIZE(compat_surfaces)];
++    unsigned int i, count = 0;
++
++    pthread_mutex_lock(&win_data_mutex);
++    for (i = 0; i < ARRAY_SIZE(compat_surfaces); i++)
++    {
++        if (!compat_surfaces[i].hwnd) continue;
++        if (hwnd ? compat_surfaces[i].hwnd != hwnd : compat_surfaces[i].metal_view != metal_view) continue;
++        clients[count++] = compat_surfaces[i].client;
++        memset(&compat_surfaces[i], 0, sizeof(compat_surfaces[i]));
++    }
++    pthread_mutex_unlock(&win_data_mutex);
++
++    /* takes the win32u surfaces lock, which must not be acquired inside win_data_mutex */
++    while (count) client_surface_release(clients[--count]);
++}
++
++static void compat_surfaces_destroy(HWND hwnd)
++{
++    compat_surfaces_release(hwnd, NULL);
++}
++
++static struct macdrv_compat_win_data *compat_get_win_data(HWND hwnd)
++{
++    struct macdrv_compat_win_data *ret;
++    struct macdrv_win_data *data;
++    unsigned int i, slot = ARRAY_SIZE(compat_surfaces);
++
++    /* callers do not check for NULL */
++    if (!(ret = calloc(1, sizeof(*ret)))) return NULL;
++    ret->hwnd = hwnd;
++
++    if (!(data = get_win_data(NtUserGetAncestor(hwnd, GA_ROOT)))) return ret;
++    ret->cocoa_window = data->cocoa_window;
++
++    for (i = 0; i < ARRAY_SIZE(compat_surfaces); i++)
++    {
++        if (compat_surfaces[i].hwnd == hwnd) { slot = i; break; }
++        if (!compat_surfaces[i].hwnd && slot == ARRAY_SIZE(compat_surfaces)) slot = i;
++    }
++    if (slot < ARRAY_SIZE(compat_surfaces) && !compat_surfaces[slot].hwnd)
++    {
++        struct client_surface *client;
++
++        if ((client = macdrv_CreateClientSurface(hwnd, 0, FALSE)))
++        {
++            compat_surfaces[slot].hwnd = hwnd;
++            compat_surfaces[slot].client = client;
++            compat_surfaces[slot].view = impl_from_client_surface(client)->cocoa_view;
++        }
++    }
++    if (slot < ARRAY_SIZE(compat_surfaces) && compat_surfaces[slot].hwnd)
++        ret->cocoa_view = ret->client_cocoa_view = compat_surfaces[slot].view;
++    release_win_data(data);
++
++    TRACE("hwnd %p -> window %p view %p\n", hwnd, ret->cocoa_window, ret->client_cocoa_view);
++    return ret;
++}
++
++static void compat_release_win_data(struct macdrv_compat_win_data *data)
++{
++    free(data);
++}
++
++static WineMetalView *compat_view_create_metal_view(WineContentView *view, MTLDevice_id device)
++{
++    WineMetalView *metal_view = macdrv_view_create_metal_view(view, device);
++    unsigned int i;
++
++    pthread_mutex_lock(&win_data_mutex);
++    for (i = 0; i < ARRAY_SIZE(compat_surfaces); i++)
++        if (compat_surfaces[i].hwnd && compat_surfaces[i].view == view) compat_surfaces[i].metal_view = metal_view;
++    pthread_mutex_unlock(&win_data_mutex);
++    return metal_view;
++}
++
++static void compat_view_release_metal_view(WineMetalView *metal_view)
++{
++    macdrv_view_release_metal_view(metal_view);
++    if (metal_view) compat_surfaces_release(NULL, metal_view);
++}
++
++struct macdrv_functions_t
++{
++    void (*macdrv_init_display_devices)(BOOL);
++    struct macdrv_compat_win_data *(*get_win_data)(HWND hwnd);
++    void (*release_win_data)(struct macdrv_compat_win_data *data);
++    WineWindow *(*macdrv_get_cocoa_window)(HWND hwnd, bool require_on_screen);
++    MTLDevice_id (*macdrv_create_metal_device)(void);
++    void (*macdrv_release_metal_device)(MTLDevice_id device);
++    WineMetalView *(*macdrv_view_create_metal_view)(WineContentView *view, MTLDevice_id device);
++    CAMetalLayer *(*macdrv_view_get_metal_layer)(WineMetalView *view);
++    void (*macdrv_view_release_metal_view)(WineMetalView *view);
++    void (*on_main_thread)(void *block);
++};
++
++__attribute__((visibility("default"))) struct macdrv_functions_t macdrv_functions =
++{
++    .get_win_data = compat_get_win_data,
++    .release_win_data = compat_release_win_data,
++    .macdrv_get_cocoa_window = macdrv_get_cocoa_window,
++    .macdrv_create_metal_device = macdrv_create_metal_device,
++    .macdrv_release_metal_device = macdrv_release_metal_device,
++    .macdrv_view_create_metal_view = compat_view_create_metal_view,
++    .macdrv_view_get_metal_layer = macdrv_view_get_metal_layer,
++    .macdrv_view_release_metal_view = compat_view_release_metal_view,
++};
