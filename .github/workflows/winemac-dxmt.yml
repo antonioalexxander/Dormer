@@ -1,0 +1,50 @@
+name: Wine Mac driver for DXMT
+
+# Pushing a tag such as winemac-dxmt-11.21-1 builds Wine's winemac.so with Dormer's patch
+# (packaging/wine) and attaches it to a GitHub pre-release, next to its SHA-256.
+# Uses only the free GITHUB_TOKEN that every run receives; no secrets, accounts or paid services.
+on:
+  push:
+    tags: ["winemac-dxmt-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: winemac.so
+    # Intel runner: Wine for macOS is x86_64 and its build runs the tools it has just compiled.
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: packaging/wine/build-winemac.sh build/winemac-dxmt
+      - name: Keep the build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: winemac-dxmt-logs
+          path: |
+            build/winemac-dxmt/*.log
+            build/winemac-dxmt/dist/
+      - name: Publish the pre-release
+        if: startsWith(github.ref, 'refs/tags/winemac-dxmt-')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="build/winemac-dxmt/dist/$GITHUB_REF_NAME.tar.gz"
+          test -f "$archive" || { echo "error: the tag must match the name in build-winemac.sh"; ls build/winemac-dxmt/dist; exit 1; }
+          cat > notes.md <<EOF
+          Wine's Mac driver (\`winemac.so\`, x86_64) built from the official Wine source with one patch, so that
+          DXMT can draw into windows. Dormer downloads it for the experimental DXMT graphics backend.
+
+          - Source: Wine under LGPL-2.1-or-later, https://dl.winehq.org/wine/source/11.x/
+          - Patch and recipe: [\`packaging/wine\`](https://github.com/$GITHUB_REPOSITORY/tree/$GITHUB_SHA/packaging/wine)
+          - SHA-256: \`$(cut -d' ' -f1 "$archive.sha256")\`
+
+          Not a Dormer release: nothing here is meant to be installed by hand.
+          EOF
+          gh release create "$GITHUB_REF_NAME" "$archive" "$archive.sha256" \
+            --title "Wine Mac driver for DXMT (${GITHUB_REF_NAME#winemac-dxmt-})" \
+            --notes-file notes.md --prerelease --verify-tag
