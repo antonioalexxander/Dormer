@@ -22,11 +22,27 @@ public struct WineRuntimeDescriptor: Codable, Hashable, Sendable, Identifiable {
         public var wow64: Bool
         public var esync: Bool
         public var msync: Bool
+        /// The runtime's `winemac.drv` exports the symbols DXMT needs to draw into windows. Without them DXMT
+        /// can create a Direct3D device but fails with "Wine has no exported symbols needed by DXMT".
+        public var dxmt: Bool
 
-        public init(wow64: Bool, esync: Bool, msync: Bool) {
+        public init(wow64: Bool, esync: Bool, msync: Bool, dxmt: Bool = false) {
             self.wow64 = wow64
             self.esync = esync
             self.msync = msync
+            self.dxmt = dxmt
+        }
+
+        private enum CodingKeys: String, CodingKey { case wow64, esync, msync, dxmt }
+
+        /// Lenient: runtime receipts written before `dxmt` existed have no such key.
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.init(
+                wow64: try container.decode(Bool.self, forKey: .wow64),
+                esync: try container.decode(Bool.self, forKey: .esync),
+                msync: try container.decode(Bool.self, forKey: .msync),
+                dxmt: try container.decodeIfPresent(Bool.self, forKey: .dxmt) ?? false)
         }
     }
 

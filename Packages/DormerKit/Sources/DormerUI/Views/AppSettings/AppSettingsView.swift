@@ -77,7 +77,9 @@ private struct RuntimeSettings: View {
                     } label: {
                         Text(runtime.displayName)
                         Text(
-                            "\(runtime.architecture.rawValue) · \(runtime.requiresRosetta ? "requiere Rosetta" : "nativo") · \(Formatters.bytes(runtime.sizeBytes))"
+                            runtime.requiresRosetta
+                                ? "\(runtime.architecture.rawValue) · requiere Rosetta · \(Formatters.bytes(runtime.sizeBytes))"
+                                : "\(runtime.architecture.rawValue) · nativo · \(Formatters.bytes(runtime.sizeBytes))"
                         )
                     }
                 }
@@ -108,19 +110,13 @@ private struct GraphicsSettings: View {
 
     var body: some View {
         Form {
-            Section("Descargables") {
+            Section("Capas gráficas") {
                 LabeledContent {
-                    if let version = model.dxmtVersion {
-                        Label("Descargado (\(version))", systemImage: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
-                    } else {
-                        Button("Descargar (18 MB)") { Task { await model.downloadDXMT() } }
-                            .disabled(model.activity != nil)
-                    }
+                    Text("No disponible").foregroundStyle(.secondary)
                 } label: {
                     Text("DXMT · MIT")
                     Text(
-                        "DirectX 10/11 → Metal. Experimental: solo se usa en las botellas que lo elijan. Se descarga solo la primera vez que hace falta."
+                        "DirectX 10/11 → Metal. Crea dispositivos Direct3D 11 con el motor incluido, pero no puede dibujar en ventanas: a su winemac.drv le faltan símbolos que DXMT necesita. Se activará cuando el catálogo incluya un motor Wine compatible."
                     )
                 }
                 LabeledContent {
@@ -157,10 +153,10 @@ private struct GraphicsSettings: View {
 
 private struct AboutSettings: View {
     private let components: [(String, String, String)] = [
-        ("Wine (compilación de Gcenx)", "LGPL-2.1-or-later", "https://gitlab.winehq.org/wine/wine"),
+        ("Wine (Gcenx)", "LGPL-2.1-or-later", "https://gitlab.winehq.org/wine/wine"),
+        ("Wine Mono · Wine Gecko", "MPL-2.0 · MIT · LGPL", "https://gitlab.winehq.org/wine"),
         ("winetricks", "LGPL-2.1-or-later", "https://github.com/Winetricks/winetricks"),
-        ("DXMT", "LGPL-2.1-or-later", "https://github.com/3Shain/dxmt"),
-        ("DXVK-macOS", "Zlib", "https://github.com/Gcenx/DXVK-macOS"),
+        ("DXMT", "MIT", "https://github.com/3Shain/dxmt"),
     ]
 
     var body: some View {

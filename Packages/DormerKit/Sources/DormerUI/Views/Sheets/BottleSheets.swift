@@ -64,6 +64,25 @@ struct NewBottleSheet: View {
 struct SymbolPicker: View {
     @Binding var selection: String
 
+    /// What VoiceOver says for each icon, instead of the SF Symbol's technical name.
+    static func name(of symbol: String) -> LocalizedStringKey {
+        switch symbol {
+        case "shippingbox": "Caja"
+        case "doc.text": "Documento"
+        case "gamecontroller": "Mando"
+        case "paintbrush": "Pincel"
+        case "music.note": "Música"
+        case "chart.bar": "Gráfico"
+        case "hammer": "Martillo"
+        case "book": "Libro"
+        case "briefcase": "Maletín"
+        case "globe": "Globo"
+        case "camera": "Cámara"
+        case "terminal": "Terminal"
+        default: LocalizedStringKey(symbol)
+        }
+    }
+
     var body: some View {
         LazyVGrid(columns: Array(repeating: GridItem(.fixed(30), spacing: 6), count: 6), spacing: 6) {
             ForEach(Bottle.availableSymbols, id: \.self) { symbol in
@@ -79,7 +98,7 @@ struct SymbolPicker: View {
                         .foregroundStyle(selection == symbol ? AnyShapeStyle(.tint) : AnyShapeStyle(.primary))
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(Text(verbatim: symbol))
+                .accessibilityLabel(Text(Self.name(of: symbol)))
                 .accessibilityAddTraits(selection == symbol ? .isSelected : [])
             }
         }

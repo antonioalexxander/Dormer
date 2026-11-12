@@ -1,0 +1,27 @@
+name: Release
+
+# Pushing a tag such as v0.1.0 tests the project, builds the disk image and attaches it to a GitHub release.
+# Uses only the free GITHUB_TOKEN that every run receives; no secrets, accounts or paid services.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  dmg:
+    name: Disk image
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: make test
+      - name: Build the disk image
+        run: Tools/make-dmg.sh "${GITHUB_REF_NAME#v}"
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" build/Dormer-*.dmg build/Dormer-*.dmg.sha256 \
+            --title "Dormer ${GITHUB_REF_NAME#v}" --generate-notes --verify-tag

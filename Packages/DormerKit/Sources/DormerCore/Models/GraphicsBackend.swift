@@ -26,9 +26,17 @@ public enum GraphicsBackend: String, Codable, CaseIterable, Sendable, Identifiab
     /// Whether the backend is shown with an "Experimental" badge.
     public var isExperimental: Bool { self == .dxvk }
 
-    /// Whether Dormer can run a bottle with this backend today. DXVK-macOS has had no release since 2024 and
-    /// D3DMetal needs a Game Porting Toolkit build of Wine that the catalog does not include.
-    public var isAvailable: Bool { self == .wined3d || self == .dxmt }
+    /// Whether a bottle can use this backend on `runtime`.
+    ///
+    /// DXMT needs a Wine that exports certain `winemac.drv` symbols (the bundled one does not); DXVK-macOS has had
+    /// no release since 2024; D3DMetal needs a Game Porting Toolkit build of Wine that the catalog does not include.
+    public func isAvailable(on runtime: WineRuntimeDescriptor?) -> Bool {
+        switch self {
+        case .wined3d: true
+        case .dxmt: runtime?.capabilities.dxmt == true
+        case .dxvk, .d3dmetal: false
+        }
+    }
 
     /// Whether the user must supply the component themselves because its license forbids redistribution.
     public var requiresUserSuppliedComponent: Bool { self == .d3dmetal }

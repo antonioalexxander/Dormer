@@ -123,6 +123,7 @@ struct WinetricksSheet: View {
             Spacer()
             if progress.isFinished {
                 Image(systemName: "checkmark.circle.fill").font(.system(size: 44)).foregroundStyle(.green)
+                    .accessibilityHidden(true)
                 Text("Componentes instalados").font(.headline)
             } else {
                 ProgressView(value: Double(progress.index), total: Double(progress.total))

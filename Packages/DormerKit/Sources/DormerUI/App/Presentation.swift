@@ -68,6 +68,26 @@ public struct AppAlert: Identifiable {
     public var retryAction: (@MainActor () -> Void)?
     /// Show a "View log" button that opens the Logs tab.
     public var offersLogs = false
+
+    /// Title and message are written as literals in the source, so they are extracted for translation.
+    public init(
+        title: LocalizedStringResource, message: LocalizedStringResource, retryAction: (@MainActor () -> Void)? = nil,
+        offersLogs: Bool = false
+    ) {
+        self.title = String(localized: title)
+        self.message = String(localized: message)
+        self.retryAction = retryAction
+        self.offersLogs = offersLogs
+    }
+
+    /// For messages that already come localized, such as an `Error`'s description.
+    public init(
+        title: LocalizedStringResource, verbatimMessage: String, retryAction: (@MainActor () -> Void)? = nil
+    ) {
+        self.title = String(localized: title)
+        self.message = verbatimMessage
+        self.retryAction = retryAction
+    }
 }
 
 extension RunTarget {
@@ -83,7 +103,7 @@ extension GraphicsBackend {
         case .wined3d:
             "Traducción integrada de Wine. La más compatible; ideal para programas de oficina."
         case .dxmt:
-            "DirectX 10 y 11 sobre Metal. Recomendado para juegos modernos."
+            "DirectX 10 y 11 sobre Metal. Necesita un motor Wine compatible; el que incluye Dormer no lo es."
         case .dxvk:
             "DirectX 9 a 11 sobre Vulkan (MoltenVK). Sin mantenimiento activo en Mac."
         case .d3dmetal:

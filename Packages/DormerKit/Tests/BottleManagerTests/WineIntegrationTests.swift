@@ -155,8 +155,7 @@ final class WineIntegrationTests: XCTestCase {
             FileManager.default.fileExists(atPath: prefix.appending(path: "dosdevices/z:").path(percentEncoded: false)),
             "Z: is hidden again after winetricks")
 
-        // 6c. DXMT: a tiny .NET program asks for a Direct3D 11 device. Wine's own Direct3D gives feature level 9.3
-        // here; DXMT (Metal) gives 11.0, which proves the variant runtime loads and works.
+        // 6c. A tiny .NET program asks for a Direct3D 11 device: Wine's own Direct3D answers with feature level 9.3.
         let source = """
             using System; using System.Runtime.InteropServices;
             class T {
@@ -176,18 +175,17 @@ final class WineIntegrationTests: XCTestCase {
         let wineD3D = await Self.output(of: try await runner.launch(.program(probe), in: bottle))
         print("WineD3D:", wineD3D.filter { $0.contains("RESULT") })
 
+        // The bundled Wine cannot present DXMT's output (Audacity 4 showed it: "your Wine has no exported symbols
+        // needed by DXMT"), so Dormer must refuse DXMT here instead of letting programs fail.
         bottle.settings.graphicsBackend = .dxmt
-        let dxmtStart = clock.now
-        bottle.appliedSettings = try await runner.prepare(bottle)  // downloads DXMT and builds the runtime variant
-        print("DXMT ready in \(clock.now - dxmtStart)")
-        let dxmtVersion = await graphics.dxmtVersion()
-        XCTAssertNotNil(dxmtVersion)
-        let dxmt = await Self.output(of: try await runner.launch(.program(probe), in: bottle))
-        XCTAssertTrue(
-            dxmt.contains { $0.contains("featurelevel=0xB000") },
-            "DXMT output: \(dxmt.filter { !$0.contains("fixme") })")
+        do {
+            _ = try await runner.prepare(bottle)
+            XCTFail("DXMT must be refused on the bundled runtime")
+        } catch {
+            XCTAssertEqual(
+                error as? GraphicsStore.GraphicsError, .dxmtNeedsCompatibleWine(runtime: runtime.displayName))
+        }
         bottle.settings.graphicsBackend = .wined3d
-        bottle.appliedSettings = try await runner.prepare(bottle)
 
         // 7. Export and import the real bottle.
         let archive = paths.root.appending(path: "export.aar")

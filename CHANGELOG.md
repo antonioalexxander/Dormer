@@ -42,17 +42,27 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 - Fase 4, extras del MVP:
   - Winetricks real: Dormer descarga el script oficial fijado (versión 20260125, SHA-256 verificado) y lo ejecuta en la botella; la hoja muestra el avance, la salida en vivo, qué componentes ya están instalados y permite cancelar. Verificado instalando `corefonts`, `d3dcompiler_47`, `vcrun2022` y `d3dx9` (con sus versiones de 32 y 64 bits).
   - `cabextract` sin compilar nada: un pequeño asistente propio sobre el `bsdtar` de macOS (que lee archivos CAB, incluidos los instaladores autoextraíbles de Microsoft) cubre las opciones que usa winetricks. No hace falta alojar binarios.
-  - DXMT (MIT, v0.80) como backend gráfico experimental: descarga verificada (SHA-256) y una variante del motor Wine creada como clon APFS, para que solo las botellas que lo elijan lo usen. Verificado con la creación de un dispositivo Direct3D 11: WineD3D da nivel 9.3 y DXMT nivel 11.0. **No se probó con juegos.**
+  - DXMT (MIT, v0.80): descarga verificada (SHA-256) y una variante del motor Wine creada como clon APFS. Crea un dispositivo Direct3D 11 (nivel 11.0 frente al 9.3 de WineD3D), **pero con el Wine de Gcenx no puede dibujar en ventanas** (ver «Changed»), así que quedó desactivado.
   - Importación de D3DMetal desde el Game Porting Toolkit que aporta el usuario (imagen de disco o volumen montado): copia solo `D3DMetal.framework` y `libd3dshared.dylib`. Dormer nunca acepta la licencia de Apple por el usuario. **Importarlo no lo activa** (falta un motor Wine del Game Porting Toolkit).
   - Lanzadores `.app` en `~/Applications` con el ícono del programa; abren `dormer://run?…` (verificado de punta a punta con Notepad++).
   - Notificaciones locales cuando termina winetricks o un instalador, solo si Dormer está en segundo plano.
-  - DXVK y D3DMetal aparecen como «no disponibles» en el selector de backend en lugar de aceptar una elección que no funciona.
+  - DXMT, DXVK y D3DMetal aparecen como «no disponibles» en el selector de backend en lugar de aceptar una elección que no funciona.
   - 29 pruebas nuevas; la prueba de extremo a extremo instala un verbo con winetricks y comprueba DXMT.
+
+- Fase 5, calidad y publicación:
+  - Español e inglés: catálogo de textos (`App/Localizable.xcstrings`, 325 entradas) y prueba que impide textos sin traducir o marcadores de formato rotos. Las alertas y mensajes de error ahora también se traducen.
+  - Accesibilidad (revisión de código; sin prueba con VoiceOver real): nombres legibles en el selector de íconos, íconos decorativos ocultos, botón solo-hover fuera del árbol de accesibilidad (la acción ya existe en el programa) y animaciones que respetan «reducir movimiento».
+  - Arranque medido: 0,4–0,5 s hasta mostrar la ventana (0,9 s en frío), con la app Release en esta máquina.
+  - `make dmg` (compilación Release firmada ad hoc con *hardened runtime* y `.dmg` con suma SHA-256), flujo de publicación en GitHub (`release.yml`, solo con el `GITHUB_TOKEN`) y plantilla de cask de Homebrew. **El flujo y el cask no se han probado en GitHub/Homebrew.**
+  - `make probe`: instala un programa en una botella desechable con los servicios reales y cuenta qué pasó; base de [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
+  - README en español e inglés, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, THIRD_PARTY_LICENSES y plantillas de issues y pull requests.
 
 ### Fixed
 - Los programas .NET fallaban con «Wine Mono is not installed» en botellas aisladas (la configuración por defecto desde la Fase 3). Wine alcanza Mono, que viaja junto al motor, a través de la unidad Z:, y las botellas aisladas no la tienen. Ahora Dormer clona Mono dentro de la botella (`C:\windows\mono\mono-2.0`; en APFS es instantáneo) al crearla y, en las existentes, la próxima vez que se abre un programa. Se añadió a la prueba de extremo a extremo una aplicación .NET real.
 
 ### Changed
+- **DXMT queda desactivado** con el motor Wine incluido: al probar Audacity 4 se vio que falla con *«your Wine has no exported symbols needed by DXMT»* (el `winemac.drv` de la compilación de Gcenx no expone lo que DXMT necesita para presentar imagen). La disponibilidad de DXMT ahora depende de una capacidad del motor (`dxmt`, `false` para los del catálogo). Mi verificación anterior solo comprobaba la creación del dispositivo, no el dibujo.
+- «Acerca de» ya no dice que DXMT es LGPL (es MIT) ni lista DXVK.
 - La app usa los servicios reales; los datos de ejemplo quedan solo para las SwiftUI Previews.
 - Los ajustes que aún no llegan a Wine (solo el backend gráfico: DXMT y D3DMetal) indican en qué fase se aplican.
 - "Renombrar programa" pasa a "Editar programa".

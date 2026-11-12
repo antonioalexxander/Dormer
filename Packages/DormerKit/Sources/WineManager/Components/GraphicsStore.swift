@@ -9,6 +9,7 @@ import Foundation
 public actor GraphicsStore: GraphicsServicing {
     public enum GraphicsError: LocalizedError, Equatable {
         case unavailable(GraphicsBackend)
+        case dxmtNeedsCompatibleWine(runtime: String)
         case dxmtPackageInvalid
         case gptkNotFound
         case gptkMountFailed(String)
@@ -19,6 +20,11 @@ public actor GraphicsStore: GraphicsServicing {
                 String(
                     localized:
                         "El backend gráfico \(backend.displayName) todavía no se puede usar en Dormer. Elige WineD3D o DXMT en la configuración de la botella."
+                )
+            case .dxmtNeedsCompatibleWine(let runtime):
+                String(
+                    localized:
+                        "DXMT no funciona con el motor «\(runtime)»: a su winemac.drv le faltan símbolos que DXMT necesita para dibujar en ventanas. Elige WineD3D."
                 )
             case .dxmtPackageInvalid:
                 String(localized: "El paquete de DXMT no tiene la estructura esperada. No se instaló.")
@@ -62,7 +68,11 @@ public actor GraphicsStore: GraphicsServicing {
         let base = try await runtimes.installation(forID: bottle.runtimeID)
         switch bottle.settings.graphicsBackend {
         case .wined3d: return base
-        case .dxmt: return try await dxmtVariant(of: base)
+        case .dxmt:
+            guard base.descriptor.capabilities.dxmt else {
+                throw GraphicsError.dxmtNeedsCompatibleWine(runtime: base.descriptor.displayName)
+            }
+            return try await dxmtVariant(of: base)
         case .dxvk, .d3dmetal: throw GraphicsError.unavailable(bottle.settings.graphicsBackend)
         }
     }

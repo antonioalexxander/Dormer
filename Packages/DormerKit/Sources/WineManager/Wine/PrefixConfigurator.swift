@@ -8,6 +8,7 @@ import Foundation
 /// change made while no program is open still takes effect on the next launch.
 public enum PrefixConfigurator {
     public struct ConfigurationError: LocalizedError {
+        /// Already localized.
         public let step: String
         public let detail: String
 
@@ -78,13 +79,15 @@ public enum PrefixConfigurator {
     }
 
     private static func run(
-        _ installation: WineInstallation, _ prefix: URL, _ arguments: [String], step: String
+        _ installation: WineInstallation, _ prefix: URL, _ arguments: [String], step: LocalizedStringResource
     ) async throws {
         let result = try await ProcessRunner.run(installation.wineSpec(arguments, prefix: prefix))
         guard result.status == 0 else {
             let errors = result.lines.filter { $0.contains(":err:") }
             let detail = (errors.isEmpty ? result.lines : errors).suffix(3).joined(separator: "\n")
-            throw ConfigurationError(step: step, detail: detail.isEmpty ? "código \(result.status)" : detail)
+            throw ConfigurationError(
+                step: String(localized: step),
+                detail: detail.isEmpty ? String(localized: "código \(result.status)") : detail)
         }
     }
 }

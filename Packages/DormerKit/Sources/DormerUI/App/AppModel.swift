@@ -193,7 +193,7 @@ public final class AppModel {
 
     public func duplicateBottle(_ id: UUID) async {
         guard let original = bottle(withID: id) else { return }
-        guard requireNoRunningPrograms(in: original, action: "duplicarla") else { return }
+        guard requireNoRunningPrograms(in: original, for: .duplicate) else { return }
         do {
             let copy = try await bottleService.duplicate(original, named: "\(original.name) (copia)")
             if let index = bottles.firstIndex(where: { $0.id == id }) {
@@ -338,7 +338,7 @@ public final class AppModel {
         do {
             // Wine settings are written to the prefix lazily, right before a program starts.
             let hasPendingChanges = bottle.appliedSettings != bottle.settings
-            if hasPendingChanges { activity = "Aplicando ajustes de «\(bottle.name)»…" }
+            if hasPendingChanges { activity = String(localized: "Aplicando ajustes de «\(bottle.name)»…") }
             defer { if hasPendingChanges { activity = nil } }
             let applied = try await runner.prepare(bottle)
             if applied != bottle.appliedSettings {
@@ -430,7 +430,7 @@ public final class AppModel {
     }
 
     public func downloadDXMT() async {
-        activity = "Descargando DXMT…"
+        activity = String(localized: "Descargando DXMT…")
         defer { activity = nil }
         do {
             try await graphicsService.installDXMT()
@@ -451,7 +451,7 @@ public final class AppModel {
         panel.prompt = String(localized: "Importar")
         guard panel.runModal() == .OK, let source = panel.url else { return }
 
-        activity = "Importando D3DMetal…"
+        activity = String(localized: "Importando D3DMetal…")
         defer { activity = nil }
         do {
             let version = try await graphicsService.importGPTK(from: source)
@@ -496,7 +496,7 @@ public final class AppModel {
     /// Asks where to save, then writes the bottle as an Apple Archive file.
     public func exportBottle(_ id: UUID) async {
         guard let bottle = bottle(withID: id) else { return }
-        guard requireNoRunningPrograms(in: bottle, action: "exportarla") else { return }
+        guard requireNoRunningPrograms(in: bottle, for: .export) else { return }
         let panel = NSSavePanel()
         panel.allowedContentTypes = [Self.archiveType]
         panel.nameFieldStringValue = "\(bottle.name).aar"
@@ -504,7 +504,7 @@ public final class AppModel {
         panel.prompt = String(localized: "Exportar")
         guard panel.runModal() == .OK, let destination = panel.url else { return }
 
-        activity = "Exportando «\(bottle.name)»…"
+        activity = String(localized: "Exportando «\(bottle.name)»…")
         defer { activity = nil }
         do {
             try await bottleService.save(bottle)  // include edits still waiting for their debounced save
@@ -525,7 +525,7 @@ public final class AppModel {
         panel.prompt = String(localized: "Importar")
         guard panel.runModal() == .OK, let source = panel.url else { return }
 
-        activity = "Importando «\(source.deletingPathExtension().lastPathComponent)»…"
+        activity = String(localized: "Importando «\(source.deletingPathExtension().lastPathComponent)»…")
         defer { activity = nil }
         do {
             let bottle = try await bottleService.importBottle(from: source)
@@ -539,11 +539,20 @@ public final class AppModel {
     }
 
     /// Wine writes its registry when the last process exits, so copying a running bottle gives a stale copy.
-    private func requireNoRunningPrograms(in bottle: Bottle, action: String) -> Bool {
+    private enum CopyingAction { case duplicate, export }
+
+    private func requireNoRunningPrograms(in bottle: Bottle, for action: CopyingAction) -> Bool {
         guard runningCount(in: bottle.id) == 0 else {
-            alert = AppAlert(
-                title: "Cierra los programas primero",
-                message: "«\(bottle.name)» tiene programas abiertos. Pulsa «Detener todo» antes de \(action).")
+            switch action {
+            case .duplicate:
+                alert = AppAlert(
+                    title: "Cierra los programas primero",
+                    message: "«\(bottle.name)» tiene programas abiertos. Pulsa «Detener todo» antes de duplicarla.")
+            case .export:
+                alert = AppAlert(
+                    title: "Cierra los programas primero",
+                    message: "«\(bottle.name)» tiene programas abiertos. Pulsa «Detener todo» antes de exportarla.")
+            }
             return false
         }
         return true
@@ -573,7 +582,8 @@ public final class AppModel {
     /// Opens `~/Library/Application Support/Dormer`.
     public func openDataFolder() {
         guard let dataFolder else {
-            explainUnavailable("Carpeta de datos", phase: 2)
+            alert = AppAlert(
+                title: "Carpeta de datos", message: "No está disponible en la vista previa con datos de ejemplo.")
             return
         }
         try? FileManager.default.createDirectory(at: dataFolder, withIntermediateDirectories: true)
@@ -596,19 +606,10 @@ public final class AppModel {
         }
     }
 
-    // MARK: Phase placeholders
-
-    /// Explains that a feature is not connected yet instead of pretending it worked.
-    public func explainUnavailable(_ feature: String, phase: Int) {
-        alert = AppAlert(
-            title: "\(feature): todavía no disponible",
-            message: "Esta función se conecta en la Fase \(phase) del plan de desarrollo.")
-    }
-
     // MARK: Helpers
 
-    func present(_ error: any Error, title: String, retry: (@MainActor () -> Void)? = nil) {
-        alert = AppAlert(title: title, message: error.localizedDescription, retryAction: retry)
+    func present(_ error: any Error, title: LocalizedStringResource, retry: (@MainActor () -> Void)? = nil) {
+        alert = AppAlert(title: title, verbatimMessage: error.localizedDescription, retryAction: retry)
     }
 
     private func mutateBottle(_ id: UUID, _ change: (inout Bottle) -> Void) {

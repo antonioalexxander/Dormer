@@ -1,0 +1,15 @@
+name: Idea o mejora
+description: Propón algo nuevo
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes: {label: Qué te gustaría y para qué}
+    validations: {required: true}
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Reglas del proyecto
+      options:
+        - label: Entiendo que Dormer solo usa herramientas gratuitas y de código abierto, sin telemetría ni cuentas
+          required: true

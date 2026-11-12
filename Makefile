@@ -3,6 +3,8 @@
 #   make run     Build and open the app
 #   make test    Unit tests (DormerCore, WineManager, BottleManager)
 #   make integration NPP=<installer.exe>   End-to-end with real Wine (downloads ~230 MB)
+#   make probe INSTALLER=<file> [ARGS=…] [VERBS=…] [PROGRAM=…] [GRAPHICS=dxmt] [ENVIRONMENT="A=1 B=2"]   Does a program work in Dormer?
+#   make dmg     Release build packed into build/Dormer-<version>.dmg
 #   make lint    swift-format lint + SwiftLint (if installed)
 #   make format  Apply swift-format in place
 #   make icon    Re-render the app icon from Tools/make-icon.swift
@@ -15,7 +17,7 @@ APP          := $(DERIVED)/Build/Products/Debug/Dormer.app
 FORMAT_PATHS := App $(PACKAGE)/Sources $(PACKAGE)/Tests $(PACKAGE)/Package.swift
 ICONSET      := App/Assets.xcassets/AppIcon.appiconset
 
-.PHONY: build run test integration lint format icon clean
+.PHONY: build run test integration probe dmg lint format icon clean
 
 build:
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug \
@@ -27,12 +29,24 @@ run: build
 test:
 	swift test --package-path $(PACKAGE)
 
+dmg:
+	Tools/make-dmg.sh
+
 # Uses a fresh folder under $TMPDIR, never ~/Library/Application Support/Dormer.
 integration:
 	@test -n "$(NPP)" || { echo "usage: make integration NPP=/path/to/npp.x.y.z.Installer.x64.exe"; exit 1; }
 	@root=$$(mktemp -d -t dormer-integration); echo "Scratch folder: $$root"; \
 	DORMER_INTEGRATION_ROOT=$$root DORMER_NPP_INSTALLER="$(NPP)" \
 		swift test --package-path $(PACKAGE) --filter WineIntegrationTests
+
+# Installs a program in a throwaway bottle with the real services and reports what happened.
+probe:
+	@test -n "$(INSTALLER)" || { echo "usage: make probe INSTALLER=/path/setup.exe [ARGS='/S'] [VERBS='vcrun2022'] [PROGRAM=name]"; exit 1; }
+	@root=$$(mktemp -d -t dormer-probe); echo "Scratch folder: $$root"; \
+	DORMER_INTEGRATION_ROOT=$$root DORMER_PROBE_INSTALLER="$(INSTALLER)" DORMER_PROBE_ARGS="$(ARGS)" \
+	DORMER_PROBE_VERBS="$(VERBS)" DORMER_PROBE_PROGRAM="$(PROGRAM)" DORMER_PROBE_OUT="$(OUT)" \
+	DORMER_PROBE_GRAPHICS="$(GRAPHICS)" DORMER_PROBE_ENV="$(ENVIRONMENT)" \
+		swift test --package-path $(PACKAGE) --filter CompatibilityProbe 2>&1 | grep -E "PROBE|error:|passed|failed"
 
 lint:
 	swift format lint --strict --recursive --configuration .swift-format $(FORMAT_PATHS)

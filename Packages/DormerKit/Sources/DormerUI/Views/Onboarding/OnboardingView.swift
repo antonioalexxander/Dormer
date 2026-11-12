@@ -19,6 +19,7 @@ struct OnboardingView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     @State private var step: Step = .rosetta
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(spacing: 0) {
@@ -36,7 +37,10 @@ struct OnboardingView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .padding(28)
             .transition(
-                .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)).combined(with: .opacity)
+                reduceMotion
+                    ? .opacity
+                    : .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading))
+                        .combined(with: .opacity)
             )
             .id(step)
         }
@@ -46,7 +50,7 @@ struct OnboardingView: View {
 
     private func advance() {
         guard let next = Step(rawValue: step.rawValue + 1) else { return }
-        withAnimation(.snappy) { step = next }
+        withAnimation(reduceMotion ? nil : .snappy) { step = next }
     }
 
     private func finish() {
@@ -127,7 +131,7 @@ private struct RosettaStep: View {
             .font(.callout)
 
             HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Image(systemName: "info.circle").foregroundStyle(.secondary)
+                Image(systemName: "info.circle").foregroundStyle(.secondary).accessibilityHidden(true)
                 Text("Apple limitará Rosetta a partir de macOS 28.")
                 Button("Saber más") { showsRosettaInfo.toggle() }
                     .buttonStyle(.link)
@@ -293,8 +297,10 @@ private struct RuntimeStep: View {
                     switch progress {
                     case .downloading(let received, let total, let speed):
                         let fraction = total > 0 ? Double(received) / Double(total) : 0
-                        let detail =
-                            "\(Formatters.bytes(received)) de \(Formatters.bytes(total)) · \(Formatters.bytes(Int64(speed)))/s"
+                        let detail = String(
+                            localized:
+                                "\(Formatters.bytes(received)) de \(Formatters.bytes(total)) · \(Formatters.bytes(Int64(speed)))/s"
+                        )
                         phase = .downloading(fraction: fraction, detail: detail)
                     case .verifying:
                         phase = .verifying

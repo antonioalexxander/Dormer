@@ -1,0 +1,21 @@
+name: Error / Bug
+description: Algo de Dormer no funciona como debería
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes: {label: Qué pasó, description: Qué esperabas y qué ocurrió}
+    validations: {required: true}
+  - type: textarea
+    id: steps
+    attributes: {label: Pasos para reproducirlo}
+    validations: {required: true}
+  - type: textarea
+    id: report
+    attributes:
+      label: Reporte de Dormer
+      description: "Pestaña Registros → «Copiar para reporte». Ya quita tu nombre de usuario y carpeta personal; revísalo antes de pegarlo."
+      render: text
+  - type: input
+    id: version
+    attributes: {label: Versión de Dormer y de macOS}

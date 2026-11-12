@@ -174,6 +174,8 @@ struct ProgramTile: View {
                 .buttonStyle(.plain)
                 .foregroundStyle(.tint)
                 .padding(6)
+                // The tile itself already opens the program (Return, double-click, accessibility action).
+                .accessibilityHidden(true)
                 .help("Abrir \(program.name)")
                 .transition(.opacity)
             }
@@ -243,6 +245,7 @@ private struct DropZone: View {
             Image(systemName: isTargeted ? "arrow.down.circle.fill" : "arrow.down.circle")
                 .font(.title2)
                 .contentTransition(.symbolEffect(.replace))
+                .accessibilityHidden(true)
             Text(
                 isTargeted
                     ? "Suelta para ejecutar en «\(bottleName)»" : "Suelta aquí un .exe, .msi o .bat para ejecutarlo")

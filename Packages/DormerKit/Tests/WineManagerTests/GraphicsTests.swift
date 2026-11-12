@@ -18,7 +18,8 @@ final class GraphicsStoreTests: XCTestCase {
             id: "test-runtime", displayName: "T", version: "1", flavor: .staging, architecture: .x86_64,
             requiresRosetta: false, minimumMacOS: "14.0", downloadURL: URL(string: "https://example.com/w")!,
             sha256: String(repeating: "a", count: 64), sizeBytes: 1, license: "LGPL-2.1-or-later",
-            sourceURL: URL(string: "https://example.com")!, capabilities: .init(wow64: true, esync: false, msync: false)
+            sourceURL: URL(string: "https://example.com")!,
+            capabilities: .init(wow64: true, esync: false, msync: false, dxmt: true)
         )
         // A fake installed runtime.
         let folder = paths.runtime(id: runtime.id)
@@ -88,6 +89,48 @@ final class GraphicsStoreTests: XCTestCase {
         let store = RuntimeStore(paths: paths, catalog: try RuntimeCatalog.bundled())
         let listed = await store.installedRuntimes().map(\.id)
         XCTAssertEqual(listed, ["test-runtime"])
+    }
+
+    func testDXMTIsRefusedOnARuntimeWithoutTheSymbolsItNeeds() async throws {
+        try placeDXMT()
+        // Like the bundled Gcenx build: DXMT can create a device but cannot draw into windows.
+        let incompatible = WineRuntimeDescriptor(
+            id: "plain", displayName: "Plain Wine", version: "1", flavor: .staging, architecture: .x86_64,
+            requiresRosetta: false, minimumMacOS: "14.0", downloadURL: URL(string: "https://example.com/w")!,
+            sha256: String(repeating: "b", count: 64), sizeBytes: 1, license: "LGPL-2.1-or-later",
+            sourceURL: URL(string: "https://example.com")!, capabilities: .init(wow64: true, esync: false, msync: false)
+        )
+        let folder = paths.runtime(id: incompatible.id)
+        let wine = folder.appending(path: "wine/bin/wine")
+        try fileManager.createDirectory(at: wine.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data("#!/bin/sh\n".utf8).write(to: wine)
+        try fileManager.setAttributes([.posixPermissions: 0o755], ofItemAtPath: wine.path(percentEncoded: false))
+        try JSONEncoder().encode(incompatible).write(to: folder.appending(path: "runtime.json"))
+        let store = RuntimeStore(
+            paths: paths, catalog: RuntimeCatalog(recommended: incompatible.id, runtimes: [incompatible]))
+        let graphics = GraphicsStore(paths: paths, runtimes: store, catalog: catalog)
+        do {
+            _ = try await graphics.installation(
+                for: Bottle(name: "B", runtimeID: "plain", settings: BottleSettings(graphicsBackend: .dxmt)))
+            XCTFail("Expected an error")
+        } catch {
+            XCTAssertEqual(error as? GraphicsStore.GraphicsError, .dxmtNeedsCompatibleWine(runtime: "Plain Wine"))
+            XCTAssertTrue(error.localizedDescription.contains("Plain Wine"))
+        }
+        XCTAssertFalse(GraphicsBackend.dxmt.isAvailable(on: incompatible))
+        XCTAssertTrue(GraphicsBackend.wined3d.isAvailable(on: incompatible))
+    }
+
+    func testRuntimeReceiptsWrittenBeforeTheDXMTCapabilityStillLoad() throws {
+        let old = #"{"wow64":true,"esync":false,"msync":false}"#
+        let capabilities = try JSONDecoder().decode(WineRuntimeDescriptor.Capabilities.self, from: Data(old.utf8))
+        XCTAssertFalse(capabilities.dxmt)
+    }
+
+    func testBundledRuntimesDoNotClaimDXMT() throws {
+        for runtime in try RuntimeCatalog.bundled().runtimes {
+            XCTAssertFalse(runtime.capabilities.dxmt, "\(runtime.id): verified not to work with DXMT")
+        }
     }
 
     func testBackendsThatCannotRunAreRefusedWithAnExplanation() async throws {

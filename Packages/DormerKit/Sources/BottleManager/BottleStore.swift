@@ -10,7 +10,7 @@ import WineManager
 public actor BottleStore: BottleServicing {
     public enum BottleError: LocalizedError {
         case noRuntimeInstalled
-        case wineFailed(step: String, detail: String)
+        case wineFailed(step: String, detail: String)  // `step` is already localized
 
         public var errorDescription: String? {
             switch self {
@@ -170,14 +170,18 @@ public actor BottleStore: BottleServicing {
         try BottleMetadataCodec.encode(bottle).write(to: paths.bottleMetadata(id: bottle.id), options: .atomic)
     }
 
-    private func runWine(_ arguments: [String], step: String, _ installation: WineInstallation, _ prefix: URL)
+    private func runWine(
+        _ arguments: [String], step: LocalizedStringResource, _ installation: WineInstallation, _ prefix: URL
+    )
         async throws
     {
         let result = try await ProcessRunner.run(installation.wineSpec(arguments, prefix: prefix))
         guard result.status == 0 else {
             let errors = result.lines.filter { $0.contains(":err:") || $0.hasPrefix("wine:") }
             let detail = (errors.isEmpty ? result.lines : errors).suffix(3).joined(separator: "\n")
-            throw BottleError.wineFailed(step: step, detail: detail.isEmpty ? "código \(result.status)" : detail)
+            throw BottleError.wineFailed(
+                step: String(localized: step),
+                detail: detail.isEmpty ? String(localized: "código \(result.status)") : detail)
         }
     }
 }

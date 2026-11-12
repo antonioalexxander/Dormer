@@ -41,22 +41,22 @@ struct BottleSettingsView: View {
                         HStack {
                             Text(backend.displayName)
                             if backend.isExperimental { Text("(experimental)") }
-                            if !backend.isAvailable { Text("(no disponible)") }
+                            if !backend.isAvailable(on: runtime) { Text("(no disponible)") }
                         }
                         .tag(backend)
-                        .selectionDisabled(!backend.isAvailable)
+                        .selectionDisabled(!backend.isAvailable(on: runtime))
                     }
                 } label: {
                     Text("Backend gráfico")
                     Text(settings.wrappedValue.graphicsBackend.summary)
                 }
-                if settings.wrappedValue.graphicsBackend == .dxmt {
+                if !GraphicsBackend.dxmt.isAvailable(on: runtime) {
                     Label {
                         Text(
-                            "DXMT es experimental: se probó con la creación de un dispositivo Direct3D 11, no con juegos. Se descarga (18 MB) la primera vez que abras un programa con él."
+                            "DXMT, DXVK y D3DMetal no están disponibles con el motor Wine que incluye Dormer. Algunas apps modernas que piden Direct3D 11 real (por ejemplo Audacity 4) no abrirán."
                         )
                     } icon: {
-                        Image(systemName: "flask").foregroundStyle(.orange)
+                        Image(systemName: "info.circle").foregroundStyle(.secondary)
                     }
                     .font(.callout)
                 }

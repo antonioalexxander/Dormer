@@ -1,0 +1,25 @@
+name: Informe de compatibilidad
+description: Cuenta si un programa funciona (o no) en Dormer
+labels: [compatibility]
+body:
+  - type: input
+    id: app
+    attributes: {label: Programa y versión}
+    validations: {required: true}
+  - type: dropdown
+    id: result
+    attributes:
+      label: Resultado
+      options: [Funciona bien, Funciona con problemas, No se instala, Se instala pero no abre, Se cierra o falla]
+    validations: {required: true}
+  - type: textarea
+    id: details
+    attributes:
+      label: Qué hiciste
+      description: Componentes de winetricks instalados, backend gráfico, versión de Windows, ajustes especiales
+  - type: textarea
+    id: report
+    attributes:
+      label: Reporte de Dormer
+      description: Pestaña Registros → «Copiar para reporte»
+      render: text
