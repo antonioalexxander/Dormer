@@ -58,6 +58,12 @@ public protocol RuntimeServicing: Sendable {
 
 /// Installs Windows runtimes (Visual C++, .NET, fonts…) through winetricks.
 public protocol DependencyInstalling: Sendable {
+    /// `false` while the installer is not connected; the UI then explains why instead of offering it.
+    var isAvailable: Bool { get }
     func curatedVerbs() async throws -> [WinetricksVerb]
     func install(verbs: [String], in bottle: Bottle) -> AsyncThrowingStream<DependencyInstallEvent, any Error>
+}
+
+extension DependencyInstalling {
+    public var isAvailable: Bool { true }
 }

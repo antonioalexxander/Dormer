@@ -59,7 +59,7 @@ timeline
   "minMacOS": "14.0",
   "url": "https://github.com/Gcenx/macOS_Wine_builds/releases/download/11.21/wine-staging-11.21-osx64.tar.xz",
   "sha256": "d7bcd5ab…f9d452",
-  "capabilities": { "wow64": true, "esync": true, "msync": false, "opengl": "verificar" }
+  "capabilities": { "wow64": true, "esync": false, "msync": false }
 }
 ```
 
@@ -75,9 +75,9 @@ Cuando exista un build gratuito de **Wine ARM64 + FEX** (CodeWeavers publica el 
 | Lanzador "en el Dock" | No hay API pública. Modificar `com.apple.dock.plist` es frágil. | Crear `.app` en `~/Applications` (o `/Applications`) y ofrecer "Mostrar en Finder" para arrastrarlo al Dock |
 | DXVK como opción principal | DXVK-macOS no tiene releases desde 2024 | **DXMT** como backend recomendado para D3D10/11, **WineD3D** por defecto y DXVK marcado como "Experimental" |
 | DirectX 12 | Sin opción open source sólida en Mac. vkd3d-proton sobre MoltenVK es muy limitado. | D3D12 solo vía **D3DMetal (GPTK)** importado por el usuario, explicando la licencia |
-| Sincronización (msync) | `msync` es un parche de CrossOver/Whisky y no está en Gcenx. `ntsync` de Wine 11 es solo para Linux. | Ofrecer `esync` cuando el runtime lo declare (staging). Ocultar lo que el runtime no soporte. |
-| WoW64 (fase 2) | Wine 11 en macOS ya usa el modo WoW64 nuevo (no hay 32 bits en Unix) | Probablemente funcione desde el MVP. Lo **verifico en Fase 2** con una app de 32 bits. |
-| WineD3D como respaldo | Un tercero reporta que algunos builds Gcenx 11.x vienen `--without-opengl` | **Verificar en Fase 2.** Si falta OpenGL, WineD3D usará su backend Vulkan (MoltenVK). |
+| Sincronización (msync) | `msync` es un parche de CrossOver/Whisky y no está en Gcenx. `ntsync` de Wine 11 es solo para Linux. | **Verificado en Fase 2:** Gcenx 11.21 staging no trae esync ni msync (no aparecen `WINEESYNC`/`WINEMSYNC` en `ntdll.so` ni en `wineserver`). El catálogo los declara `false` y la UI solo ofrece la sincronización estándar. |
+| WoW64 (fase 2) | Wine 11 en macOS ya usa el modo WoW64 nuevo (no hay 32 bits en Unix) | **Verificado en Fase 2:** el Bloc de notas de 32 bits (`syswow64\notepad.exe`, PE32 i386) abre su ventana. |
+| WineD3D como respaldo | Un tercero reporta que algunos builds Gcenx 11.x vienen `--without-opengl` | **Verificado en Fase 2:** el build 11.21 trae `opengl32.so` y `winemac.so` enlaza CGL, así que tiene OpenGL. Aún no se probó una app 3D. |
 | Sandbox / "mínimo de permisos" | App Sandbox es incompatible con lanzar Wine sobre ejecutables arbitrarios | App **sin sandbox** (como cualquier app de este tipo). Mitigaciones en §6. |
 | winetricks "desde la interfaz" | Necesita `cabextract`/`7z`, que macOS no trae | Compilarlos en CI (universal) y descargarlos como "Herramientas" con checksum y licencia (GPL/LGPL, ofreciendo el código fuente) |
 | Instalar Rosetta sin terminal | `softwareupdate --install-rosetta` pide permisos de administrador | Lanzarlo con el diálogo de autorización nativo de macOS tras mostrar el aviso de licencia de Apple, o dejar que macOS muestre su propio instalador |

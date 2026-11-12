@@ -76,7 +76,7 @@ struct ProgramsView: View {
         }
         Divider()
         Button("Crear lanzador .app…") { model.explainUnavailable("Crear lanzador .app", phase: 4) }
-        Button("Mostrar en Finder") { model.explainUnavailable("Mostrar en Finder", phase: 2) }
+        Button("Mostrar en Finder") { model.revealProgram(program, in: bottle.id) }
     }
 
     // MARK: Detected

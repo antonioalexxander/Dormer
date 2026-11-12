@@ -25,8 +25,14 @@ public final class LogSession: Identifiable {
         self.programPathKey = programPathKey
     }
 
+    /// Wine can print thousands of lines per second; keep memory bounded by dropping the oldest.
+    static let maximumLines = 20_000
+
     func append(_ line: LogLine) {
         lines.append(line)
+        if lines.count > Self.maximumLines {
+            lines.removeFirst(lines.count - Self.maximumLines)
+        }
     }
 
     func finish(status: Int32) {

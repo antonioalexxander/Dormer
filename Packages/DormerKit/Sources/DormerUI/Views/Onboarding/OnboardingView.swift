@@ -118,7 +118,7 @@ private struct RosettaStep: View {
                         .foregroundStyle(.green)
                 case .notInstalled:
                     Label(
-                        "Rosetta no está instalado. macOS te pedirá tu contraseña y que aceptes la licencia de Apple.",
+                        "Rosetta no está instalado. Al pulsar Instalar aceptas la licencia de Rosetta de Apple; macOS te pedirá tu contraseña.",
                         systemImage: "exclamationmark.circle"
                     )
                     .foregroundStyle(.orange)

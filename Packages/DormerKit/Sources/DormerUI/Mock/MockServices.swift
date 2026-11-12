@@ -174,15 +174,4 @@ extension AppModel {
             isPreview: true,
             defaults: defaults)
     }
-
-    /// The model used by the app in Phase 1: sample data, but onboarding state persisted normally.
-    public static func phaseOnePreview() -> AppModel {
-        let bottleService = MockBottleService()
-        return AppModel(
-            bottleService: bottleService,
-            runner: MockProgramRunner(bottleService: bottleService),
-            runtimeService: MockRuntimeService(),
-            dependencyInstaller: MockDependencyInstaller(),
-            isPreview: true)
-    }
 }

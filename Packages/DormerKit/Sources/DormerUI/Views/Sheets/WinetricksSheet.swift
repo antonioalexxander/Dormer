@@ -50,6 +50,18 @@ struct WinetricksSheet: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 8)
 
+            if !model.dependencyInstaller.isAvailable {
+                Label(
+                    "La instalación de componentes se conecta en la Fase 4. Por ahora puedes ver la lista.",
+                    systemImage: "clock"
+                )
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 8)
+            }
+
             if let progress {
                 progressView(progress)
             } else if let loadError {
@@ -153,7 +165,7 @@ struct WinetricksSheet: View {
                     .keyboardShortcut(.cancelAction)
                 Button("Instalar") { install() }
                     .keyboardShortcut(.defaultAction)
-                    .disabled(selection.isEmpty)
+                    .disabled(selection.isEmpty || !model.dependencyInstaller.isAvailable)
             }
         }
         .padding(16)

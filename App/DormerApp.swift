@@ -3,8 +3,7 @@ import SwiftUI
 
 @main
 struct DormerApp: App {
-    // Fase 1: datos de ejemplo. La Fase 2 inyecta los servicios reales de Wine.
-    @State private var model = AppModel.phaseOnePreview()
+    @State private var model = AppModel.live()
 
     var body: some Scene {
         Window("Dormer", id: "main") {

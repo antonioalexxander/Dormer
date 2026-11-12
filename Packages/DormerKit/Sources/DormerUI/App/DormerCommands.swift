@@ -25,9 +25,11 @@ public struct DormerCommands: Commands {
             }
             .disabled(model.selectedBottle == nil)
             Divider()
-            Button("Abrir unidad C:") { model.explainUnavailable("Abrir unidad C:", phase: 2) }
-                .keyboardShortcut("c", modifiers: [.command, .shift])
-                .disabled(model.selectedBottle == nil)
+            Button("Abrir unidad C:") {
+                if let id = model.selectedBottleID { model.openCDrive(of: id) }
+            }
+            .keyboardShortcut("c", modifiers: [.command, .shift])
+            .disabled(model.selectedBottle == nil)
             Button("Winetricks…") {
                 if let id = model.selectedBottleID {
                     model.activeSheet = .winetricks(bottleID: id, preselected: [])

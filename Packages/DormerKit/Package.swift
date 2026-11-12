@@ -25,6 +25,6 @@ let package = Package(
         .target(name: "DormerUI", dependencies: ["DormerCore", "WineManager", "BottleManager"]),
         .testTarget(name: "DormerCoreTests", dependencies: ["DormerCore"]),
         .testTarget(name: "WineManagerTests", dependencies: ["WineManager"]),
-        .testTarget(name: "BottleManagerTests", dependencies: ["BottleManager"]),
+        .testTarget(name: "BottleManagerTests", dependencies: ["BottleManager", "WineManager"]),
     ]
 )

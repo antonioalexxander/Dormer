@@ -18,6 +18,18 @@ struct SidebarView: View {
                             return true
                         }
                 }
+                ForEach(Array(model.bottlesBeingCreated.enumerated()), id: \.offset) { _, name in
+                    Label {
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(name)
+                            Text("Creando… (unos 30 s)").font(.caption).foregroundStyle(.secondary)
+                        }
+                    } icon: {
+                        ProgressView().controlSize(.small)
+                    }
+                    .selectionDisabled()
+                    .accessibilityElement(children: .combine)
+                }
             }
         }
         .listStyle(.sidebar)
@@ -57,7 +69,7 @@ struct SidebarView: View {
                 Task { await model.deleteBottle(bottle.id) }
             }
         } message: { _ in
-            Text("Se borrarán todos los programas y archivos que contiene. Esta acción no se puede deshacer.")
+            Text("La botella, con sus programas y archivos, se moverá a la Papelera.")
         }
     }
 
@@ -66,7 +78,7 @@ struct SidebarView: View {
         Button("Renombrar…") { model.activeSheet = .renameBottle(bottle.id) }
         Button("Duplicar") { Task { await model.duplicateBottle(bottle.id) } }
         Button("Exportar…") { model.explainUnavailable("Exportar botella", phase: 3) }
-        Button("Mostrar en Finder") { model.explainUnavailable("Mostrar en Finder", phase: 2) }
+        Button("Mostrar en Finder") { model.openCDrive(of: bottle.id) }
         Divider()
         Button("Eliminar…", role: .destructive) { bottlePendingDeletion = bottle }
     }

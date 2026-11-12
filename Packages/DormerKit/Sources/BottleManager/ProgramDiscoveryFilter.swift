@@ -9,7 +9,7 @@ public enum ProgramDiscoveryFilter {
     /// Lowercase file-name prefixes of helper executables.
     static let hiddenPrefixes = [
         "unins", "uninstall", "setup", "install", "update", "updater", "crashpad", "crashreporter",
-        "crash_handler", "vc_redist", "vcredist", "dotnet", "ndp4", "dxsetup", "helper",
+        "crash_handler", "gup", "vc_redist", "vcredist", "dotnet", "ndp4", "dxsetup", "helper",
     ]
 
     /// Lowercase Windows directory fragments that only contain system or runtime files.

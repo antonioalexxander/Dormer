@@ -32,6 +32,7 @@ struct BottleSettingsView: View {
                     Text("Versión de Windows")
                     Text("La versión que los programas creen estar usando. Windows 10 funciona con casi todo.")
                 }
+                PendingSettingNote("Se aplica al crear la botella. Cambiarla después se conecta en la Fase 3.")
             }
 
             Section("Gráficos") {
@@ -87,6 +88,9 @@ struct BottleSettingsView: View {
                     Text("Escala (DPI)")
                     Text("Aumenta el tamaño del texto y de los controles dentro de los programas.")
                 }
+                PendingSettingNote(
+                    "Por ahora todos los programas usan WineD3D. Retina y DPI se aplican en la Fase 3; DXMT y D3DMetal, en la Fase 4."
+                )
             }
 
             Section("Rendimiento") {
@@ -111,6 +115,7 @@ struct BottleSettingsView: View {
                     Text("Ocultar los archivos del Mac (unidad Z:)")
                     Text("Los programas de Windows solo verán su propia unidad C: y no el resto de tu disco.")
                 }
+                PendingSettingNote("Se aplica en la Fase 3. Por ahora la unidad Z: sigue visible.")
             }
 
             Section {
@@ -136,6 +141,21 @@ struct BottleSettingsView: View {
             }
         }
         .formStyle(.grouped)
+    }
+}
+
+/// Says plainly that a setting is saved but not applied to Wine yet.
+private struct PendingSettingNote: View {
+    let text: LocalizedStringKey
+
+    init(_ text: LocalizedStringKey) {
+        self.text = text
+    }
+
+    var body: some View {
+        Label(text, systemImage: "clock")
+            .font(.caption)
+            .foregroundStyle(.secondary)
     }
 }
 

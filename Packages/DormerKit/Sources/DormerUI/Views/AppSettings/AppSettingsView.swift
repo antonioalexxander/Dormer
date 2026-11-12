@@ -43,9 +43,7 @@ private struct GeneralSettings: View {
                     Text("Vuelve a revisar Rosetta y el motor Wine.")
                 }
                 LabeledContent {
-                    Button("Mostrar en Finder") {
-                        model.explainUnavailable("Carpeta de datos", phase: 2)
-                    }
+                    Button("Mostrar en Finder") { model.openDataFolder() }
                 } label: {
                     Text("Datos de Dormer")
                     Text(verbatim: "~/Library/Application Support/Dormer")

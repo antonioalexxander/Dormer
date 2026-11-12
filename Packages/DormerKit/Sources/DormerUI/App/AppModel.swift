@@ -1,3 +1,4 @@
+import AppKit
 import DormerCore
 import Foundation
 import Observation
@@ -5,8 +6,8 @@ import Observation
 /// Main-actor state shared by every view.
 ///
 /// Views never talk to services directly: they call intent methods here, which update
-/// state optimistically and persist through the injected services. In Phase 1 the services
-/// are mocks (see ``AppModel/preview()``); later phases inject the real implementations.
+/// state optimistically and persist through the injected services: the real Wine services in
+/// the app (``AppModel/live()``) and in-memory mocks in SwiftUI Previews.
 @MainActor
 @Observable
 public final class AppModel {
@@ -26,6 +27,10 @@ public final class AppModel {
 
     /// `true` while the app runs on sample data with no Wine connected.
     public let isPreview: Bool
+    /// `~/Library/Application Support/Dormer`, or `nil` in previews.
+    public let dataFolder: URL?
+    /// Names of bottles Wine is still creating (takes ~30 s), shown as placeholders in the sidebar.
+    public private(set) var bottlesBeingCreated: [String] = []
 
     public var hasCompletedOnboarding: Bool {
         didSet { defaults.set(hasCompletedOnboarding, forKey: Keys.onboardingCompleted) }
@@ -56,6 +61,7 @@ public final class AppModel {
         runtimeService: any RuntimeServicing,
         dependencyInstaller: any DependencyInstalling,
         isPreview: Bool,
+        dataFolder: URL? = nil,
         defaults: UserDefaults = .standard
     ) {
         self.bottleService = bottleService
@@ -63,6 +69,7 @@ public final class AppModel {
         self.runtimeService = runtimeService
         self.dependencyInstaller = dependencyInstaller
         self.isPreview = isPreview
+        self.dataFolder = dataFolder
         self.defaults = defaults
         self.hasCompletedOnboarding = defaults.bool(forKey: Keys.onboardingCompleted)
         self.warnsBeforeRunningDownloads = defaults.object(forKey: Keys.warnBeforeRunning) as? Bool ?? true
@@ -112,7 +119,8 @@ public final class AppModel {
             present(error, title: "No se pudieron cargar las botellas")
         }
         isLoaded = true
-        if !hasCompletedOnboarding { activeSheet = .onboarding }
+        // Also covers people who finished the Phase 1 preview onboarding, where the download was simulated.
+        if !hasCompletedOnboarding || installedRuntimes.isEmpty { activeSheet = .onboarding }
     }
 
     public func refreshPrograms(in bottleID: UUID) async {
@@ -136,6 +144,10 @@ public final class AppModel {
     public func createBottle(named name: String, symbolName: String, windowsVersion: WindowsVersion) async -> Bottle? {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return nil }
+        bottlesBeingCreated.append(trimmed)
+        defer {
+            if let index = bottlesBeingCreated.firstIndex(of: trimmed) { bottlesBeingCreated.remove(at: index) }
+        }
         do {
             let bottle = try await bottleService.createBottle(
                 named: trimmed, symbolName: symbolName, windowsVersion: windowsVersion)
@@ -340,14 +352,60 @@ public final class AppModel {
         return report.render()
     }
 
+    // MARK: Finder
+
+    /// Opens the bottle's `C:` drive in Finder.
+    public func openCDrive(of bottleID: UUID) {
+        guard let bottle = bottle(withID: bottleID) else { return }
+        openInFinder(bottleService.cDriveURL(for: bottle), reveal: false)
+    }
+
+    /// Selects a program's `.exe` in Finder.
+    public func revealProgram(_ program: Program, in bottleID: UUID) {
+        guard let bottle = bottle(withID: bottleID) else { return }
+        guard let url = WindowsPath.fileURL(for: program.windowsPath, cDrive: bottleService.cDriveURL(for: bottle))
+        else {
+            alert = AppAlert(
+                title: "No se puede mostrar en Finder",
+                message: "La ruta \(program.windowsPath) no está en la unidad C: ni en Z:.")
+            return
+        }
+        openInFinder(url, reveal: true)
+    }
+
+    /// Opens `~/Library/Application Support/Dormer`.
+    public func openDataFolder() {
+        guard let dataFolder else {
+            explainUnavailable("Carpeta de datos", phase: 2)
+            return
+        }
+        try? FileManager.default.createDirectory(at: dataFolder, withIntermediateDirectories: true)
+        openInFinder(dataFolder, reveal: false)
+    }
+
+    private func openInFinder(_ url: URL, reveal: Bool) {
+        guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else {
+            alert = AppAlert(
+                title: "La carpeta no existe",
+                message: isPreview
+                    ? "Esta es una botella de ejemplo: no existe en el disco."
+                    : "No se encontró \(url.path(percentEncoded: false)).")
+            return
+        }
+        if reveal {
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        } else {
+            NSWorkspace.shared.open(url)
+        }
+    }
+
     // MARK: Phase placeholders
 
     /// Explains that a feature is not connected yet instead of pretending it worked.
     public func explainUnavailable(_ feature: String, phase: Int) {
         alert = AppAlert(
             title: "\(feature): todavía no disponible",
-            message: "Esta versión es una vista previa de la interfaz con datos de ejemplo. "
-                + "Esta función se conecta en la Fase \(phase) del plan.")
+            message: "Esta función se conecta en la Fase \(phase) del plan de desarrollo.")
     }
 
     // MARK: Helpers

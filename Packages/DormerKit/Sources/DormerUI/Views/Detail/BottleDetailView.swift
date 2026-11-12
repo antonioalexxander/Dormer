@@ -38,7 +38,7 @@ struct BottleDetailView: View {
                 .help("Ejecutar un archivo .exe, .msi o .bat en esta botella (⌘R)")
 
                 Button {
-                    model.explainUnavailable("Abrir unidad C:", phase: 2)
+                    model.openCDrive(of: bottle.id)
                 } label: {
                     Label("Abrir unidad C:", systemImage: "internaldrive")
                 }
