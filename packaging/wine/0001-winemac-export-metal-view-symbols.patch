@@ -1,0 +1,65 @@
+From: Dormer contributors
+Subject: [PATCH] winemac.drv: Export the Metal view helpers.
+
+Out-of-tree Direct3D translation layers such as DXMT (MIT) present their Metal output by looking up, with
+dlsym(RTLD_DEFAULT, ...), five functions that winemac.so already implements but hides because Wine builds
+with -fvisibility=hidden:
+
+    get_win_data, release_win_data,
+    macdrv_view_create_metal_view, macdrv_view_get_metal_layer, macdrv_view_release_metal_view
+
+Without them DXMT can create a Direct3D 11 device but fails with "your Wine has no exported symbols needed by
+DXMT" the moment a window must be drawn. This patch only changes symbol visibility; behavior is unchanged.
+
+Applies to wine-11.21 (vanilla). Gcenx's staging builds are built from wine-staging 11.21, which does not touch
+these functions.
+---
+--- a/dlls/winemac.drv/window.c	2026-11-12 10:35:04
++++ b/dlls/winemac.drv/window.c	2026-11-12 10:35:05
+@@ -184,7 +184,7 @@
+  *
+  * Lock and return the data structure associated with a window.
+  */
+-struct macdrv_win_data *get_win_data(HWND hwnd)
++__attribute__((visibility("default"))) struct macdrv_win_data *get_win_data(HWND hwnd)
+ {
+     struct macdrv_win_data *data;
+ 
+@@ -202,7 +202,7 @@
+  *
+  * Release the data returned by get_win_data.
+  */
+-void release_win_data(struct macdrv_win_data *data)
++__attribute__((visibility("default"))) void release_win_data(struct macdrv_win_data *data)
+ {
+     if (data) pthread_mutex_unlock(&win_data_mutex);
+ }
+--- a/dlls/winemac.drv/cocoa_window.m	2026-11-12 10:35:04
++++ b/dlls/winemac.drv/cocoa_window.m	2026-11-12 10:35:05
+@@ -3607,7 +3607,7 @@
+ }
+ }
+ 
+-WineMetalView *macdrv_view_create_metal_view(WineContentView *view, id<MTLDevice> device)
++__attribute__((visibility("default"))) WineMetalView *macdrv_view_create_metal_view(WineContentView *view, id<MTLDevice> device)
+ {
+     __block WineMetalView *metalView;
+ 
+@@ -3618,7 +3618,7 @@
+     return metalView;
+ }
+ 
+-CAMetalLayer *macdrv_view_get_metal_layer(WineMetalView *view)
++__attribute__((visibility("default"))) CAMetalLayer *macdrv_view_get_metal_layer(WineMetalView *view)
+ {
+     __block CAMetalLayer* layer;
+ 
+@@ -3629,7 +3629,7 @@
+     return layer;
+ }
+ 
+-void macdrv_view_release_metal_view(WineMetalView *view)
++__attribute__((visibility("default"))) void macdrv_view_release_metal_view(WineMetalView *view)
+ {
+     OnMainThread(^{
+         [view removeFromSuperview];
