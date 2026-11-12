@@ -20,6 +20,10 @@ Lo que se ha **probado de verdad** en Dormer, incluido lo que **no** funciona. C
 >
 > La prueba con una aplicación «mediana» (Audacity 4) dio un resultado **negativo** con el motor actual. Es un resultado útil: Dormer no pretende que todo funcione. Las apps modernas basadas en Qt 6/Direct3D 11, .NET Framework completo, WPF o WebView2 son candidatas a fallar con el motor Wine actual.
 
+## Imágenes de disco (`.iso`)
+
+Probado con una imagen hecha para la prueba ([instalador de ejemplo](../packaging/wine/tests/disc-setup.c)): el instalador corre desde `D:`, Windows la ve como unidad de CD, lee los archivos que tiene al lado, el disco del Mac sigue oculto y la imagen se expulsa al terminar. **Sin probar** con discos comerciales. No funcionan: instaladores de varios discos y juegos con protección anticopia que exige el disco original.
+
 ## Componentes de Windows (winetricks)
 
 Instalados y comprobados (los archivos esperados quedaron en la botella, 32 y 64 bits cuando corresponde): `corefonts`, `d3dcompiler_47`, `vcrun2022`, `d3dx9`. **No se comprobó** que cada uno arregle un programa concreto.

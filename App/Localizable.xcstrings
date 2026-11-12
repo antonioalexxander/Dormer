@@ -964,6 +964,9 @@
         }
       }
     },
+    "Dormer": {
+      "shouldTranslate": false
+    },
     "Dormer gestiona esta variable; no se puede cambiar aquí.": {
       "extractionState": "manual",
       "localizations": {
@@ -986,13 +989,13 @@
         }
       }
     },
-    "Dormer puede ejecutar archivos .exe, .msi y .bat.": {
+    "Dormer puede ejecutar archivos .exe, .msi y .bat, e imágenes de disco .iso.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dormer can run .exe, .msi and .bat files."
+            "value": "Dormer can run .exe, .msi and .bat files, and .iso disc images."
           }
         }
       }
@@ -1074,13 +1077,13 @@
         }
       }
     },
-    "Ejecutar un archivo .exe, .msi o .bat en esta botella (⌘R)": {
+    "Ejecutar un archivo .exe, .msi, .bat o .iso en esta botella (⌘R)": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Run an .exe, .msi or .bat file in this bottle (⌘R)"
+            "value": "Run an .exe, .msi, .bat or .iso file in this bottle (⌘R)"
           }
         }
       }
@@ -1742,6 +1745,17 @@
         }
       }
     },
+    "La botella no tiene letras de unidad libres para el disco.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bottle has no free drive letters for the disc."
+          }
+        }
+      }
+    },
     "La botella, con sus programas y archivos, se moverá a la Papelera.": {
       "extractionState": "manual",
       "localizations": {
@@ -1771,6 +1785,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "The download isn't the expected size (%lld of %lld bytes). It was deleted for safety; try again."
+          }
+        }
+      }
+    },
+    "La imagen de disco no tiene un instalador reconocible (autorun.inf, setup.exe o similar) en su carpeta principal.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The disc image has no recognisable installer (autorun.inf, setup.exe or similar) in its top folder."
           }
         }
       }
@@ -2259,6 +2284,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Couldn't install the components"
+          }
+        }
+      }
+    },
+    "No se pudo abrir la imagen de disco (%@).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The disc image couldn't be opened (%@)."
           }
         }
       }
@@ -2876,13 +2912,13 @@
         }
       }
     },
-    "Suelta aquí un .exe, .msi o .bat para ejecutarlo": {
+    "Suelta aquí un .exe, .msi, .bat o .iso para ejecutarlo": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Drop an .exe, .msi or .bat here to run it"
+            "value": "Drop an .exe, .msi, .bat or .iso here to run it"
           }
         }
       }

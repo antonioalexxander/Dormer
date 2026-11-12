@@ -35,7 +35,7 @@ struct BottleDetailView: View {
                 } label: {
                     Label("Ejecutar…", systemImage: "play.fill")
                 }
-                .help("Ejecutar un archivo .exe, .msi o .bat en esta botella (⌘R)")
+                .help("Ejecutar un archivo .exe, .msi, .bat o .iso en esta botella (⌘R)")
 
                 Button {
                     model.openCDrive(of: bottle.id)

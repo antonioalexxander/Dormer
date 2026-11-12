@@ -99,6 +99,14 @@ public struct WineLaunchPlan: Sendable, Equatable {
         self.workingDirectory = workingDirectory
     }
 
+    /// Starts `program` (a path relative to the disc's root) from the drive the disc is mounted as.
+    public static func make(forProgram program: String, onDisc disc: DiscImage.Mounted) -> WineLaunchPlan {
+        let windowsPath = "\(disc.driveLetter):\\" + program.replacingOccurrences(of: "/", with: "\\")
+        let directory = disc.mountPoint.appending(path: program).deletingLastPathComponent()
+        let arguments = program.lowercased().hasSuffix(".msi") ? ["msiexec", "/i", windowsPath] : [windowsPath]
+        return WineLaunchPlan(arguments: arguments, workingDirectory: directory)
+    }
+
     public static func make(for request: LaunchRequest, cDrive: URL) -> WineLaunchPlan {
         switch request {
         case .file(let target):
@@ -112,6 +120,9 @@ public struct WineLaunchPlan: Sendable, Equatable {
                 return WineLaunchPlan(arguments: ["msiexec", "/i", windowsPath], workingDirectory: directory)
             case .batch:
                 return WineLaunchPlan(arguments: ["cmd", "/c", windowsPath], workingDirectory: directory)
+            case .discImage:
+                // WineRunner mounts the image and starts its installer with `make(forProgram:onDisc:)`.
+                return WineLaunchPlan(arguments: ["explorer"], workingDirectory: cDrive)
             }
         case .tool(let tool):
             return WineLaunchPlan(arguments: [tool.rawValue], workingDirectory: cDrive)

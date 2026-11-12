@@ -280,7 +280,7 @@ public final class AppModel {
             if !urls.isEmpty {
                 alert = AppAlert(
                     title: "Tipo de archivo no compatible",
-                    message: "Dormer puede ejecutar archivos .exe, .msi y .bat.")
+                    message: "Dormer puede ejecutar archivos .exe, .msi y .bat, e imágenes de disco .iso.")
             }
             return
         }

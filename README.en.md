@@ -14,7 +14,7 @@ If you need *any* Windows program to work, the closest thing to Windows is a vir
 
 ## What it does
 
-- **Everything from the app, no terminal:** downloads Wine (SHA-256 verified), installs Rosetta if needed, creates bottles and runs `.exe`, `.msi` and `.bat` files (drag them in, or ⌘R).
+- **Everything from the app, no terminal:** downloads Wine (SHA-256 verified), installs Rosetta if needed, creates bottles and runs `.exe`, `.msi` and `.bat` files (drag them in, or ⌘R). It also opens `.iso` disc images: it mounts them as a CD drive of the bottle and starts their installer.
 - **Isolated bottles** (they can't see your Mac's disk by default) that you can duplicate, export to an `.aar` file and import on another Mac.
 - **Programs with their real icon**, found through the shortcuts the installer leaves behind; pinnable, with their own arguments and environment variables.
 - **`.app` launchers** to open a program with a double-click from Finder or the Dock.
@@ -58,6 +58,7 @@ If you need *any* Windows program to work, the closest thing to Windows is a vir
 - **Notepad++:** the menu bar appears stacked in rows (a Wine issue with that app); it is usable.
 - **Modern apps that need real Direct3D 11** (for example Audacity 4) won't open with WineD3D (it only offers level 9.3 on this Mac). With the **DXMT (experimental)** backend they do draw (tested with Audacity 4 and Warzone 2100); it uses a [patched Wine driver](packaging/wine/README.md) (in Spanish) that Dormer downloads. Few programs tested and no commercial game.
 - **D3DMetal (Game Porting Toolkit):** you can import it, but it can't be used yet (it needs a Game Porting Toolkit build of Wine that Dormer doesn't include). DXVK is not offered (no releases since 2024).
+- **Disc images:** only `.iso`, one disc at a time (installers that ask for "disc 2" do not work yet). Dormer does not emulate copy protection that requires the original disc, nor does it include ways around it.
 - **Wine Gecko** (Windows' web engine) is unverified in isolated bottles.
 - The `.dmg` build and automatic publishing (CI) are written but **not yet tested** on GitHub.
 

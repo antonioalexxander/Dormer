@@ -9,13 +9,15 @@ public struct RunTarget: Hashable, Sendable {
         case installer
         /// `.bat`: launched with `wine cmd /c`.
         case batch
+        /// `.iso`: mounted as a drive of the bottle, then its installer is started.
+        case discImage
     }
 
     public let url: URL
     public let kind: Kind
 
     /// Lowercase file extensions Dormer accepts.
-    public static let supportedExtensions = ["exe", "msi", "bat"]
+    public static let supportedExtensions = ["exe", "msi", "bat", "iso"]
 
     /// Returns `nil` when the file is not a supported Windows file.
     public init?(url: URL) {
@@ -23,6 +25,7 @@ public struct RunTarget: Hashable, Sendable {
         case "exe": kind = .executable
         case "msi": kind = .installer
         case "bat": kind = .batch
+        case "iso": kind = .discImage
         default: return nil
         }
         self.url = url

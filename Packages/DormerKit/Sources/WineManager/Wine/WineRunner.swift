@@ -24,19 +24,39 @@ public actor WineRunner: ProgramRunning {
         let installation = try await graphics.installation(for: bottle)
         let cDrive = paths.cDrive(id: bottle.id)
         var request = request
-        // Without the Z: drive a program cannot be started from its Mac path, so it is cloned into C: first.
-        if case .file(let target) = request, bottle.settings.hidesHostFileSystem {
-            Self.sweepStagedFiles(in: cDrive)
-            request = .file(try Self.stage(target, in: cDrive))
+        var disc: DiscImage.Mounted?
+        let plan: WineLaunchPlan
+        if case .file(let target) = request, target.kind == .discImage {
+            // A disc image becomes a drive of its own, so its installer finds the files next to it.
+            let mounted = try await DiscImage.mount(target.url, prefix: paths.prefix(id: bottle.id))
+            guard let program = DiscImage.setupProgram(in: mounted.mountPoint) else {
+                DiscImage.unmount(mounted)
+                throw DiscImage.DiscError.noSetupProgram
+            }
+            disc = mounted
+            plan = WineLaunchPlan.make(forProgram: program, onDisc: mounted)
+        } else {
+            // Without the Z: drive a program cannot be started from its Mac path, so it is cloned into C: first.
+            if case .file(let target) = request, bottle.settings.hidesHostFileSystem {
+                Self.sweepStagedFiles(in: cDrive)
+                request = .file(try Self.stage(target, in: cDrive))
+            }
+            plan = WineLaunchPlan.make(for: request, cDrive: cDrive)
         }
-        let plan = WineLaunchPlan.make(for: request, cDrive: cDrive)
         var programEnvironment: [EnvironmentVariable] = []
         if case .program(let program) = request { programEnvironment = program.environment }
 
-        let process = try RunningProcess.start(
-            installation.wineSpec(
-                plan.arguments, prefix: paths.prefix(id: bottle.id), settings: bottle.settings,
-                extraEnvironment: programEnvironment, workingDirectory: plan.workingDirectory))
+        let process: RunningProcess
+        do {
+            process = try RunningProcess.start(
+                installation.wineSpec(
+                    plan.arguments, prefix: paths.prefix(id: bottle.id), settings: bottle.settings,
+                    extraEnvironment: programEnvironment, workingDirectory: plan.workingDirectory))
+        } catch {
+            if let disc { DiscImage.unmount(disc) }
+            throw error
+        }
+        let waitForBottle = installation.wineserverSpec(["-w"], prefix: paths.prefix(id: bottle.id))
 
         let sessionID = UUID()
         let bottleID = bottle.id
@@ -53,6 +73,11 @@ public actor WineRunner: ProgramRunning {
             continuation.yield(.exited(status: status))
             continuation.finish()
             self.forget(sessionID, in: bottleID)
+            if let disc {
+                // Installers often hand over to another process: keep the disc until the bottle is idle.
+                _ = try? await ProcessRunner.run(waitForBottle)
+                DiscImage.unmount(disc)
+            }
         }
         return RunSession(id: sessionID, bottleID: bottleID, title: request.displayName, events: events)
     }

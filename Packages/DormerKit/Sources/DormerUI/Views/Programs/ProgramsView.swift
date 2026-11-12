@@ -248,7 +248,8 @@ private struct DropZone: View {
                 .accessibilityHidden(true)
             Text(
                 isTargeted
-                    ? "Suelta para ejecutar en «\(bottleName)»" : "Suelta aquí un .exe, .msi o .bat para ejecutarlo")
+                    ? "Suelta para ejecutar en «\(bottleName)»"
+                    : "Suelta aquí un .exe, .msi, .bat o .iso para ejecutarlo")
         }
         .foregroundStyle(isTargeted ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
         .frame(maxWidth: .infinity, minHeight: 72)

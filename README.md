@@ -14,7 +14,7 @@ Si necesitas que *cualquier* programa de Windows funcione, lo que se parece a Wi
 
 ## Qué hace
 
-- **Todo desde la app, sin terminal:** descarga Wine (verificado con SHA-256), instala Rosetta si hace falta, crea botellas y ejecuta `.exe`, `.msi` y `.bat` (arrastrándolos o con ⌘R).
+- **Todo desde la app, sin terminal:** descarga Wine (verificado con SHA-256), instala Rosetta si hace falta, crea botellas y ejecuta `.exe`, `.msi` y `.bat` (arrastrándolos o con ⌘R). También abre imágenes de disco `.iso`: las monta como una unidad de CD de la botella y arranca su instalador.
 - **Botellas aisladas** (por defecto no ven el disco de tu Mac), que puedes duplicar, exportar a un archivo `.aar` e importar en otro Mac.
 - **Programas con su ícono real**, detectados por los accesos directos que deja el instalador; anclables y con argumentos y variables propios.
 - **Lanzadores `.app`** para abrir un programa con doble clic desde Finder o el Dock.
@@ -58,6 +58,7 @@ Si necesitas que *cualquier* programa de Windows funcione, lo que se parece a Wi
 - **Notepad++:** la barra de menú se ve apilada en filas (problema de Wine con esa app); se puede usar.
 - **Apps modernas que piden Direct3D 11 real** (por ejemplo Audacity 4) no abren con WineD3D (solo ofrece el nivel 9.3 en este Mac). Con el backend **DXMT (experimental)** sí se dibujan (probado con Audacity 4 y Warzone 2100); usa un [controlador de Wine parcheado](packaging/wine/README.md) que Dormer descarga. Pocos programas probados y ningún juego comercial.
 - **D3DMetal (Game Porting Toolkit):** puedes importarlo, pero todavía no se puede usar (necesita un motor Wine del Game Porting Toolkit que Dormer no incluye). DXVK no se ofrece (sin versiones desde 2024).
+- **Imágenes de disco:** solo `.iso` y de un solo disco (los instaladores que piden «inserte el disco 2» no funcionan todavía). Dormer no emula las protecciones anticopia que exigen el disco original ni incluye formas de saltárselas.
 - **Wine Gecko** (motor web de Windows) sin verificar en botellas aisladas.
 - Compilación del `.dmg` y publicación automática (CI): escritas pero **sin probar** en GitHub todavía.
 
