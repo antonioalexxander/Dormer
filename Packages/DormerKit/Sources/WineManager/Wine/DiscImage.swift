@@ -1,3 +1,4 @@
+import Darwin
 import DormerCore
 import Foundation
 
@@ -40,9 +41,31 @@ public enum DiscImage {
     /// Names tried, in order, when the disc has no usable `autorun.inf`.
     static let setupNames = ["setup.exe", "install.exe", "autorun.exe", "setup.msi", "install.msi"]
 
+    /// The other discs of a multi-disc set, found next to `image` by their numbered names (`CD1.iso`, `CD2.iso`…).
+    /// Returns every disc of the set in order, or just `image` when its name carries no number or has no siblings.
+    public static func discSet(containing image: URL, fileManager: FileManager = .default) -> [URL] {
+        func split(_ name: String) -> (prefix: String, number: Int, ext: String)? {
+            let url = URL(filePath: name)
+            let stem = url.deletingPathExtension().lastPathComponent
+            guard let match = stem.wholeMatch(of: /(.*?)(\d{1,2})/), let number = Int(match.2) else { return nil }
+            return (String(match.1).lowercased(), number, url.pathExtension.lowercased())
+        }
+        guard let mine = split(image.lastPathComponent) else { return [image] }
+        let folder = image.deletingLastPathComponent()
+        let names = (try? fileManager.contentsOfDirectory(atPath: folder.path(percentEncoded: false))) ?? []
+        var found: [Int: URL] = [:]
+        for name in names {
+            guard let other = split(name), other.prefix == mine.prefix, other.ext == mine.ext else { continue }
+            found[other.number] = folder.appending(path: name)
+        }
+        found[mine.number] = image
+        return found.count > 1 && found.count <= 8 ? found.sorted { $0.key < $1.key }.map(\.value) : [image]
+    }
+
     public static func mount(_ image: URL, prefix: URL, fileManager: FileManager = .default) async throws -> Mounted {
         let devices = prefix.appending(path: "dosdevices", directoryHint: .isDirectory)
         removeStaleLinks(in: devices, fileManager: fileManager)
+        removeEmptyMountPoints(in: fileManager.temporaryDirectory, fileManager: fileManager)
         guard let letter = freeDriveLetter(in: devices, fileManager: fileManager) else {
             throw DiscError.noFreeDriveLetter
         }
@@ -74,6 +97,16 @@ public enum DiscImage {
     public static func unmount(_ mounted: Mounted, fileManager: FileManager = .default) {
         try? fileManager.removeItem(at: mounted.link)
         detach(mounted.mountPoint, fileManager: fileManager)
+    }
+
+    /// The first setup program among `discs`, starting with `first` (the disc the user chose).
+    public static func setupProgram(
+        among discs: [Mounted], preferring first: Mounted, fileManager: FileManager = .default
+    ) -> (program: String, disc: Mounted)? {
+        for disc in [first] + discs.filter({ $0 != first }) {
+            if let program = setupProgram(in: disc.mountPoint, fileManager: fileManager) { return (program, disc) }
+        }
+        return nil
     }
 
     /// The program a Windows PC would start for this disc, as a path relative to the disc's root.
@@ -142,6 +175,15 @@ public enum DiscImage {
                 ((try? fileManager.contentsOfDirectory(atPath: target)) ?? []).isEmpty
             else { continue }
             try? fileManager.removeItem(at: link)
+        }
+    }
+
+    /// Mount folders left behind when Dormer quit during an eject. `rmdir` removes only an empty folder and
+    /// fails on anything mounted or holding files, so a disc in use is never touched.
+    static func removeEmptyMountPoints(in folder: URL, fileManager: FileManager = .default) {
+        for name in (try? fileManager.contentsOfDirectory(atPath: path(of: folder))) ?? []
+        where name.hasPrefix(mountPrefix) {
+            _ = rmdir(path(of: folder.appending(path: name)))
         }
     }
 

@@ -22,7 +22,7 @@ Lo que se ha **probado de verdad** en Dormer, incluido lo que **no** funciona. C
 
 ## Imágenes de disco (`.iso`)
 
-Probado con una imagen hecha para la prueba ([instalador de ejemplo](../packaging/wine/tests/disc-setup.c)): el instalador corre desde `D:`, Windows la ve como unidad de CD, lee los archivos que tiene al lado, el disco del Mac sigue oculto y la imagen se expulsa al terminar. **Sin probar** con discos comerciales. No funcionan: instaladores de varios discos y juegos con protección anticopia que exige el disco original.
+Probado con una imagen hecha para la prueba ([instalador de ejemplo](../packaging/wine/tests/disc-setup.c)): el instalador corre desde `D:`, Windows la ve como unidad de CD, lee los archivos que tiene al lado, el disco del Mac sigue oculto y la imagen se expulsa al terminar. También con un juego de ejemplo de tres discos (`DISC1.iso`…`DISC3.iso`): se montan las tres unidades a la vez y el instalador las ve todas, se arrastre el disco que se arrastre. **Sin probar** con discos comerciales. No funcionan los juegos con protección anticopia que exige el disco original, que Dormer no emula.
 
 ## Componentes de Windows (winetricks)
 

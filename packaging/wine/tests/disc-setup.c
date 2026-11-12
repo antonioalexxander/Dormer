@@ -13,6 +13,15 @@ int main(void) {
     FILE *out = fopen("C:\\disc-test.log", "w");
     if (!out) return 2;
     fprintf(out, "exe=%s\ndrivetype=%u\npayload=%s\nzdrive=%u\n", exe, GetDriveTypeA(root), line, GetDriveTypeA("Z:\\"));
+    // Every disc of a set carries MARK.TXT; list what each drive letter holds.
+    fprintf(out, "marks=");
+    for (char letter = 'D'; letter <= 'H'; letter++) {
+        char path[] = "?:\\MARK.TXT", mark[64] = "";
+        path[0] = letter;
+        FILE *m = fopen(path, "r");
+        if (m) { if (fgets(mark, sizeof mark, m)) mark[strcspn(mark, "\r\n")] = 0; fclose(m); fprintf(out, "%c:%s;", letter, mark); }
+    }
+    fprintf(out, "\n");
     fclose(out);
     return in ? 0 : 1;
 }

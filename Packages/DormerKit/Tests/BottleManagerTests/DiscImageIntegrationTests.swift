@@ -3,6 +3,7 @@ import WineManager
 import XCTest
 
 @testable import BottleManager
+@testable import WineManager
 
 /// Opt-in: runs the installer of a real disc image in a real, isolated bottle.
 ///
@@ -40,13 +41,23 @@ final class DiscImageIntegrationTests: XCTestCase {
         XCTAssertTrue(log.contains("exe=D:\\"), "the installer runs from the disc's own drive")
         XCTAssertTrue(log.contains("payload=hello from the disc"), "files next to the installer are visible")
         XCTAssertTrue(log.contains("zdrive=1"), "the Mac's disk stays hidden (1 = no such drive)")
-
-        // The disc is ejected once the bottle is idle.
-        let link = paths.prefix(id: bottle.id).appending(path: "dosdevices/d:")
-        for _ in 0..<60
-        where (try? FileManager.default.destinationOfSymbolicLink(atPath: link.path(percentEncoded: false))) != nil {
-            try await Task.sleep(for: .milliseconds(500))
+        if let expected = environment["DORMER_DISC_MARKS"] {
+            XCTAssertTrue(log.contains("marks=\(expected)"), "every disc of the set is mounted as its own drive")
         }
-        XCTAssertNil(try? FileManager.default.destinationOfSymbolicLink(atPath: link.path(percentEncoded: false)))
+
+        // Every disc is ejected once the bottle is idle: no links left and nothing still mounted.
+        let devices = paths.prefix(id: bottle.id).appending(path: "dosdevices")
+        let temporary = FileManager.default.temporaryDirectory
+        func leftovers() -> Int {
+            let links =
+                ((try? FileManager.default.contentsOfDirectory(atPath: devices.path(percentEncoded: false))) ?? [])
+                .filter { $0.count == 2 && $0 != "c:" && $0 != "z:" }
+            let mounts =
+                ((try? FileManager.default.contentsOfDirectory(atPath: temporary.path(percentEncoded: false))) ?? [])
+                .filter { $0.hasPrefix(DiscImage.mountPrefix) }
+            return links.count + mounts.count
+        }
+        for _ in 0..<120 where leftovers() > 0 { try await Task.sleep(for: .milliseconds(500)) }
+        XCTAssertEqual(leftovers(), 0)
     }
 }
