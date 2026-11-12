@@ -108,29 +108,42 @@ private struct GraphicsSettings: View {
 
     var body: some View {
         Form {
-            Section("Incluidos") {
+            Section("Descargables") {
                 LabeledContent {
-                    Text("LGPL-2.1").foregroundStyle(.secondary)
+                    if let version = model.dxmtVersion {
+                        Label("Descargado (\(version))", systemImage: "checkmark.circle.fill")
+                            .foregroundStyle(.green)
+                    } else {
+                        Button("Descargar (18 MB)") { Task { await model.downloadDXMT() } }
+                            .disabled(model.activity != nil)
+                    }
                 } label: {
-                    Text("DXMT")
-                    Text("DirectX 10/11 → Metal. Se descarga junto al motor Wine.")
+                    Text("DXMT · MIT")
+                    Text(
+                        "DirectX 10/11 → Metal. Experimental: solo se usa en las botellas que lo elijan. Se descarga solo la primera vez que hace falta."
+                    )
                 }
                 LabeledContent {
-                    Text("Zlib").foregroundStyle(.secondary)
+                    Text("No disponible").foregroundStyle(.secondary)
                 } label: {
-                    Text("DXVK (experimental)")
-                    Text("DirectX 9–11 → Vulkan con MoltenVK.")
+                    Text("DXVK")
+                    Text("DXVK-macOS no publica versiones desde 2024, así que Dormer no lo ofrece.")
                 }
             }
             Section {
                 LabeledContent {
-                    Button("Importar…") { model.explainUnavailable("Importar D3DMetal", phase: 4) }
+                    if model.gptkVersion != nil {
+                        Button("Quitar", role: .destructive) { Task { await model.removeGPTK() } }
+                    } else {
+                        Button("Importar…") { Task { await model.importGPTK() } }
+                            .disabled(model.activity != nil)
+                    }
                 } label: {
                     Text("D3DMetal (Game Porting Toolkit)")
-                    Text("No importado")
+                    Text(model.gptkVersion.map { "Importado (\($0))" } ?? String(localized: "No importado"))
                 }
                 Text(
-                    "Apple no permite redistribuir D3DMetal. Descarga el Game Porting Toolkit desde developer.apple.com con un Apple ID gratuito y selecciona su imagen de disco: Dormer copiará solo los archivos necesarios, en tu Mac."
+                    "Apple no permite redistribuir D3DMetal. Descarga el Game Porting Toolkit desde developer.apple.com con un Apple ID gratuito y elige su imagen de disco: Dormer copia solo los archivos necesarios, en tu Mac. Importarlo no lo activa: usarlo requiere un motor Wine del Game Porting Toolkit, que Dormer todavía no incluye."
                 )
                 .font(.callout)
                 .foregroundStyle(.secondary)

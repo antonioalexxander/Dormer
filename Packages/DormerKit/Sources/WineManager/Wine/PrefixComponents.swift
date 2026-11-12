@@ -7,6 +7,24 @@ import Foundation
 /// "Wine Mono is not installed". Wine also looks for Mono in `C:\windows\mono\mono-2.0`, so a copy there
 /// works without `Z:`. On APFS the copy is a clone: instant and without using extra disk space.
 public enum PrefixComponents {
+    /// DXMT's `winemetal.dll` must also sit in the prefix (64-bit in `system32`, 32-bit in `syswow64`).
+    public static func installDXMTLibrary(
+        from dxmtFiles: URL, into prefix: URL, fileManager: FileManager = .default
+    ) throws {
+        for (source, system) in [("x86_64-windows", "system32"), ("i386-windows", "syswow64")] {
+            let directory = prefix.appending(path: "drive_c/windows/\(system)", directoryHint: .isDirectory)
+            guard fileManager.fileExists(atPath: directory.path(percentEncoded: false)) else { continue }
+            let original = dxmtFiles.appending(path: "\(source)/winemetal.dll")
+            let copy = directory.appending(path: "winemetal.dll")
+            let size: (URL) -> Int? = {
+                (try? fileManager.attributesOfItem(atPath: $0.path(percentEncoded: false))[.size] as? Int)
+            }
+            if size(copy) == size(original), size(copy) != nil { continue }
+            try? fileManager.removeItem(at: copy)
+            try fileManager.copyItem(at: original, to: copy)
+        }
+    }
+
     /// Name of the file that records which bundled Mono the prefix copy came from.
     static let monoMarker = ".dormer-source"
 

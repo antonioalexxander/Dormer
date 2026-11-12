@@ -4,23 +4,24 @@ import Foundation
 /// Launches Windows programs with Wine and streams their output.
 public actor WineRunner: ProgramRunning {
     private let paths: AppPaths
-    private let runtimes: RuntimeStore
+    private let graphics: GraphicsStore
     private var running: [UUID: [UUID: RunningProcess]] = [:]
 
-    public init(paths: AppPaths = .standard(), runtimes: RuntimeStore) {
+    public init(paths: AppPaths = .standard(), graphics: GraphicsStore) {
         self.paths = paths
-        self.runtimes = runtimes
+        self.graphics = graphics
     }
 
     public func prepare(_ bottle: Bottle) async throws -> BottleSettings {
-        let installation = try await runtimes.installation(forID: bottle.runtimeID)
+        let installation = try await graphics.installation(for: bottle)
+        let dxmtFiles = bottle.settings.graphicsBackend == .dxmt ? try await graphics.dxmtFiles() : nil
         return try await PrefixConfigurator.apply(
             bottle.settings, previous: bottle.appliedSettings, installation: installation,
-            prefix: paths.prefix(id: bottle.id))
+            prefix: paths.prefix(id: bottle.id), dxmtFiles: dxmtFiles)
     }
 
     public func launch(_ request: LaunchRequest, in bottle: Bottle) async throws -> RunSession {
-        let installation = try await runtimes.installation(forID: bottle.runtimeID)
+        let installation = try await graphics.installation(for: bottle)
         let cDrive = paths.cDrive(id: bottle.id)
         var request = request
         // Without the Z: drive a program cannot be started from its Mac path, so it is cloned into C: first.
@@ -59,7 +60,7 @@ public actor WineRunner: ProgramRunning {
     /// `wineserver -k` stops every Windows process of the bottle, including ones started by installers.
     public func terminateAll(in bottle: Bottle) async throws {
         let processes = running[bottle.id]?.values.map { $0 } ?? []
-        if let installation = try? await runtimes.installation(forID: bottle.runtimeID) {
+        if let installation = try? await graphics.installation(for: bottle) {
             _ = try await ProcessRunner.run(installation.wineserverSpec(["-k"], prefix: paths.prefix(id: bottle.id)))
         }
         // Anything that ignored wineserver (or a missing runtime) gets SIGTERM.

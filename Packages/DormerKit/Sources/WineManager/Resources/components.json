@@ -1,0 +1,22 @@
+{
+  "winetricks": {
+    "id": "winetricks-20260125",
+    "displayName": "winetricks",
+    "version": "20260125",
+    "downloadURL": "https://raw.githubusercontent.com/Winetricks/winetricks/20260125/src/winetricks",
+    "sha256": "431f82fc74000e6c864409f1d8fb495d696c03928808e3e8acffc45179312a7b",
+    "sizeBytes": 830687,
+    "license": "LGPL-2.1-or-later",
+    "sourceURL": "https://github.com/Winetricks/winetricks"
+  },
+  "dxmt": {
+    "id": "dxmt-v0.80",
+    "displayName": "DXMT",
+    "version": "0.80",
+    "downloadURL": "https://github.com/3Shain/dxmt/releases/download/v0.80/dxmt-v0.80-builtin.tar.gz",
+    "sha256": "8f260e36b5739e68f3bad613381441385c4dc7b85b78ba8de653d5a6a264529d",
+    "sizeBytes": 18681669,
+    "license": "MIT",
+    "sourceURL": "https://github.com/3Shain/dxmt"
+  }
+}

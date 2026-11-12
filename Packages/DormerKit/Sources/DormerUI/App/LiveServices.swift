@@ -3,43 +3,30 @@ import DormerCore
 import Foundation
 import WineManager
 
-/// Stand-in until winetricks is connected (Phase 4). It refuses clearly instead of pretending.
-struct UnavailableDependencyInstaller: DependencyInstalling {
-    struct NotConnectedError: LocalizedError {
-        var errorDescription: String? {
-            String(localized: "La instalación de componentes (winetricks) se conecta en la Fase 4 del plan.")
-        }
-    }
-
-    var isAvailable: Bool { false }
-
-    func curatedVerbs() async throws -> [WinetricksVerb] {
-        try WinetricksCatalog.bundled()
-    }
-
-    func install(verbs: [String], in bottle: Bottle) -> AsyncThrowingStream<DependencyInstallEvent, any Error> {
-        AsyncThrowingStream { $0.finish(throwing: NotConnectedError()) }
-    }
-}
-
 extension AppModel {
     /// The model used by the app: real Wine, data under `~/Library/Application Support/Dormer`.
     public static func live() -> AppModel {
         let paths = AppPaths.standard()
-        // The catalog is part of the app bundle; if it is unreadable the build itself is broken.
-        let catalog: RuntimeCatalog
+        // The catalogs are part of the app bundle; if one is unreadable the build itself is broken.
+        let runtimeCatalog: RuntimeCatalog
+        let components: ComponentCatalog
         do {
-            catalog = try RuntimeCatalog.bundled()
+            runtimeCatalog = try RuntimeCatalog.bundled()
+            components = try ComponentCatalog.bundled()
         } catch {
-            fatalError("Bundled runtime catalog is invalid: \(error)")
+            fatalError("Bundled catalog is invalid: \(error)")
         }
-        let runtimes = RuntimeStore(paths: paths, catalog: catalog)
+        let runtimes = RuntimeStore(paths: paths, catalog: runtimeCatalog)
+        let graphics = GraphicsStore(paths: paths, runtimes: runtimes, catalog: components)
+        let tools = ToolStore(paths: paths, catalog: components)
         return AppModel(
             bottleService: BottleStore(paths: paths, runtimes: runtimes),
-            runner: WineRunner(paths: paths, runtimes: runtimes),
+            runner: WineRunner(paths: paths, graphics: graphics),
             runtimeService: runtimes,
-            dependencyInstaller: UnavailableDependencyInstaller(),
+            dependencyInstaller: WinetricksRunner(paths: paths, tools: tools, graphics: graphics),
+            graphicsService: graphics,
             iconProvider: ProgramIconStore(paths: paths),
+            notifier: SystemNotifier(),
             isPreview: false,
             dataFolder: paths.root)
     }

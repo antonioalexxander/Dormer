@@ -20,8 +20,11 @@ final class WineIntegrationTests: XCTestCase {
 
         let paths = AppPaths(root: URL(filePath: rootPath, directoryHint: .isDirectory))
         let runtimes = RuntimeStore(paths: paths, catalog: try RuntimeCatalog.bundled())
+        let components = try ComponentCatalog.bundled()
+        let graphics = GraphicsStore(paths: paths, runtimes: runtimes, catalog: components)
+        let tools = ToolStore(paths: paths, catalog: components)
         let bottles = BottleStore(paths: paths, runtimes: runtimes)
-        let runner = WineRunner(paths: paths, runtimes: runtimes)
+        let runner = WineRunner(paths: paths, graphics: graphics)
 
         // 1. Runtime (skipped when a previous run already installed it).
         let runtime = try await runtimes.recommendedRuntime()
@@ -136,6 +139,56 @@ final class WineIntegrationTests: XCTestCase {
         let status = await exited.value
         print("Notepad++ exited with \(status) after wineserver -k")
 
+        // 6b. winetricks (the pinned script plus Dormer's cabextract wrapper) installs a verb in the isolated bottle
+        // and puts the isolation back afterwards.
+        let tricks = WinetricksRunner(paths: paths, tools: tools, graphics: graphics)
+        var started = false
+        for try await event in tricks.install(verbs: ["d3dcompiler_47"], in: bottle) {
+            if case .started = event { started = true }
+        }
+        XCTAssertTrue(started)
+        let compiler47 = paths.cDrive(id: bottle.id).appending(path: "windows/system32/d3dcompiler_47.dll")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: compiler47.path(percentEncoded: false)), "verb installed")
+        let installedVerbs = await tricks.installedVerbs(in: bottle)
+        XCTAssertTrue(installedVerbs.contains("d3dcompiler_47"))
+        XCTAssertFalse(
+            FileManager.default.fileExists(atPath: prefix.appending(path: "dosdevices/z:").path(percentEncoded: false)),
+            "Z: is hidden again after winetricks")
+
+        // 6c. DXMT: a tiny .NET program asks for a Direct3D 11 device. Wine's own Direct3D gives feature level 9.3
+        // here; DXMT (Metal) gives 11.0, which proves the variant runtime loads and works.
+        let source = """
+            using System; using System.Runtime.InteropServices;
+            class T {
+              [DllImport("d3d11.dll")] static extern int D3D11CreateDevice(IntPtr a, int t, IntPtr s, uint f, int[] l, uint n, uint sdk, out IntPtr d, out int level, out IntPtr c);
+              static void Main() { IntPtr d, c; int lvl; int hr = D3D11CreateDevice(IntPtr.Zero, 1, IntPtr.Zero, 0, null, 0, 7, out d, out lvl, out c);
+                Console.WriteLine("RESULT hr=0x{0:X8} featurelevel=0x{1:X} device={2}", hr, lvl, d != IntPtr.Zero); }
+            }
+            """
+        let dxFolder = paths.cDrive(id: bottle.id).appending(path: "dxtest", directoryHint: .isDirectory)
+        try FileManager.default.createDirectory(at: dxFolder, withIntermediateDirectories: true)
+        try Data(source.utf8).write(to: dxFolder.appending(path: "dxtest.cs"))
+        let build = Program(
+            name: "mcs", windowsPath: compiler.windowsPath, arguments: #"-out:C:\dxtest\dxtest.exe C:\dxtest\dxtest.cs"#
+        )
+        _ = await Self.output(of: try await runner.launch(.program(build), in: bottle))
+        let probe = Program(name: "dxtest", windowsPath: #"C:\dxtest\dxtest.exe"#)
+        let wineD3D = await Self.output(of: try await runner.launch(.program(probe), in: bottle))
+        print("WineD3D:", wineD3D.filter { $0.contains("RESULT") })
+
+        bottle.settings.graphicsBackend = .dxmt
+        let dxmtStart = clock.now
+        bottle.appliedSettings = try await runner.prepare(bottle)  // downloads DXMT and builds the runtime variant
+        print("DXMT ready in \(clock.now - dxmtStart)")
+        let dxmtVersion = await graphics.dxmtVersion()
+        XCTAssertNotNil(dxmtVersion)
+        let dxmt = await Self.output(of: try await runner.launch(.program(probe), in: bottle))
+        XCTAssertTrue(
+            dxmt.contains { $0.contains("featurelevel=0xB000") },
+            "DXMT output: \(dxmt.filter { !$0.contains("fixme") })")
+        bottle.settings.graphicsBackend = .wined3d
+        bottle.appliedSettings = try await runner.prepare(bottle)
+
         // 7. Export and import the real bottle.
         let archive = paths.root.appending(path: "export.aar")
         let exportStart = clock.now
@@ -160,6 +213,15 @@ final class WineIntegrationTests: XCTestCase {
         try await Task.sleep(for: .seconds(5))
         try await runner.terminateAll(in: imported)
         _ = await Self.exitStatus(of: importedRun)
+    }
+
+    /// All output lines of a program, once it has exited.
+    private static func output(of session: RunSession) async -> [String] {
+        var lines: [String] = []
+        for await event in session.events {
+            if case .output(let line) = event { lines.append(line.raw) }
+        }
+        return lines
     }
 
     private static func exitStatus(of session: RunSession) async -> Int32 {

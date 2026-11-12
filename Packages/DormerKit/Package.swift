@@ -19,7 +19,10 @@ let package = Package(
         .target(
             name: "WineManager",
             dependencies: ["DormerCore"],
-            resources: [.copy("Resources/runtimes.json"), .copy("Resources/winetricks-curated.json")]
+            resources: [
+                .copy("Resources/runtimes.json"), .copy("Resources/winetricks-curated.json"),
+                .copy("Resources/components.json"), .copy("Resources/cabextract-wrapper.sh"),
+            ]
         ),
         .target(name: "BottleManager", dependencies: ["DormerCore", "WineManager"]),
         .target(name: "DormerUI", dependencies: ["DormerCore", "WineManager", "BottleManager"]),

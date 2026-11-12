@@ -41,12 +41,24 @@ struct BottleSettingsView: View {
                         HStack {
                             Text(backend.displayName)
                             if backend.isExperimental { Text("(experimental)") }
+                            if !backend.isAvailable { Text("(no disponible)") }
                         }
                         .tag(backend)
+                        .selectionDisabled(!backend.isAvailable)
                     }
                 } label: {
                     Text("Backend gráfico")
                     Text(settings.wrappedValue.graphicsBackend.summary)
+                }
+                if settings.wrappedValue.graphicsBackend == .dxmt {
+                    Label {
+                        Text(
+                            "DXMT es experimental: se probó con la creación de un dispositivo Direct3D 11, no con juegos. Se descarga (18 MB) la primera vez que abras un programa con él."
+                        )
+                    } icon: {
+                        Image(systemName: "flask").foregroundStyle(.orange)
+                    }
+                    .font(.callout)
                 }
                 if settings.wrappedValue.graphicsBackend.requiresUserSuppliedComponent {
                     Label {
@@ -89,8 +101,7 @@ struct BottleSettingsView: View {
                     Text("Aumenta el tamaño del texto y de los controles dentro de los programas.")
                 }
                 PendingSettingNote(
-                    "Retina y la escala se aplican la próxima vez que abras un programa. Por ahora todos los programas usan WineD3D: DXMT y D3DMetal llegan en la Fase 4."
-                )
+                    "El backend, Retina y la escala se aplican la próxima vez que abras un programa.")
             }
 
             Section("Rendimiento") {

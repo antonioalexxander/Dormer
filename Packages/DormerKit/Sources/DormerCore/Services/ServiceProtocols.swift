@@ -69,8 +69,22 @@ public protocol RuntimeServicing: Sendable {
     func install(_ runtime: WineRuntimeDescriptor) -> AsyncThrowingStream<RuntimeInstallProgress, any Error>
 }
 
+/// Downloads and imports the graphics layers a bottle can use besides Wine's own Direct3D.
+public protocol GraphicsServicing: Sendable {
+    /// Version of the downloaded DXMT, or `nil` if it has not been downloaded.
+    func dxmtVersion() async -> String?
+    func installDXMT() async throws
+    /// Version of the D3DMetal the user imported from Apple's Game Porting Toolkit, or `nil`.
+    func gptkVersion() async -> String?
+    /// Copies D3DMetal out of the Game Porting Toolkit disk image (or its mounted folder) and returns its version.
+    func importGPTK(from source: URL) async throws -> String
+    func removeGPTK() async throws
+}
+
 /// Installs Windows runtimes (Visual C++, .NET, fonts…) through winetricks.
 public protocol DependencyInstalling: Sendable {
+    /// Verbs already installed in the bottle.
+    func installedVerbs(in bottle: Bottle) async -> Set<String>
     /// `false` while the installer is not connected; the UI then explains why instead of offering it.
     var isAvailable: Bool { get }
     func curatedVerbs() async throws -> [WinetricksVerb]
@@ -79,4 +93,5 @@ public protocol DependencyInstalling: Sendable {
 
 extension DependencyInstalling {
     public var isAvailable: Bool { true }
+    public func installedVerbs(in bottle: Bottle) async -> Set<String> { [] }
 }

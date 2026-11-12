@@ -76,7 +76,7 @@ struct ProgramsView: View {
             withAnimation(.snappy) { model.unpin(program.id, in: bottle.id) }
         }
         Divider()
-        Button("Crear lanzador .app…") { model.explainUnavailable("Crear lanzador .app", phase: 4) }
+        Button("Crear lanzador .app…") { Task { await model.createLauncher(for: program, in: bottle.id) } }
         Button("Mostrar en Finder") { model.revealProgram(program, in: bottle.id) }
     }
 

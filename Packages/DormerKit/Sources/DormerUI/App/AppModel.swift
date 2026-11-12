@@ -1,4 +1,5 @@
 import AppKit
+import BottleManager
 import DormerCore
 import Foundation
 import Observation
@@ -34,6 +35,10 @@ public final class AppModel {
     public private(set) var bottlesBeingCreated: [String] = []
     /// Long-running work shown in the sidebar (exporting, importing, applying settings), or `nil`.
     public private(set) var activity: String?
+    /// Version of the downloaded DXMT, or `nil`.
+    public private(set) var dxmtVersion: String?
+    /// Version of the D3DMetal imported from Apple's Game Porting Toolkit, or `nil`.
+    public private(set) var gptkVersion: String?
 
     public var hasCompletedOnboarding: Bool {
         didSet { defaults.set(hasCompletedOnboarding, forKey: Keys.onboardingCompleted) }
@@ -50,6 +55,8 @@ public final class AppModel {
     let runner: any ProgramRunning
     let runtimeService: any RuntimeServicing
     let dependencyInstaller: any DependencyInstalling
+    let graphicsService: any GraphicsServicing
+    private let notifier: any Notifying
     private let iconProvider: any ProgramIconProviding
     @ObservationIgnored private var iconCache: [String: NSImage] = [:]
     private let defaults: UserDefaults
@@ -65,7 +72,9 @@ public final class AppModel {
         runner: any ProgramRunning,
         runtimeService: any RuntimeServicing,
         dependencyInstaller: any DependencyInstalling,
+        graphicsService: any GraphicsServicing,
         iconProvider: any ProgramIconProviding,
+        notifier: any Notifying,
         isPreview: Bool,
         dataFolder: URL? = nil,
         defaults: UserDefaults = .standard
@@ -74,7 +83,9 @@ public final class AppModel {
         self.runner = runner
         self.runtimeService = runtimeService
         self.dependencyInstaller = dependencyInstaller
+        self.graphicsService = graphicsService
         self.iconProvider = iconProvider
+        self.notifier = notifier
         self.isPreview = isPreview
         self.dataFolder = dataFolder
         self.defaults = defaults
@@ -120,6 +131,7 @@ public final class AppModel {
         do {
             bottles = try await bottleService.loadBottles()
             installedRuntimes = await runtimeService.installedRuntimes()
+            await refreshGraphics()
             if selectedBottleID == nil { selectedBottleID = bottles.first?.id }
             for bottle in bottles { await refreshPrograms(in: bottle.id) }
         } catch {
@@ -360,6 +372,11 @@ public final class AppModel {
         if case .file = request {
             iconCache.removeAll()  // an installer may have replaced executables
             await refreshPrograms(in: log.bottleID)
+            if log.exitStatus == 0 {
+                notifyIfInactive(
+                    title: String(localized: "«\(log.title)» terminó"),
+                    body: String(localized: "Ya puedes buscar el programa en la botella."))
+            }
         }
         guard let status = log.exitStatus, status != 0, status != -1 else { return }
         alert = AppAlert(
@@ -395,6 +412,81 @@ public final class AppModel {
     public func openTool(_ tool: WineTool, in bottleID: UUID) async {
         selectedBottleID = bottleID
         await start(.tool(tool), in: bottleID, programPathKey: nil)
+    }
+
+    // MARK: Notifications
+
+    /// Posts a notification only when Dormer is in the background; if it is in front, the user already sees the result.
+    func notifyIfInactive(title: String, body: String) {
+        guard !NSApplication.shared.isActive else { return }
+        Task { await notifier.notify(title: title, body: body) }
+    }
+
+    // MARK: Graphics
+
+    public func refreshGraphics() async {
+        dxmtVersion = await graphicsService.dxmtVersion()
+        gptkVersion = await graphicsService.gptkVersion()
+    }
+
+    public func downloadDXMT() async {
+        activity = "Descargando DXMT…"
+        defer { activity = nil }
+        do {
+            try await graphicsService.installDXMT()
+        } catch {
+            present(error, title: "No se pudo descargar DXMT")
+        }
+        await refreshGraphics()
+    }
+
+    /// Asks for Apple's Game Porting Toolkit (disk image or already mounted volume) and copies D3DMetal out of it.
+    public func importGPTK() async {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.diskImage, .folder]
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = true
+        panel.message = String(
+            localized: "Elige la imagen de disco del Game Porting Toolkit, o su volumen ya montado.")
+        panel.prompt = String(localized: "Importar")
+        guard panel.runModal() == .OK, let source = panel.url else { return }
+
+        activity = "Importando D3DMetal…"
+        defer { activity = nil }
+        do {
+            let version = try await graphicsService.importGPTK(from: source)
+            alert = AppAlert(
+                title: "D3DMetal importado (\(version))",
+                message:
+                    "Quedó guardado en tu Mac. Todavía no se puede elegir como backend: necesita un motor Wine del Game Porting Toolkit, que el catálogo de Dormer aún no incluye."
+            )
+        } catch {
+            present(error, title: "No se pudo importar D3DMetal")
+        }
+        await refreshGraphics()
+    }
+
+    public func removeGPTK() async {
+        do {
+            try await graphicsService.removeGPTK()
+        } catch {
+            present(error, title: "No se pudo quitar D3DMetal")
+        }
+        await refreshGraphics()
+    }
+
+    // MARK: Launchers
+
+    /// Creates `<program>.app` in `~/Applications` and shows it in Finder so it can be dragged to the Dock.
+    public func createLauncher(for program: Program, in bottleID: UUID) async {
+        guard let bottle = bottle(withID: bottleID) else { return }
+        let icon = await iconProvider.iconPNG(for: program, in: bottle)
+        do {
+            let app = try LauncherBuilder.create(for: program, in: bottle, iconPNG: icon)
+            NSWorkspace.shared.activateFileViewerSelecting([app])
+        } catch {
+            present(error, title: "No se pudo crear el lanzador")
+        }
     }
 
     // MARK: Export and import

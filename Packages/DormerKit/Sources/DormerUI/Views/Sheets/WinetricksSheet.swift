@@ -14,6 +14,8 @@ struct WinetricksSheet: View {
     @State private var progress: Progress?
     @State private var installTask: Task<Void, Never>?
     @State private var loadError: String?
+    @State private var installed: Set<String> = []
+    @State private var logTail: [String] = []
 
     struct Progress: Equatable {
         var current: String
@@ -50,18 +52,6 @@ struct WinetricksSheet: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 8)
 
-            if !model.dependencyInstaller.isAvailable {
-                Label(
-                    "La instalación de componentes se conecta en la Fase 4. Por ahora puedes ver la lista.",
-                    systemImage: "clock"
-                )
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 20)
-                .padding(.bottom, 8)
-            }
-
             if let progress {
                 progressView(progress)
             } else if let loadError {
@@ -79,6 +69,9 @@ struct WinetricksSheet: View {
             do {
                 verbs = try await model.dependencyInstaller.curatedVerbs()
                 selection = preselected
+                if let bottle = model.bottle(withID: bottleID) {
+                    installed = await model.dependencyInstaller.installedVerbs(in: bottle)
+                }
             } catch {
                 loadError = error.localizedDescription
             }
@@ -101,6 +94,12 @@ struct WinetricksSheet: View {
                             ) {
                                 HStack {
                                     Text(verb.title)
+                                    if installed.contains(verb.id) {
+                                        Label("Instalado", systemImage: "checkmark.circle.fill")
+                                            .labelStyle(.titleAndIcon)
+                                            .font(.caption)
+                                            .foregroundStyle(.green)
+                                    }
                                     Text(verbatim: verb.id)
                                         .font(.caption.monospaced())
                                         .foregroundStyle(.secondary)
@@ -133,6 +132,17 @@ struct WinetricksSheet: View {
                 Text("Puede tardar unos minutos. Algunos instaladores abren ventanas propias.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                ScrollView {
+                    Text(verbatim: logTail.joined(separator: "\n"))
+                        .font(.caption2.monospaced())
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .textSelection(.enabled)
+                }
+                .frame(height: 90)
+                .padding(8)
+                .background(.quaternary.opacity(0.4), in: .rect(cornerRadius: 6))
+                .accessibilityLabel("Salida de winetricks")
             }
             if model.isPreview {
                 Label("Vista previa: la instalación es simulada.", systemImage: "eye")
@@ -165,7 +175,7 @@ struct WinetricksSheet: View {
                     .keyboardShortcut(.cancelAction)
                 Button("Instalar") { install() }
                     .keyboardShortcut(.defaultAction)
-                    .disabled(selection.isEmpty || !model.dependencyInstaller.isAvailable)
+                    .disabled(selection.isEmpty)
             }
         }
         .padding(16)
@@ -175,14 +185,27 @@ struct WinetricksSheet: View {
         guard let bottle = model.bottle(withID: bottleID) else { return }
         let ordered = verbs.map(\.id).filter(selection.contains)
         progress = Progress(current: ordered.first ?? "", index: 0, total: ordered.count)
+        logTail = []
         installTask = Task {
             do {
                 for try await event in model.dependencyInstaller.install(verbs: ordered, in: bottle) {
-                    if case .started(let verb, let index, let total) = event {
+                    switch event {
+                    case .started(let verb, let index, let total):
                         progress = Progress(current: verb, index: index, total: total)
+                    case .log(let line):
+                        // Wine's "fixme" lines are noise for this view; the full output is in winetricks.log.
+                        guard !line.contains(":fixme:") else { continue }
+                        logTail.append(line)
+                        if logTail.count > 40 { logTail.removeFirst(logTail.count - 40) }
+                    case .finished:
+                        break
                     }
                 }
                 progress?.isFinished = true
+                installed = await model.dependencyInstaller.installedVerbs(in: bottle)
+                model.notifyIfInactive(
+                    title: String(localized: "Componentes instalados"),
+                    body: String(localized: "winetricks terminó en «\(bottle.name)»."))
             } catch is CancellationError {
                 progress = nil
             } catch {

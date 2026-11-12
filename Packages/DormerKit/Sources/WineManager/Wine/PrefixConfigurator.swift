@@ -20,12 +20,15 @@ public enum PrefixConfigurator {
     /// Throws without returning if any step fails, so the caller keeps the old "applied" value and retries.
     public static func apply(
         _ settings: BottleSettings, previous: BottleSettings?, installation: WineInstallation, prefix: URL,
-        home: URL = FileManager.default.homeDirectoryForCurrentUser
+        home: URL = FileManager.default.homeDirectoryForCurrentUser, dxmtFiles: URL? = nil
     ) async throws -> BottleSettings {
         // Cheap and idempotent, so it runs every time: Wine recreates the host links when it updates a prefix.
         try PrefixIsolation.apply(hidesHostFileSystem: settings.hidesHostFileSystem, prefix: prefix, home: home)
         // Without Z:, Wine cannot reach the Mono it ships with, so .NET programs would not start.
         if settings.hidesHostFileSystem { try PrefixComponents.installMono(from: installation, into: prefix) }
+        if settings.graphicsBackend == .dxmt, let dxmtFiles {
+            try PrefixComponents.installDXMTLibrary(from: dxmtFiles, into: prefix)
+        }
 
         if previous?.windowsVersion != settings.windowsVersion {
             try await run(

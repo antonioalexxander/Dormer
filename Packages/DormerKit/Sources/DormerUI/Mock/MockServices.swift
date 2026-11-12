@@ -118,6 +118,14 @@ actor MockProgramRunner: ProgramRunning {
     }
 }
 
+struct MockGraphicsService: GraphicsServicing {
+    func dxmtVersion() async -> String? { nil }
+    func installDXMT() async throws { throw MockBottleService.PreviewOnlyError() }
+    func gptkVersion() async -> String? { nil }
+    func importGPTK(from source: URL) async throws -> String { throw MockBottleService.PreviewOnlyError() }
+    func removeGPTK() async throws {}
+}
+
 struct MockIconProvider: ProgramIconProviding {
     func iconPNG(for program: Program, in bottle: Bottle) async -> Data? { nil }
 }
@@ -185,7 +193,9 @@ extension AppModel {
             runner: MockProgramRunner(bottleService: bottleService),
             runtimeService: MockRuntimeService(),
             dependencyInstaller: MockDependencyInstaller(),
+            graphicsService: MockGraphicsService(),
             iconProvider: MockIconProvider(),
+            notifier: SilentNotifier(),
             isPreview: true,
             defaults: defaults)
     }

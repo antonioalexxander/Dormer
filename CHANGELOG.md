@@ -39,6 +39,16 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
   - Dormer se niega a duplicar o exportar una botella con programas abiertos, para no copiar un registro a medias.
   - Pruebas: 43 nuevas, incluidas pruebas con archivos truncados y corruptos para los parsers.
 
+- Fase 4, extras del MVP:
+  - Winetricks real: Dormer descarga el script oficial fijado (versión 20260125, SHA-256 verificado) y lo ejecuta en la botella; la hoja muestra el avance, la salida en vivo, qué componentes ya están instalados y permite cancelar. Verificado instalando `corefonts`, `d3dcompiler_47`, `vcrun2022` y `d3dx9` (con sus versiones de 32 y 64 bits).
+  - `cabextract` sin compilar nada: un pequeño asistente propio sobre el `bsdtar` de macOS (que lee archivos CAB, incluidos los instaladores autoextraíbles de Microsoft) cubre las opciones que usa winetricks. No hace falta alojar binarios.
+  - DXMT (MIT, v0.80) como backend gráfico experimental: descarga verificada (SHA-256) y una variante del motor Wine creada como clon APFS, para que solo las botellas que lo elijan lo usen. Verificado con la creación de un dispositivo Direct3D 11: WineD3D da nivel 9.3 y DXMT nivel 11.0. **No se probó con juegos.**
+  - Importación de D3DMetal desde el Game Porting Toolkit que aporta el usuario (imagen de disco o volumen montado): copia solo `D3DMetal.framework` y `libd3dshared.dylib`. Dormer nunca acepta la licencia de Apple por el usuario. **Importarlo no lo activa** (falta un motor Wine del Game Porting Toolkit).
+  - Lanzadores `.app` en `~/Applications` con el ícono del programa; abren `dormer://run?…` (verificado de punta a punta con Notepad++).
+  - Notificaciones locales cuando termina winetricks o un instalador, solo si Dormer está en segundo plano.
+  - DXVK y D3DMetal aparecen como «no disponibles» en el selector de backend en lugar de aceptar una elección que no funciona.
+  - 29 pruebas nuevas; la prueba de extremo a extremo instala un verbo con winetricks y comprueba DXMT.
+
 ### Fixed
 - Los programas .NET fallaban con «Wine Mono is not installed» en botellas aisladas (la configuración por defecto desde la Fase 3). Wine alcanza Mono, que viaja junto al motor, a través de la unidad Z:, y las botellas aisladas no la tienen. Ahora Dormer clona Mono dentro de la botella (`C:\windows\mono\mono-2.0`; en APFS es instantáneo) al crearla y, en las existentes, la próxima vez que se abre un programa. Se añadió a la prueba de extremo a extremo una aplicación .NET real.
 
