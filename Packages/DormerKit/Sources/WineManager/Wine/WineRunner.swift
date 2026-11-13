@@ -33,7 +33,11 @@ public actor WineRunner: ProgramRunning {
             var chosen: DiscImage.Mounted?
             let set = DiscImage.discSet(containing: target.url)
             if target.mergesDiscs, set.count > 1 {
-                let merged = try await DiscImage.merge(set, prefix: paths.prefix(id: bottle.id), cDrive: cDrive)
+                let stub = cDrive.appending(path: "windows/system32/hostname.exe")
+                let merged = try await DiscImage.merge(
+                    set, prefix: paths.prefix(id: bottle.id), cDrive: cDrive,
+                    registrationStub: FileManager.default.fileExists(atPath: stub.path(percentEncoded: false))
+                        ? stub : nil)
                 mergedDisc = merged
                 // Wine sees a plain folder as a hard disk; installers that look for a CD need to see one.
                 _ = try? await ProcessRunner.run(

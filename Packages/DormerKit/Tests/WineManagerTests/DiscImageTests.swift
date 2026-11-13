@@ -213,4 +213,16 @@ final class DiscImageTests: XCTestCase {
         XCTAssertEqual(
             WineLaunchPlan.make(forProgram: "Setup.MSI", onDisc: disc).arguments, ["msiexec", "/i", "D:\\Setup.MSI"])
     }
+
+    func testRegistrationToolIsReplacedByTheStub() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory.appending(path: UUID().uuidString)
+        defer { try? fm.removeItem(at: root) }
+        let support = root.appending(path: "Support")
+        try fm.createDirectory(at: support, withIntermediateDirectories: true)
+        try Data("old".utf8).write(to: support.appending(path: "EReg.exe"))
+        try Data("stub".utf8).write(to: root.appending(path: "stub.exe"))
+        DiscImage.replaceRegistrationTool(in: root, with: root.appending(path: "stub.exe"))
+        XCTAssertEqual(try Data(contentsOf: support.appending(path: "EReg.exe")), Data("stub".utf8))
+    }
 }

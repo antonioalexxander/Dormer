@@ -179,7 +179,8 @@ public enum DiscImage {
     /// Copies every disc of a set into one folder in the bottle's `C:` and links it as a single drive. A file
     /// that is on several discs keeps the first disc's version.
     public static func merge(
-        _ images: [URL], prefix: URL, cDrive: URL, fileManager: FileManager = .default
+        _ images: [URL], prefix: URL, cDrive: URL, registrationStub: URL? = nil,
+        fileManager: FileManager = .default
     ) async throws -> Mounted {
         let devices = prefix.appending(path: "dosdevices", directoryHint: .isDirectory)
         removeStaleLinks(in: devices, fileManager: fileManager)
@@ -194,6 +195,9 @@ public enum DiscImage {
                 defer { release(mountPoint, owned: owned, fileManager: fileManager) }
                 try copyContents(of: mountPoint, into: folder, fileManager: fileManager)
             }
+            if let registrationStub {
+                replaceRegistrationTool(in: folder, with: registrationStub, fileManager: fileManager)
+            }
             let link = devices.appending(path: "\(letter.lowercased()):")
             try fileManager.createSymbolicLink(
                 atPath: link.path(percentEncoded: false), withDestinationPath: path(of: folder))
@@ -201,6 +205,20 @@ public enum DiscImage {
         } catch {
             try? fileManager.removeItem(at: folder)
             throw error
+        }
+    }
+
+    /// EA's installers launch `Support\EReg.exe` (online product registration) and wait for it. Under Wine on a Mac
+    /// it crashes at start, which leaves the installer hanging at 99 %. In the merged copy only, it is replaced by
+    /// a program that exits at once. The serial is still asked for and checked by the installer itself.
+    static func replaceRegistrationTool(in folder: URL, with stub: URL, fileManager: FileManager = .default) {
+        let support = folder.appending(path: "Support", directoryHint: .isDirectory)
+        guard let names = try? fileManager.contentsOfDirectory(atPath: path(of: support)) else { return }
+        for name in names where name.lowercased() == "ereg.exe" {
+            let target = support.appending(path: name)
+            try? fileManager.removeItem(at: target)
+            try? fileManager.copyItem(at: stub, to: target)
+            try? fileManager.setAttributes([.posixPermissions: 0o644], ofItemAtPath: path(of: target))
         }
     }
 
