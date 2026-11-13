@@ -35,7 +35,7 @@ final class WineEnvironmentTests: XCTestCase {
         let env = environment()
         XCTAssertEqual(env["WINEPREFIX"], "/tmp/bottle/prefix")
         XCTAssertEqual(env["PATH"]?.hasPrefix("/opt/wine/bin:"), true)
-        XCTAssertEqual(env["WINEDLLOVERRIDES"], "winemenubuilder.exe=d")
+        XCTAssertEqual(env["WINEDLLOVERRIDES"], "winemenubuilder.exe=d;winedbg.exe=d")
     }
 
     func testOnlyAllowListedHostVariablesAreInherited() {

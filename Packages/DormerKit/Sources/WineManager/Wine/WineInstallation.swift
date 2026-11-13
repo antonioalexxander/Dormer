@@ -51,7 +51,9 @@ public enum WineEnvironment {
 
     /// DLLs disabled in every bottle. `winemenubuilder` would create menu entries and file
     /// associations outside Dormer's folder.
-    public static let disabledDLLs = "winemenubuilder.exe=d"
+    /// `winedbg` is Wine's crash dialog: it keeps a crashed program alive until someone closes it, so an
+    /// installer waiting for a helper that crashed never finishes. The crash is still written to the log.
+    public static let disabledDLLs = "winemenubuilder.exe=d;winedbg.exe=d"
 
     public static func make(
         installation: WineInstallation,
