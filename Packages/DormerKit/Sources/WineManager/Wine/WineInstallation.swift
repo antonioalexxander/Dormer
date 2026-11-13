@@ -55,12 +55,28 @@ public enum WineEnvironment {
     /// installer waiting for a helper that crashed never finishes. The crash is still written to the log.
     public static let disabledDLLs = "winemenubuilder.exe=d;winedbg.exe=d"
 
+    /// For diagnosing a Wine problem: if the file `Application Support/Dormer/wine-debug.txt` exists, its first line
+    /// is passed as `WINEDEBUG` (for example `err+all,+process,+file`). Nothing changes when the file is absent.
+    public static func requestedDebugChannels(fileManager: FileManager = .default) -> String? {
+        guard
+            let support = try? fileManager.url(
+                for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false),
+            let text = try? String(contentsOf: support.appending(path: "Dormer/wine-debug.txt"), encoding: .utf8)
+        else { return nil }
+        let line = text.split(whereSeparator: \.isNewline).first.map(String.init)?.trimmingCharacters(in: .whitespaces)
+        guard let line, !line.isEmpty, line.allSatisfy({ $0.isLetter || $0.isNumber || "+-,_:".contains($0) }) else {
+            return nil
+        }
+        return line
+    }
+
     public static func make(
         installation: WineInstallation,
         prefix: URL,
         settings: BottleSettings,
         extraEnvironment: [EnvironmentVariable] = [],
-        host: [String: String] = ProcessInfo.processInfo.environment
+        host: [String: String] = ProcessInfo.processInfo.environment,
+        debugChannels: String? = WineEnvironment.requestedDebugChannels()
     ) -> [String: String] {
         var environment: [String: String] = [:]
         for name in inheritedNames {
@@ -71,6 +87,7 @@ public enum WineEnvironment {
         environment["PATH"] = bin + ":/usr/bin:/bin:/usr/sbin:/sbin"
         environment["WINEPREFIX"] = prefix.path(percentEncoded: false)
         environment["WINEDLLOVERRIDES"] = disabledDLLs
+        if let debugChannels { environment["WINEDEBUG"] = debugChannels }
         // MoltenVK prints a banner on every start; keep only its errors.
         environment["MVK_CONFIG_LOG_LEVEL"] = "1"
 
